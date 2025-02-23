@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DestroyUserService;
 use App\Services\GetUsersService;
 use App\Services\StoreUserService;
+use App\Services\UpdateUserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UsersController extends Controller
 {
-    public function store(Request $request)
+    public function storeUser(Request $request)
     {
         $storeUserService = new StoreUserService();
 
@@ -19,5 +22,20 @@ class UsersController extends Controller
     {
         $getUsersService = new GetUsersService();
         return $getUsersService->execute();
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $updateUserService = new UpdateUserService();
+
+        return $updateUserService->execute($request->all(), $id);
+    }
+
+    public function destroyUser($id)
+    {
+        $destroyUserService = new DestroyUserService();
+        $destroyUserService->execute($id);
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
