@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\AppError;
 use App\Models\User;
-use ErrorException;
 
 class DestroyUserService
 {
@@ -12,7 +12,7 @@ class DestroyUserService
         $userToDestroy = User::firstWhere("id", $id);
 
         if (is_null($userToDestroy)) {
-            throw new ErrorException("User not found.", 404);
+            throw new AppError("User not found.", 404);
         }
 
         $userToDestroy->delete();

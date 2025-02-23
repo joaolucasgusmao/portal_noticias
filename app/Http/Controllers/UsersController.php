@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Services\DestroyUserService;
 use App\Services\GetUsersService;
 use App\Services\StoreUserService;
@@ -11,7 +13,7 @@ use Illuminate\Http\Response;
 
 class UsersController extends Controller
 {
-    public function storeUser(Request $request)
+    public function storeUser(StoreUserRequest $request)
     {
         $storeUserService = new StoreUserService();
 
@@ -24,7 +26,7 @@ class UsersController extends Controller
         return $getUsersService->execute();
     }
 
-    public function updateUser(Request $request, $id)
+    public function updateUser(UpdateUserRequest $request, $id)
     {
         $updateUserService = new UpdateUserService();
 

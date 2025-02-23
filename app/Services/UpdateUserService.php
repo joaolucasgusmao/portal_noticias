@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\AppError;
 use App\Models\User;
-use ErrorException;
 
 class UpdateUserService
 {
@@ -12,7 +12,7 @@ class UpdateUserService
         $userToUpdate = User::firstWhere("id", $id);
 
         if (is_null($userToUpdate)) {
-            throw new ErrorException("User not found.", 404);
+            throw new AppError("User not found.", 404);
         }
 
         $userToUpdate->update($data);

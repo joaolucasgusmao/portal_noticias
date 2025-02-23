@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\AppError;
 use App\Models\User;
-use ErrorException;
 
 class StoreUserService
 {
@@ -12,7 +12,7 @@ class StoreUserService
         $email = User::firstWhere("email", $data["email"]);
 
         if (!is_null($email)) {
-            throw new ErrorException("E-mail already exists.", 400);
+            throw new AppError("E-mail already exists.", 400);
         }
 
         return User::create($data);
