@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class StoreUserRequest extends FormRequest
 {
@@ -26,7 +27,7 @@ class StoreUserRequest extends FormRequest
             "name" => "min:2|required|string",
             "email" => "email|required",
             "password" => "string|required|min:8|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/",
-            "birth_date" => "date|required|before:today",
+            "birth_date" => "required|date_format:d/m/Y|before:today",
             "phone_number" => "string|required|min:10|max:11",
             "gender" => "string|required|max:1",
         ];
@@ -46,6 +47,7 @@ class StoreUserRequest extends FormRequest
             "password.min" => "A senha deve conter no mínimo 8 caractéres.",
             "password.regex" => "A senha deve conter pelo menos 1 letra maiúscula, 1 caractere especial e 1 número.",
             "birth_date.date" => "A data de nascimento deve ser válida.",
+            "birth_date.date_format" => "A data de nascimento deve estar no formato dd/mm/yyyy.",
             "birth_date.required" => "É obrigatório preencher a data de nascimento.",
             "birth_date.before" => "A data de nascimento deve ser anterior a data atual.",
             "phone_number.string" => "O número de telefone deve ser válido.",
