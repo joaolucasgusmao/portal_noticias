@@ -18,13 +18,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'is_admin',
-        'birth_date',
-        'phone_number',
-        'gender'
+        "avatar",
+        "name",
+        "email",
+        "password",
+        "is_admin",
+        "birth_date",
+        "phone_number",
+        "gender"
     ];
 
     /**
@@ -33,7 +34,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        "password",
     ];
 
     /**
@@ -42,11 +43,11 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'password' => 'hashed',
+        "password" => "hashed",
     ];
 
     public function setBirthDateAttribute($value)
     {
-        $this->attributes['birth_date'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+        $this->attributes["birth_date"] = Carbon::createFromFormat("d/m/Y", $value)->format("Y-m-d");
     }
 }

@@ -22,18 +22,20 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "avatar" => "nullable|string",
             "name" => "min:2|required|string",
             "email" => "email|required",
             "password" => "string|required|min:8|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/",
             "birth_date" => "date|required|before:today",
             "phone_number" => "string|required|min:10|max:11",
-            "gender" => "string|required|min:1|max:1",
+            "gender" => "string|required|max:1",
         ];
     }
 
     public function messages(): array
     {
         return [
+            "avatar.string" => "A imagem deve ser válida.",
             "name.min" => "O nome deve conter no mínimo 2 caractéres.",
             "name.required" => "É obrigatório preencher o nome.",
             "name.string" => "O nome deve ser válido.",
@@ -52,7 +54,6 @@ class StoreUserRequest extends FormRequest
             "phone_number.max" => "O número de telefone deve conter no máximo 11 caractéres.",
             "gender.string" => "O gênero deve ser válido",
             "gender.required" => "É obrigatório preencher o gênero.",
-            "gender.min" => "O gênero deve conter no mínimo 1 caractére.",
             "gender.max" => "O gênero deve conter no máximo 1 caractére.",
         ];
     }
