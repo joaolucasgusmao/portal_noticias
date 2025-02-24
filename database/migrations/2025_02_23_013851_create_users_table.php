@@ -12,8 +12,11 @@ return new class extends Migration {
             $table->id()->autoIncrement();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password')->unique();
-            $table->boolean('isAdmin')->default(false);
+            $table->string('password');
+            $table->boolean('is_admin')->default(false);
+            $table->date('birth_date');
+            $table->string('phone_number');
+            $table->string('gender');
             $table->timestamps();
         });
     }
