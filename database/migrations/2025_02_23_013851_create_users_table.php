@@ -10,7 +10,6 @@ return new class extends Migration {
     {
         Schema::create("users", function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string("avatar")->nullable();
             $table->string("name");
             $table->string("email")->unique();
             $table->string("password");
@@ -18,6 +17,7 @@ return new class extends Migration {
             $table->date("birth_date");
             $table->string("phone_number");
             $table->string("gender");
+            $table->string("avatar")->nullable();
             $table->timestamps();
         });
     }
