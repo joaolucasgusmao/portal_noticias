@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\DestroyUserService;
 use App\Services\GetUsersService;
+use App\Services\RetrieveUserService;
 use App\Services\StoreUserService;
 use App\Services\UpdateUserService;
 use Illuminate\Http\Request;
@@ -26,6 +27,12 @@ class UsersController extends Controller
         return $getUsersService->execute();
     }
 
+    public function retrieveUser(int $id)
+    {
+        $retrieveUserService = new RetrieveUserService();
+        return $retrieveUserService->execute($id);
+    }
+
     public function updateUser(UpdateUserRequest $request, $id)
     {
         $updateUserService = new UpdateUserService();
@@ -33,7 +40,7 @@ class UsersController extends Controller
         return $updateUserService->execute($request->all(), $id);
     }
 
-    public function destroyUser($id)
+    public function destroyUser(int $id)
     {
         $destroyUserService = new DestroyUserService();
         $destroyUserService->execute($id);
