@@ -7,7 +7,7 @@ use App\Models\User;
 
 class UpdateUserService
 {
-    public function execute(array $data, int $id)
+    public function execute(array $data, int $id): User
     {
         $userToUpdate = User::find($id);
 

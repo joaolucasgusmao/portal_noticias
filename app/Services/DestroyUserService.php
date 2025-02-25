@@ -7,7 +7,7 @@ use App\Models\User;
 
 class DestroyUserService
 {
-    public function execute(int $id)
+    public function execute(int $id): void
     {
         $userToDestroy = User::find($id);
 

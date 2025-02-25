@@ -7,7 +7,7 @@ use App\Models\User;
 
 class StoreUserService
 {
-    public function execute(array $data)
+    public function execute(array $data): User
     {
         $userEmail = User::firstWhere("email", $data["email"]);
         $userPhoneNumber = User::firstWhere("phone_number", $data["phone_number"]);

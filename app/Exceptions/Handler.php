@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
@@ -45,7 +46,7 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $error)
+    public function render($request, Throwable $error): JsonResponse
     {
 
         if ($error instanceof ValidationException) {

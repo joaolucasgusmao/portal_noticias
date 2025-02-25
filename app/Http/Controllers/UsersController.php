@@ -9,38 +9,39 @@ use App\Services\GetUsersService;
 use App\Services\RetrieveUserService;
 use App\Services\StoreUserService;
 use App\Services\UpdateUserService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 
 class UsersController extends Controller
 {
-    public function storeUser(StoreUserRequest $request)
+    public function storeUser(StoreUserRequest $request): JsonResponse
     {
         $storeUserService = new StoreUserService();
 
-        return $storeUserService->execute($request->all());
+        return response()->json($storeUserService->execute($request->all()));
     }
 
-    public function getUsers()
+    public function getUsers(): JsonResponse
     {
         $getUsersService = new GetUsersService();
-        return $getUsersService->execute();
+        return response()->json($getUsersService->execute());
     }
 
-    public function retrieveUser(int $id)
+    public function retrieveUser(int $id): JsonResponse
     {
         $retrieveUserService = new RetrieveUserService();
-        return $retrieveUserService->execute($id);
+
+        return response()->json($retrieveUserService->execute($id));
     }
 
-    public function updateUser(UpdateUserRequest $request, $id)
+    public function updateUser(UpdateUserRequest $request, int $id): JsonResponse
     {
         $updateUserService = new UpdateUserService();
 
-        return $updateUserService->execute($request->all(), $id);
+        return response()->json($updateUserService->execute($request->all(), $id));
     }
 
-    public function destroyUser(int $id)
+    public function destroyUser(int $id): Response
     {
         $destroyUserService = new DestroyUserService();
         $destroyUserService->execute($id);

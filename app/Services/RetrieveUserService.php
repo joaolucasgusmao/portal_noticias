@@ -7,7 +7,7 @@ use App\Models\User;
 
 class RetrieveUserService
 {
-    public function execute(int $id)
+    public function execute(int $id): User
     {
         $user = User::find($id);
         if (is_null($user)) {
