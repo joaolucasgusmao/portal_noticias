@@ -8,3 +8,5 @@ Route::get("/users", [UsersController::class, 'getUsers']);
 Route::get("/users/{id}", [UsersController::class, 'retrieveUser']);
 Route::patch("/users/{id}", [UsersController::class, 'updateUser']);
 Route::delete("/users/{id}", [UsersController::class, 'destroyUser']);
+
+Route::post("/users/login", [UsersController::class, 'login']);

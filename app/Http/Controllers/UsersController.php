@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\DestroyUserService;
 use App\Services\GetUsersService;
+use App\Services\LoginUserService;
 use App\Services\RetrieveUserService;
 use App\Services\StoreUserService;
 use App\Services\UpdateUserService;
@@ -47,5 +49,12 @@ class UsersController extends Controller
         $destroyUserService->execute($id);
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function login(LoginUserRequest $request): JsonResponse
+    {
+        $loginUserService = new LoginUserService();
+
+        return response()->json($loginUserService->execute($request->all()));
     }
 }
