@@ -9,7 +9,7 @@ class DestroyUserService
 {
     public function execute(int $id)
     {
-        $userToDestroy = User::firstWhere("id", $id);
+        $userToDestroy = User::find($id);
 
         if (is_null($userToDestroy)) {
             throw new AppError("Usuário não encontrado.", 404);

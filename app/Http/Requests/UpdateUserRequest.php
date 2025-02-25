@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
             "name" => "min:2|string",
             "email" => "email",
             "password" => "string|min:8|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/",
-            "birth_date" => "required|date_format:d/m/Y|before:today",
+            "birth_date" => "date_format:d/m/Y|before:today",
             "phone_number" => "string|min:10|max:11",
             "gender" => "string|max:1",
         ];

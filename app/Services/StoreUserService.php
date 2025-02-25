@@ -9,14 +9,14 @@ class StoreUserService
 {
     public function execute(array $data)
     {
-        $email = User::firstWhere("email", $data["email"]);
-        $phoneNumber = User::firstWhere("phone_number", $data["phone_number"]);
+        $userEmail = User::firstWhere("email", $data["email"]);
+        $userPhoneNumber = User::firstWhere("phone_number", $data["phone_number"]);
 
-        if (!is_null($email)) {
+        if (!is_null($userEmail)) {
             throw new AppError("O e-mail já existe.", 400);
         }
 
-        if (!is_null($phoneNumber)) {
+        if (!is_null($userPhoneNumber)) {
             throw new AppError("O número de telefone já existe.", 400);
         }
 

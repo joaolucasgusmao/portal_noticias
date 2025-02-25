@@ -9,7 +9,7 @@ class UpdateUserService
 {
     public function execute(array $data, int $id)
     {
-        $userToUpdate = User::firstWhere("id", $id);
+        $userToUpdate = User::find($id);
 
         if (is_null($userToUpdate)) {
             throw new AppError("Usuário não encontrado.", 404);
