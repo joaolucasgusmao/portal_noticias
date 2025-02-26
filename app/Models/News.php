@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         "hat",
@@ -18,6 +19,8 @@ class News extends Model
         "content",
         "caption",
         "topics",
+        "is_fixed",
+        "is_active",
         "user_id",
     ];
 
@@ -28,6 +31,6 @@ class News extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_news');
+        return $this->belongsToMany(Category::class, "category_news");
     }
 }

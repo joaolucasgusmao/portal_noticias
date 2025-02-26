@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->id()->autoIncrement();
+            $table->id();
             $table->string('hat')->nullable();
             $table->string('title');
             $table->text('summary')->nullable();
@@ -21,7 +21,10 @@ return new class extends Migration
             $table->text('content');
             $table->string('caption')->nullable();
             $table->string('topics')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->boolean("is_fixed")->default(false);
+            $table->foreignId("user_id")->constrained()->onDelete("cascade");
+            $table->boolean("is_active")->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists("news");
     }
 };
