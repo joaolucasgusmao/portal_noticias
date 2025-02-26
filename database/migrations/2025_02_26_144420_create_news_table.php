@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('news', function (Blueprint $table) {
+        Schema::create("news", function (Blueprint $table) {
             $table->id();
-            $table->string('hat')->nullable();
-            $table->string('title');
-            $table->text('summary')->nullable();
-            $table->string('image');
-            $table->timestamp('published_at')->nullable();
-            $table->text('content');
-            $table->string('caption')->nullable();
-            $table->string('topics')->nullable();
+            $table->string("hat")->nullable();
+            $table->string("title");
+            $table->text("summary")->nullable();
+            $table->string("image");
+            $table->text("content");
+            $table->string("caption")->nullable();
+            $table->string("topics")->nullable();
             $table->boolean("is_fixed")->default(false);
             $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->boolean("is_active")->default(true);

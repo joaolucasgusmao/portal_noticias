@@ -15,11 +15,10 @@ class News extends Model
         "title",
         "summary",
         "image",
-        "published_at",
         "content",
         "caption",
         "topics",
-        "is_fixed",
+        "is_fixed", 
         "is_active",
         "user_id",
     ];
