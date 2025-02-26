@@ -7,7 +7,7 @@ use App\Models\User;
 
 class LoginUserService
 {
-    public function  execute(array $data): array
+    public function execute(array $data): array
     {
         $user = User::firstWhere("email", $data["email"]);
 
