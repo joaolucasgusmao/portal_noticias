@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         $this->attributes["birth_date"] = Carbon::createFromFormat("d/m/Y", $value)->format("Y-m-d");
     }
+
+    public function news()
+    {
+        return $this->hasMany(News::class);
+    }
 }
