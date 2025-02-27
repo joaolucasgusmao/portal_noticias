@@ -20,27 +20,27 @@ class UsersController extends Controller
     {
         $storeUserService = new StoreUserService();
 
-        return response()->json($storeUserService->execute($request->all()));
+        return response()->json($storeUserService->execute($request->all()), 201);
     }
 
     public function getUsers(): JsonResponse
     {
         $getUsersService = new GetUsersService();
-        return response()->json($getUsersService->execute());
+        return response()->json($getUsersService->execute(), 200);
     }
 
     public function retrieveUser(int $id): JsonResponse
     {
         $retrieveUserService = new RetrieveUserService();
 
-        return response()->json($retrieveUserService->execute($id));
+        return response()->json($retrieveUserService->execute($id), 200);
     }
 
     public function updateUser(UpdateUserRequest $request, int $id): JsonResponse
     {
         $updateUserService = new UpdateUserService();
 
-        return response()->json($updateUserService->execute($request->all(), $id));
+        return response()->json($updateUserService->execute($request->all(), $id), 200);
     }
 
     public function destroyUser(int $id): Response
@@ -48,13 +48,13 @@ class UsersController extends Controller
         $destroyUserService = new DestroyUserService();
         $destroyUserService->execute($id);
 
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response(null, 204);
     }
 
     public function login(LoginUserRequest $request): JsonResponse
     {
         $loginUserService = new LoginUserService();
 
-        return response()->json($loginUserService->execute($request->all()));
+        return response()->json($loginUserService->execute($request->all()), 200);
     }
 }
