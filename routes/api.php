@@ -1,54 +1,51 @@
 <?php
 
-use App\Http\Controllers\BannersController;
-use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Users
-Route::post("/users", [UsersController::class, "storeUser"]);
-Route::post("/users/login", [UsersController::class, "login"]);
+Route::post("/users", [UserController::class, "store"]);
+Route::post("/users/login", [UserController::class, "login"]);
 
 Route::middleware(["auth.custom"])->group(function () {
-    Route::get("/users", [UsersController::class, "getUsers"])->middleware("admin");
-    Route::get("/users/{id}", [UsersController::class, "retrieveUser"])->middleware("admin");
-    Route::patch("/users/{id}", [UsersController::class, "updateUser"]);
-    Route::delete("/users/{id}", [UsersController::class, "destroyUser"])->middleware("admin");
+    Route::get("/users", [UserController::class, "get"])->middleware("admin");
+    Route::get("/users/{id}", [UserController::class, "retrieve"])->middleware("admin");
+    Route::patch("/users/{id}", [UserController::class, "update"]);
+    Route::delete("/users/{id}", [UserController::class, "destroy"])->middleware("admin");
 });
 
 
 // News
-Route::get("/news", [NewsController::class, "getNews"]);
-Route::get("/news/{id}", [NewsController::class, "retrieveNews"]);
+Route::get("/news", [NewsController::class, "get"]);
+Route::get("/news/{id}", [NewsController::class, "retrieve"]);
 
 Route::middleware(["auth.custom"])->group(function () {
-    Route::post("/news", [NewsController::class, "storeNews"]);
-    Route::patch("/news/{id}", [NewsController::class, "updateNews"]);
-    Route::delete("/news/{id}", [NewsController::class, "destroyNews"]);
+    Route::post("/news", [NewsController::class, "store"]);
+    Route::patch("/news/{id}", [NewsController::class, "update"]);
+    Route::delete("/news/{id}", [NewsController::class, "destroy"]);
 });
 
 
 // Categories
 Route::middleware(["auth.custom"])->group(function () {
-    Route::post("/categories", [CategoriesController::class, "storeCategory"])->middleware("admin");
-    Route::get("/categories", [CategoriesController::class, "getCategories"])->middleware("admin");
-    Route::get("/categories/{id}", [CategoriesController::class, "retrieveCategory"])->middleware("admin");
-    Route::patch("/categories/{id}", [CategoriesController::class, "updateCategory"])->middleware("admin");
-    Route::delete("/categories/{id}", [CategoriesController::class, "destroyCategory"])->middleware("admin");
+    Route::post("/categories", [CategoryController::class, "store"])->middleware("admin");
+    Route::get("/categories", [CategoryController::class, "get"])->middleware("admin");
+    Route::get("/categories/{id}", [CategoryController::class, "retrieve"])->middleware("admin");
+    Route::patch("/categories/{id}", [CategoryController::class, "update"])->middleware("admin");
+    Route::delete("/categories/{id}", [CategoryController::class, "destroy"])->middleware("admin");
 });
 
 
 // Banners
-Route::get("/banners", [BannersController::class, "getBanners"]);
-Route::get("/banners/{id}", [BannersController::class, "retrieveBanner"]);
+Route::get("/banners", [BannerController::class, "get"]);
+Route::get("/banners/{id}", [BannerController::class, "retrieve"]);
 
 Route::middleware(["auth.custom"])->group(function () {
-    Route::post("/banners", [BannersController::class, "storeBanner"]);
-    Route::patch("/banners/{id}", [BannersController::class, "updateBanner"]);
-    Route::patch("/banners/{id}", [BannersController::class, "updateBanner"]);
-    Route::delete("/banners/{id}", [BannersController::class, "destroyBanner"]);
+    Route::post("/banners", [BannerController::class, "store"]);
+    Route::patch("/banners/{id}", [BannerController::class, "update"]);
+    Route::patch("/banners/{id}", [BannerController::class, "update"]);
+    Route::delete("/banners/{id}", [BannerController::class, "destroy"]);
 });
-
-
-
