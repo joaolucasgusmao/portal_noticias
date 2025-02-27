@@ -26,7 +26,7 @@ class NewsService
 
     public function get(): Collection
     {
-        return News::orderBy("id", "asc")->get();
+        return News::oldest("id")->get();
     }
 
     public function retrieve(int $id): News

@@ -21,7 +21,7 @@ class CategoryService
 
     public function get(): Collection
     {
-        return Category::orderBy("id", "asc")->get();
+        return Category::oldest("id")->get();
     }
 
     public function retrieve(int $id): Category

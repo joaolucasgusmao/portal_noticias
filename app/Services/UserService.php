@@ -26,7 +26,7 @@ class UserService
 
     public function get(): Collection
     {
-        return User::orderBy("id", "asc")->get();
+        return User::oldest("id")->get();
     }
 
     public function retrieve(int $id): User

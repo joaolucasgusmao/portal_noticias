@@ -24,7 +24,7 @@ class BannerService
 
     public function get(): Collection
     {
-        return Banner::orderBy("id", "asc")->get();
+        return Banner::oldest("id")->get();
     }
 
     public function retrieve(int $id): Banner
