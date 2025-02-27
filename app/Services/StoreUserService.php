@@ -13,11 +13,11 @@ class StoreUserService
         $userPhoneNumber = User::firstWhere("phone_number", $data["phone_number"]);
 
         if (!is_null($userEmail)) {
-            throw new AppError("O e-mail já existe.", 400);
+            throw new AppError("O e-mail já existe.", 409);
         }
 
         if (!is_null($userPhoneNumber)) {
-            throw new AppError("O número de telefone já existe.", 400);
+            throw new AppError("O número de telefone já existe.", 409);
         }
 
         return User::create($data);
