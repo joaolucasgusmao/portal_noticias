@@ -46,6 +46,10 @@ class BannerService
             throw new AppError("Banner não encontrado.", 404);
         }
 
+        if (!empty($data['side']) && (!empty($data['top']) || !empty($data['home']))) {
+            throw new AppError("Você não pode posicionar o banner lateral junto com os outros.", 409);
+        }
+
         $bannerToUpdate->update($data);
         return $bannerToUpdate;
     }
