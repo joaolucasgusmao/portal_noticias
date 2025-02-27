@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBannerRequest;
+use App\Http\Requests\UpdateBannerRequest;
 use App\Services\DestroyBannerService;
 use App\Services\GetBannersService;
 use App\Services\RetrieveBannerService;
@@ -13,7 +15,7 @@ use Illuminate\Http\Response;
 
 class BannersController extends Controller
 {
-    public function storeBanner(Request $request): JsonResponse
+    public function storeBanner(StoreBannerRequest $request): JsonResponse
     {
         $storeBannerService = new StoreBannerService();
         return response()->json($storeBannerService->execute($request->all()), 201);
@@ -31,7 +33,7 @@ class BannersController extends Controller
         return response()->json($retrieveBannerService->execute($id), 200);
     }
 
-    public function updateBanner(int $id, Request $request): JsonResponse
+    public function updateBanner(int $id, UpdateBannerRequest $request): JsonResponse
     {
         $updateBannerService = new UpdateBannerService();
         return response()->json($updateBannerService->execute($id, $request->all()), 200);

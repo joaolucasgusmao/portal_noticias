@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string("image");
             $table->text("content");
             $table->string("caption")->nullable();
-            $table->string("topics")->nullable();
+            $table->json("topics")->nullable();
             $table->boolean("is_fixed")->default(false);
+            $table->boolean("is_draft")->default(false);
             $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->boolean("is_active")->default(true);
             $table->softDeletes();

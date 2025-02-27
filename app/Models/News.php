@@ -18,7 +18,8 @@ class News extends Model
         "content",
         "caption",
         "topics",
-        "is_fixed", 
+        "is_fixed",
+        "is_draft",
         "is_active",
         "user_id",
     ];
