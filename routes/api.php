@@ -7,10 +7,10 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Users
-Route::post("/users", [UserController::class, "store"]);
 Route::post("/users/login", [UserController::class, "login"]);
 
 Route::middleware(["auth.custom"])->group(function () {
+    Route::post("/users/register", [UserController::class, "store"])->middleware("admin");
     Route::get("/users", [UserController::class, "get"])->middleware("admin");
     Route::get("/users/paginate", [UserController::class, "getUsersPaginate"])->middleware("admin");
     Route::get("/users/{id}", [UserController::class, "retrieve"])->middleware("admin");
