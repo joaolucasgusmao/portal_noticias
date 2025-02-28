@@ -40,4 +40,9 @@ class NewsController extends Controller
     {
         return response($this->newsService->destroy($id), 204);
     }
+
+    public function getNewsByCategory(int $categoryId): JsonResponse
+    {
+        return response()->json($this->newsService->getNewsByCategory($categoryId), 200);
+    }
 }

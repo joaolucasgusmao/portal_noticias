@@ -68,4 +68,17 @@ class NewsService
 
         $news->delete();
     }
+
+    public function getNewsByCategory(int $id): Collection
+    {
+        $news = News::whereHas('categories', function ($query) use ($id) {
+            $query->where('category_id', $id);
+        })->get();
+
+        if ($news->isEmpty()) {
+            throw new AppError("News not found.", 404);
+        }
+
+        return $news;
+    }
 }
