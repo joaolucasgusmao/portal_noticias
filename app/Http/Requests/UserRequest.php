@@ -15,14 +15,14 @@ class UserRequest extends FormRequest
     {
         $rules = [];
 
-        if ($this->isMethod("post") && $this->path() === "api/users/login") { // Login de usuário
+        if ($this->isMethod("post") && $this->path() === "api/users/login") { 
             return [
                 "email" => "required|email",
                 "password" => "required|string|min:8|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/",
             ];
         }
 
-        if ($this->isMethod("post")) { // Cadastro de usuário
+        if ($this->isMethod("post")) { 
             $rules = [
                 "avatar" => ["nullable", "url", "regex:/\\.(jpg|jpeg|png|webp)$/i"],
                 "name" => "required|string|min:2",
@@ -34,7 +34,7 @@ class UserRequest extends FormRequest
             ];
         }
 
-        if ($this->isMethod("put") || $this->isMethod("patch")) { // Atualização de usuário
+        if ($this->isMethod("patch")) { 
             $rules = [
                 "avatar" => ["nullable", "url", "regex:/\\.(jpg|jpeg|png|webp)$/i"],
                 "name" => "sometimes|string|min:2",
