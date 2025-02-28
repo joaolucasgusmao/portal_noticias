@@ -10,10 +10,8 @@ class CategoryService
 {
     public function store(array $data): Category
     {
-        $categoryName = Category::firstWhere("name", $data["name"]);
-
-        if (!is_null($categoryName)) {
-            throw new AppError("A categoria já existe.", 409);
+        if (Category::where("name", $data["name"])->exists()) {
+            throw new AppError("The category already exists.", 409);
         }
 
         return Category::create($data);
@@ -27,8 +25,9 @@ class CategoryService
     public function retrieve(int $id): Category
     {
         $category = Category::find($id);
-        if (is_null($category)) {
-            throw new AppError("Categoria não encontrada.", 404);
+
+        if (!$category) {
+            throw new AppError("Category not found.", 404);
         }
 
         return $category;
@@ -36,25 +35,25 @@ class CategoryService
 
     public function update(array $data, int $id): Category
     {
-        $categoryToUpdate = Category::find($id);
+        $category = Category::find($id);
 
-        if (is_null($categoryToUpdate)) {
-            throw new AppError("Categoria não encontrada.", 404);
+        if (!$category) {
+            throw new AppError("Category not found.", 404);
         }
 
-        $categoryToUpdate->update($data);
+        $category->update($data);
 
-        return $categoryToUpdate;
+        return $category;
     }
 
     public function destroy(int $id): void
     {
-        $categoryToDestroy = Category::find($id);
+        $category = Category::find($id);
 
-        if (is_null($categoryToDestroy)) {
-            throw new AppError("Categoria não encontrada.", 404);
+        if (!$category) {
+            throw new AppError("Category not found.", 404);
         }
 
-        $categoryToDestroy->delete();
+        $category->delete();
     }
 }

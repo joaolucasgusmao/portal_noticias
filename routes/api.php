@@ -46,6 +46,5 @@ Route::get("/banners/{id}", [BannerController::class, "retrieve"]);
 Route::middleware(["auth.custom"])->group(function () {
     Route::post("/banners", [BannerController::class, "store"]);
     Route::patch("/banners/{id}", [BannerController::class, "update"]);
-    Route::patch("/banners/{id}", [BannerController::class, "update"]);
     Route::delete("/banners/{id}", [BannerController::class, "destroy"]);
 });

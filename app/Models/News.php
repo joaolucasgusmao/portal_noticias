@@ -24,6 +24,10 @@ class News extends Model
         "user_id",
     ];
 
+    protected $casts = [
+        "topics" => "array",
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreNewsRequest;
-use App\Http\Requests\UpdateNewsRequest;
+use App\Http\Requests\NewsRequest;
 use App\Services\NewsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class NewsController extends Controller
 {
-
     protected NewsService $newsService;
 
     public function __construct(NewsService $newsService)
@@ -18,7 +16,7 @@ class NewsController extends Controller
         $this->newsService = $newsService;
     }
 
-    public function store(StoreNewsRequest $request): JsonResponse
+    public function store(NewsRequest $request): JsonResponse
     {
         return response()->json($this->newsService->store($request->all(), $request), 201);
     }
@@ -33,7 +31,7 @@ class NewsController extends Controller
         return response()->json($this->newsService->retrieve($id), 200);
     }
 
-    public function update(int $id, UpdateNewsRequest $request): JsonResponse
+    public function update(int $id, NewsRequest $request): JsonResponse
     {
         return response()->json($this->newsService->update($id, $request->all()), 200);
     }

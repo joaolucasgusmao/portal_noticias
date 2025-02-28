@@ -5,20 +5,14 @@ namespace App\Services;
 use App\Exceptions\AppError;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     public function store(array $data): User
     {
-        $userEmail = User::firstWhere("email", $data["email"]);
-        $userPhoneNumber = User::firstWhere("phone_number", $data["phone_number"]);
-
-        if (!is_null($userEmail)) {
-            throw new AppError("O e-mail já existe.", 409);
-        }
-
-        if (!is_null($userPhoneNumber)) {
-            throw new AppError("O número de telefone já existe.", 409);
+        if (User::where('email', $data['email'])->orWhere('phone_number', $data['phone_number'])->exists()) {
+            throw new AppError("Email or phone number already registered.", 409);
         }
 
         return User::create($data);
@@ -32,8 +26,9 @@ class UserService
     public function retrieve(int $id): User
     {
         $user = User::find($id);
-        if (is_null($user)) {
-            throw new AppError("Usuário não encontrado.", 404);
+
+        if (!$user) {
+            throw new AppError("User not found.", 404);
         }
 
         return $user;
@@ -41,38 +36,34 @@ class UserService
 
     public function update(array $data, int $id): User
     {
-        $userToUpdate = User::find($id);
+        $user = User::find($id);
 
-        if (is_null($userToUpdate)) {
-            throw new AppError("Usuário não encontrado.", 404);
+        if (!$user) {
+            throw new AppError("User not found.", 404);
         }
 
-        $userToUpdate->update($data);
+        $user->update($data);
 
-        return $userToUpdate;
+        return $user;
     }
 
     public function destroy(int $id): void
     {
-        $userToDestroy = User::find($id);
+        $user = User::find($id);
 
-        if (is_null($userToDestroy)) {
-            throw new AppError("Usuário não encontrado.", 404);
+        if (!$user) {
+            throw new AppError("User not found.", 404);
         }
 
-        $userToDestroy->delete();
+        $user->delete();
     }
 
     public function login(array $data): array
     {
-        $user = User::firstWhere("email", $data["email"]);
+        $user = User::where("email", $data["email"])->first();
 
-        if (is_null($user)) {
-            throw new AppError("E-mail incorreto!", 401);
-        }
-
-        if (!password_verify($data["password"], $user->password)) {
-            throw new AppError("Senha incorreta!", 401);
+        if (!$user || !Hash::check($data["password"], $user->password)) {
+            throw new AppError("Incorrect email or password!", 401);
         }
 
         $token = $user->createToken('auth_token', ['*'], now()->addDay())->plainTextToken;

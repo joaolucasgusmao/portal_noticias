@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\CategoryRequest;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
-
     private CategoryService $categoryService;
 
     public function __construct(CategoryService $categoryService)
@@ -18,7 +16,7 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function store(StoreCategoryRequest $request): JsonResponse
+    public function store(CategoryRequest $request): JsonResponse
     {
         return response()->json($this->categoryService->store($request->all()), 201);
     }
@@ -33,7 +31,7 @@ class CategoryController extends Controller
         return response()->json($this->categoryService->retrieve($id), 200);
     }
 
-    public function update(UpdateCategoryRequest $request, int $id): JsonResponse
+    public function update(CategoryRequest $request, int $id): JsonResponse
     {
         return response()->json($this->categoryService->update($request->all(), $id), 200);
     }

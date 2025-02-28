@@ -12,11 +12,11 @@ class BannerService
     public function store(array $data): Banner
     {
         if (empty($data['side']) && empty($data['top']) && empty($data['home'])) {
-            throw new AppError("Você deve informar ao menos uma posição para o banner.", 409);
+            throw new AppError("You must specify at least one position for the banner.", 409);
         }
 
         if (!empty($data['side']) && (!empty($data['top']) || !empty($data['home']))) {
-            throw new AppError("Você não pode posicionar o banner lateral junto com os outros.", 409);
+            throw new AppError("You cannot place the side banner together with the others.", 409);
         }
 
         return Banner::create($data);
@@ -31,8 +31,8 @@ class BannerService
     {
         $banner = Banner::find($id);
 
-        if (is_null($banner)) {
-            throw new AppError("Banner não encontrado.", 404);
+        if (!$banner) {
+            throw new AppError("Banner not found.", 404);
         }
 
         return $banner;
@@ -40,28 +40,28 @@ class BannerService
 
     public function update(int $id, array $data): Banner
     {
-        $bannerToUpdate = Banner::find($id);
+        $banner = Banner::find($id);
 
-        if (is_null($bannerToUpdate)) {
-            throw new AppError("Banner não encontrado.", 404);
+        if (!$banner) {
+            throw new AppError("Banner not found.", 404);
         }
 
         if (!empty($data['side']) && (!empty($data['top']) || !empty($data['home']))) {
-            throw new AppError("Você não pode posicionar o banner lateral junto com os outros.", 409);
+            throw new AppError("You cannot place the side banner together with the others.", 409);
         }
 
-        $bannerToUpdate->update($data);
-        return $bannerToUpdate;
+        $banner->update($data);
+        return $banner;
     }
 
     public function destroy(int $id): void
     {
-        $bannerToDestroy = Banner::find($id);
+        $banner = Banner::find($id);
 
-        if (is_null($bannerToDestroy)) {
-            throw new AppError("Banner não encontrado.", 404);
+        if (!$banner) {
+            throw new AppError("Banner not found.", 404);
         }
 
-        $bannerToDestroy->delete();
+        $banner->delete();
     }
 }

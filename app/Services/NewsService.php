@@ -19,7 +19,7 @@ class NewsService
 
         $news = $user->news()->create($data);
 
-        $news->categories()->attach($categories);
+        $news->categories()->sync($categories);
 
         return $news;
     }
@@ -33,8 +33,8 @@ class NewsService
     {
         $news = News::find($id);
 
-        if (is_null($news)) {
-            throw new AppError("Notícia não encontrada.", 404);
+        if (!$news) {
+            throw new AppError("News not found.", 404);
         }
 
         return $news;
@@ -42,30 +42,30 @@ class NewsService
 
     public function update(int $id, array $data): News
     {
-        $newsToUpdate = News::find($id);
+        $news = News::find($id);
 
-        if (is_null($newsToUpdate)) {
-            throw new AppError("Notícia não encontrada.", 404);
+        if (!$news) {
+            throw new AppError("News not found.", 404);
         }
 
-        if (isset($data["categories"])) {
-            $categories = $data["categories"];
+        if (array_key_exists("categories", $data)) {
+            $categories = $data["categories"] ?? [];
             unset($data["categories"]);
-
-            $newsToUpdate->categories()->sync($categories);
+            $news->categories()->sync($categories);
         }
 
-        $newsToUpdate->update($data);
-        return $newsToUpdate;
+        $news->update($data);
+        return $news;
     }
 
     public function destroy(int $id): void
     {
-        $newsToDestroy = News::find($id);
-        if (is_null($newsToDestroy)) {
-            throw new AppError("Notícia não encontrada.", 404);
+        $news = News::find($id);
+
+        if (!$news) {
+            throw new AppError("News not found.", 404);
         }
 
-        $newsToDestroy->delete();
+        $news->delete();
     }
 }

@@ -19,7 +19,7 @@ class AdminMiddleware
         $user = $request->user();
 
         if (!$user || $user->is_admin !== 1) {
-            throw new AppError("Acesso não autorizado!", 403);
+            throw new AppError("Unauthorized access!", 403);
         }
 
         return $next($request);

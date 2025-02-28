@@ -20,13 +20,13 @@ class AuthenticateMiddleware
         $token = $request->bearerToken();
 
         if (!$token) {
-            throw new AppError("Token não fornecido!", 401);
+            throw new AppError("Token not provided!", 401);
         }
 
         $accessToken = PersonalAccessToken::findToken($token);
 
         if (!$accessToken || $accessToken->expires_at->isPast()) {
-            throw new AppError("Token inválido ou expirado!", 401);
+            throw new AppError("Invalid or expired token!", 401);
         }
 
         $request->setUserResolver(function () use ($accessToken) {
