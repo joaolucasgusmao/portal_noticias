@@ -81,4 +81,29 @@ class NewsService
 
         return $news;
     }
+
+    public function getNewsByUser(Request $request, int $userId): Collection
+    {
+        $user = $request->user();
+
+        if ($user->is_admin) {
+            $news = News::where('user_id', $userId)->get();
+
+            if ($news->isEmpty()) {
+                throw new AppError("News not found.", 404);
+            }
+
+            return $news;
+        }
+
+        if ($user->id !== $userId) {
+            throw new AppError("Unauthorized", 401);
+        }
+
+        if ($user->news->isEmpty()) {
+            throw new AppError("News not found.", 404);
+        }
+
+        return $user->news;
+    }
 }
