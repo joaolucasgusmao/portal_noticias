@@ -23,9 +23,11 @@ class BannerRequest extends FormRequest
     {
         $rules = [
             "image" => ["url", "regex:/\\.(jpg|jpeg|png|webp|gif)$/i"],
+            "link" => "sometimes|url",
             "top" => "sometimes|boolean",
             "side" => "sometimes|boolean",
             "home" => "sometimes|boolean",
+            "is_active" => "sometimes|boolean",
             "description" => "nullable|string|min:5|max:255",
         ];
 
@@ -43,6 +45,8 @@ class BannerRequest extends FormRequest
             "image.url" => "The image field must be a valid URL.",
             "image.regex" => "The image URL must end in .jpg, .jpeg, .png, .webp or .gif",
 
+            "link.url" => "The link field must be a valid URL.",
+
             "description.string" => "The description field must be a text.",
             "description.min" => "The description must be at least :min characters.",
             "description.max" => "The description must be at most :max characters.",
@@ -50,6 +54,7 @@ class BannerRequest extends FormRequest
             "side.boolean" => "The side field must be true or false.",
             "top.boolean" => "The top field must be true or false.",
             "home.boolean" => "The home field must be true or false.",
+            "is_active.boolean" => "The is_active field must be true or false.",
         ];
     }
 }
