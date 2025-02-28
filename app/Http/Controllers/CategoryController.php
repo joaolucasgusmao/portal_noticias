@@ -40,4 +40,9 @@ class CategoryController extends Controller
     {
         return response($this->categoryService->destroy($id), 204);
     }
+
+    public function getCategoriesPaginate(): JsonResponse
+    {
+        return response()->json($this->categoryService->getCategoriesPaginate(), 200);
+    }
 }

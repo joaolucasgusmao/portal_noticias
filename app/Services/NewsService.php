@@ -6,6 +6,7 @@ use App\Exceptions\AppError;
 use App\Models\News;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class NewsService
 {
@@ -105,5 +106,10 @@ class NewsService
         }
 
         return $user->news;
+    }
+
+    public function getNewsPaginate(): LengthAwarePaginator
+    {
+        return News::paginate(10);
     }
 }

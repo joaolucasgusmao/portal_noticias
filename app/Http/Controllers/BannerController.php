@@ -40,4 +40,9 @@ class BannerController extends Controller
     {
         return response($this->bannerService->destroy($id), 204);
     }
+
+    public function getBannersPaginate(): JsonResponse
+    {
+        return response()->json($this->bannerService->getBannersPaginate(), 200);
+    }
 }

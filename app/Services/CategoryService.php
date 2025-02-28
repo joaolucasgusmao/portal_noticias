@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\AppError;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryService
 {
@@ -55,5 +56,10 @@ class CategoryService
         }
 
         $category->delete();
+    }
+
+    public function getCategoriesPaginate(): LengthAwarePaginator
+    {
+        return Category::paginate(10);
     }
 }

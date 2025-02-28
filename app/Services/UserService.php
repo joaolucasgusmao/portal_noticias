@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\AppError;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -72,5 +73,10 @@ class UserService
             "access_token" => $token,
             "user" => $user
         ];
+    }
+
+    public function getUsersPaginate(): LengthAwarePaginator
+    {
+        return User::paginate(10);
     }
 }

@@ -12,6 +12,7 @@ Route::post("/users/login", [UserController::class, "login"]);
 
 Route::middleware(["auth.custom"])->group(function () {
     Route::get("/users", [UserController::class, "get"])->middleware("admin");
+    Route::get("/users/paginate", [UserController::class, "getUsersPaginate"])->middleware("admin");
     Route::get("/users/{id}", [UserController::class, "retrieve"])->middleware("admin");
     Route::patch("/users/{id}", [UserController::class, "update"]);
     Route::delete("/users/{id}", [UserController::class, "destroy"])->middleware("admin");
@@ -20,6 +21,7 @@ Route::middleware(["auth.custom"])->group(function () {
 
 // News
 Route::get("/news", [NewsController::class, "get"]);
+Route::get("/news/paginate", [NewsController::class, "getNewsPaginate"]);
 Route::get("/news/{id}", [NewsController::class, "retrieve"]);
 Route::get("/news/category/{categoryId}", [NewsController::class, "getNewsByCategory"]);
 
@@ -35,6 +37,7 @@ Route::middleware(["auth.custom"])->group(function () {
 Route::middleware(["auth.custom"])->group(function () {
     Route::post("/categories", [CategoryController::class, "store"])->middleware("admin");
     Route::get("/categories", [CategoryController::class, "get"])->middleware("admin");
+    Route::get("/categories/paginate", [CategoryController::class, "getCategoriesPaginate"])->middleware("admin");
     Route::get("/categories/{id}", [CategoryController::class, "retrieve"])->middleware("admin");
     Route::patch("/categories/{id}", [CategoryController::class, "update"])->middleware("admin");
     Route::delete("/categories/{id}", [CategoryController::class, "destroy"])->middleware("admin");
@@ -42,11 +45,12 @@ Route::middleware(["auth.custom"])->group(function () {
 
 
 // Banners
-Route::get("/banners", [BannerController::class, "get"]);
-Route::get("/banners/{id}", [BannerController::class, "retrieve"]);
-
 Route::middleware(["auth.custom"])->group(function () {
     Route::post("/banners", [BannerController::class, "store"]);
     Route::patch("/banners/{id}", [BannerController::class, "update"]);
     Route::delete("/banners/{id}", [BannerController::class, "destroy"]);
+    Route::get("/banners/paginate", [BannerController::class, "getBannersPaginate"]);
 });
+
+Route::get("/banners", [BannerController::class, "get"]);
+Route::get("/banners/{id}", [BannerController::class, "retrieve"]);

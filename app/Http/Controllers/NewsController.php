@@ -51,4 +51,9 @@ class NewsController extends Controller
     {
         return response()->json($this->newsService->getNewsByUser($request, $userId), 200);
     }
+
+    public function getNewsPaginate(): JsonResponse
+    {
+        return response()->json($this->newsService->getNewsPaginate(), 200);
+    }
 }

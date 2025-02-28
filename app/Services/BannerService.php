@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\AppError;
 use App\Models\Banner;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class BannerService
 {
@@ -63,5 +64,10 @@ class BannerService
         }
 
         $banner->delete();
+    }
+
+    public function getBannersPaginate(): LengthAwarePaginator
+    {
+        return Banner::paginate(10);
     }
 }

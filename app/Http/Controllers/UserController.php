@@ -45,4 +45,9 @@ class UserController extends Controller
     {
         return response()->json($this->userService->login($request->all()), 200);
     }
+
+    public function getUsersPaginate(): JsonResponse
+    {
+        return response()->json($this->userService->getUsersPaginate(), 200);
+    }
 }
