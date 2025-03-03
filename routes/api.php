@@ -3,6 +3,7 @@
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\RealStateController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,3 +55,14 @@ Route::middleware(["auth.custom"])->group(function () {
 
 Route::get("/banners", [BannerController::class, "get"]);
 Route::get("/banners/{id}", [BannerController::class, "retrieve"]);
+
+
+// Real States
+Route::middleware(["auth.custom"])->group(function () {
+    Route::post("/realstates", [RealStateController::class, "store"]);
+    Route::patch("/realstates/{id}", [RealStateController::class, "update"]);
+    Route::delete("/realstates/{id}", [RealStateController::class, "destroy"]);
+});
+
+Route::get("/realstates", [RealStateController::class, "get"]);
+Route::get("/realstates/{id}", [RealStateController::class, "retrieve"]);
