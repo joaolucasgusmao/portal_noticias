@@ -62,7 +62,9 @@ Route::middleware(["auth.custom"])->group(function () {
     Route::post("/realstates", [RealStateController::class, "store"]);
     Route::patch("/realstates/{id}", [RealStateController::class, "update"]);
     Route::delete("/realstates/{id}", [RealStateController::class, "destroy"]);
+    Route::get("/realstates/user/{userId}", [RealStateController::class, "getRealStatesByUser"]);
 });
 
 Route::get("/realstates", [RealStateController::class, "get"]);
+Route::get("/realstates/paginate", [RealStateController::class, "getRealStatesPaginate"]);
 Route::get("/realstates/{id}", [RealStateController::class, "retrieve"]);

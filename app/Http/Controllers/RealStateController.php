@@ -47,13 +47,13 @@ class RealStateController extends Controller
     //     return response()->json($this->realStateService->getNewsByCategory($categoryId), 200);
     // }
 
-    public function getRealStateByUser(Request $request, int $userId): JsonResponse
+    public function getRealStatesByUser(Request $request, int $userId): JsonResponse
     {
-        return response()->json($this->realStateService->getRealStateByUser($request, $userId), 200);
+        return response()->json($this->realStateService->getRealStatesByUser($request, $userId), 200);
     }
 
-    public function getRealStatePaginate(): JsonResponse
+    public function getRealStatesPaginate(): JsonResponse
     {
-        return response()->json($this->realStateService->getRealStatePaginate(), 200);
+        return response()->json($this->realStateService->getRealStatesPaginate(), 200);
     }
 }

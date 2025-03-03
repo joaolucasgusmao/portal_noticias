@@ -60,7 +60,7 @@ class RealStateService
         $real_state->delete();
     }
 
-    public function getRealStateByUser(Request $request, int $userId): Collection
+    public function getRealStatesByUser(Request $request, int $userId): Collection
     {
         $user = $request->user();
 
@@ -85,7 +85,7 @@ class RealStateService
         return $user->real_state;
     }
 
-    public function getRealStatePaginate(): LengthAwarePaginator
+    public function getRealStatesPaginate(): LengthAwarePaginator
     {
         return RealState::paginate(10);
     }
