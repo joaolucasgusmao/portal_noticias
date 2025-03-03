@@ -37,4 +37,11 @@ class News extends Model
     {
         return $this->belongsToMany(Category::class, "category_news");
     }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+        ] + parent::toArray(); 
+    }
 }

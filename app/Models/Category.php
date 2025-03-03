@@ -15,4 +15,11 @@ class Category extends Model
     {
         return $this->belongsToMany(News::class, 'category_news');
     }
+
+    public function toArray()
+{
+    return [
+        'id' => $this->id, 
+    ] + parent::toArray();
+}
 }

@@ -19,4 +19,11 @@ class Banner extends Model
         "description",
         "is_active"
     ];
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+        ] + parent::toArray();
+    }
 }

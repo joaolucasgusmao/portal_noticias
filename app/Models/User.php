@@ -60,4 +60,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(RealState::class);
     }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+        ] + parent::toArray();
+    }
 }

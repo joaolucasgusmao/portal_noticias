@@ -14,11 +14,10 @@ class RealStateService
 
     public function store(array $data, Request $request): RealState
     {
-        $user = $request->user();
+        $data['price'] = (float) str_replace(['.', ','], ['', '.'], $data['price']);
+        $data['square_m'] = (float) str_replace(['.', ','], ['', '.'], $data['square_m']);
 
-        $news = $user->real_state()->create($data);
-
-        return $news;
+        return $request->user()->real_state()->create($data);
     }
 
     public function get(): Collection

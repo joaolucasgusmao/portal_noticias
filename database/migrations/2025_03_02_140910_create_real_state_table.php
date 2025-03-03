@@ -12,14 +12,14 @@ return new class extends Migration {
             $table->string("title");
             $table->enum("type", ["house", "apartment", "studio"]);
             $table->enum("payment_method", ["sale", "financing", "rent"]);
-            $table->decimal("price")->index();
+            $table->decimal("price", 15, 2)->index();
             $table->string("city");
             $table->string("address");
             $table->string("hood")->index();
             $table->tinyInteger("rooms")->index();
             $table->tinyInteger("bathrooms");
             $table->string("cep");
-            $table->decimal("square_m");
+            $table->decimal("square_m", 10, 2);
             $table->string("condominium")->nullable();
             $table->tinyInteger("suites")->nullable();
             $table->boolean("air_conditioning")->default(false);
