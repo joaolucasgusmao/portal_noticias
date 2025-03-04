@@ -11,6 +11,7 @@ class RealState extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        "image",
         "title",
         "type",
         "rooms",
@@ -56,9 +57,9 @@ class RealState extends Model
     }
 
     public function toArray()
-{
-    return [
-        'id' => $this->id, 
-    ] + parent::toArray(); 
-}
+    {
+        return [
+            'id' => $this->id,
+        ] + parent::toArray();
+    }
 }

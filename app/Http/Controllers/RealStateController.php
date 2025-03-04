@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RealStateRequest;
 use App\Models\RealState;
 use App\Services\RealStateService;
 use Illuminate\Http\JsonResponse;
@@ -17,11 +18,11 @@ class RealStateController extends Controller
         $this->realStateService = $realStateService;
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(RealStateRequest $request): JsonResponse
     {
         return response()->json($this->realStateService->store($request->all(), $request), 201);
     }
-    
+
     public function get(): JsonResponse
     {
         return response()->json($this->realStateService->get(), 200);
@@ -32,7 +33,7 @@ class RealStateController extends Controller
         return response()->json($this->realStateService->retrieve($id), 200);
     }
 
-    public function update(int $id, Request $request): JsonResponse
+    public function update(int $id, RealStateRequest $request): JsonResponse
     {
         return response()->json($this->realStateService->update($id, $request->all()), 200);
     }

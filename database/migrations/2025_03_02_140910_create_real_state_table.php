@@ -9,9 +9,10 @@ return new class extends Migration {
     {
         Schema::create('real_states', function (Blueprint $table) {
             $table->id();
+            $table->string("image");
             $table->string("title");
-            $table->enum("type", ["house", "apartment", "studio"]);
-            $table->enum("payment_method", ["sale", "financing", "rent"]);
+            $table->enum("type", ["house", "apartment", "studio", "comercial"]);
+            $table->enum("payment_method", ["sale", "rent"]);
             $table->decimal("price", 15, 2)->index();
             $table->string("city");
             $table->string("address");
