@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string("image");
             $table->string("title");
-            $table->enum("type", ["house", "apartment", "studio", "comercial"]);
+            $table->enum("type", ["house", "apartment", "studio", "comercial", "terrain"]);
             $table->enum("payment_method", ["sale", "rent"]);
             $table->decimal("price", 15, 2)->index();
             $table->string("city");

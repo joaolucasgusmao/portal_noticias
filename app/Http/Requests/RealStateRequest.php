@@ -23,7 +23,7 @@ class RealStateRequest extends FormRequest
         $rules = [
             "image" => ["required", "url", "regex:/\\.(jpg|jpeg|png|webp)$/i"],
             "title" => "required|string|min:5|max:255",
-            "type" => ["required", Rule::in(["house", "apartment", "studio", "comercial"])],
+            "type" => ["required", Rule::in(["house", "apartment", "studio", "comercial", "terrain"])],
             "payment_method" => ["required", Rule::in(["sale", "financing", "rent"])],
             "price" => "required|numeric|min:0",
             "city" => "required|string|min:2|max:255",
@@ -43,7 +43,7 @@ class RealStateRequest extends FormRequest
         if ($this->isMethod("patch")) {
             $rules["image"] = ["sometimes", "url", "regex:/\\.(jpg|jpeg|png|webp)$/i"];
             $rules["title"] = "sometimes|string|min:2|max:255";
-            $rules["type"] = ["sometimes", Rule::in(["house", "apartment", "studio", "comercial"])];
+            $rules["type"] = ["sometimes", Rule::in(["house", "apartment", "studio", "comercial", "terrain"])];
             $rules["payment_method"] = ["sometimes", Rule::in(["sale", "rent"])];
             $rules["price"] = "sometimes|numeric|min:100";
             $rules["city"] = "sometimes|string|min:2|max:255";
@@ -77,7 +77,7 @@ class RealStateRequest extends FormRequest
             "title.max" => "The title must not exceed :max characters.",
 
             "type.required" => "The property type is required.",
-            "type.in" => "The type must be 'house', 'apartment', or 'studio'.",
+            "type.in" => "The type must be 'house', 'apartment', 'studio', 'comercial', or 'terrain'.",
 
             "payment_method.required" => "The payment method is required.",
             "payment_method.in" => "The payment method must be 'sale', 'financing', or 'rent'.",
