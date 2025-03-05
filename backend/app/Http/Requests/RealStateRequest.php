@@ -80,7 +80,7 @@ class RealStateRequest extends FormRequest
             "type.in" => "The type must be 'house', 'apartment', 'studio', 'comercial', or 'terrain'.",
 
             "payment_method.required" => "The payment method is required.",
-            "payment_method.in" => "The payment method must be 'sale', 'financing', or 'rent'.",
+            "payment_method.in" => "The payment method must be 'sale' or 'rent'.",
 
             "price.required" => "The price is required.",
             "price.numeric" => "The price must be a number.",
