@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+:root {
+  --background: #0d0d0d;
+  --card-bg: #1a1a1a;
+  --input-bg: #262626;
+  --border: #333333;
+
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+
+  --primary: #eb4432;
+  --primary-hover: #eb4432;
+
+  --error: #ff3b3b;
+  --success: #4caf50;
+}
