@@ -3,9 +3,9 @@
 import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import LoginForm from "@/components/LoginForm";
-import useLogin from "@/hooks/useLogin";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import userLogin from "@/hooks/userLogin";
 
 const LoginPage: React.FC = () => {
   const {
@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
     showPassword,
     handleLogin,
     handleClickShowPassword,
-  } = useLogin();
+  } = userLogin();
 
   return (
     <Box

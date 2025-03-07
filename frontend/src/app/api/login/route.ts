@@ -1,27 +1,34 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
-import { setToken } from "@/lib/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+export async function POST(req: Request) {
+  const { email, password } = await req.json();
 
-export const POST = async (req: Request) => {
-  try {
-    const { email, password } = await req.json();
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
 
-    const response = await axios.post(`${API_URL}/users/login`, {
-      email,
-      password,
+  const data = await res.json();
+
+  if (res.ok && data.access_token) {
+    const response = NextResponse.json({
+      message: "Login efetuado com sucesso!",
     });
 
-    const { access_token, user } = response.data;
+    response.cookies.set("token", data.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      sameSite: "strict",
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
 
-    setToken(access_token);
-
-    return NextResponse.json({ success: true, user }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, message: "Email ou senha inválidos!" },
-      { status: 401 }
-    );
+    return response;
   }
-};
+
+  return NextResponse.json(
+    { error: "E-mail ou senha incorretos!" },
+    { status: 401 }
+  );
+}

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { setToken } from "@/lib/auth";
 
-const useLogin = () => {
+const userLogin = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -11,26 +10,22 @@ const useLogin = () => {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+      });
 
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("Login realizado com sucesso!");
-        setToken(data.access_token);
-
+        toast.success(data.message);
         setTimeout(() => {
-          router.push("/");
-        }, 3000);
+          router.push("/dashboard");
+        }, 2000);
       } else {
-        toast.error("E-mail ou senha incorretos!");
+        toast.error(data.error);
       }
     } catch (error) {
       toast.error("Erro ao tentar fazer o login. Por favor, tente novamente.");
@@ -52,4 +47,4 @@ const useLogin = () => {
   };
 };
 
-export default useLogin;
+export default userLogin;

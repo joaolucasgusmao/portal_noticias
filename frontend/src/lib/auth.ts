@@ -1,17 +1,20 @@
-import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
-export const getToken = () => {
-  return Cookies.get("token") || null;
-};
+export const auth = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-export const setToken = (token: string) => {
-  Cookies.set("token", token, {
-    expires: 1, 
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-  });
-};
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("/api/token", { credentials: "include" });
+        setIsAuthenticated(res.ok);
+      } catch (error) {
+        setIsAuthenticated(false);
+      }
+    };
 
-export const removeToken = () => {
-  Cookies.remove("token", { path: "/" });
+    checkAuth();
+  }, []);
+
+  return isAuthenticated;
 };
