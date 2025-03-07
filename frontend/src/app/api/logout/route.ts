@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { removeToken } from "@/lib/auth";
 
 export const POST = async () => {
-  (await cookies()).set("token", "", { expires: new Date(0) });
+  removeToken();
 
   return NextResponse.json({
     success: true,

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import axios from "axios";
+import { setToken } from "@/lib/auth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,12 +15,7 @@ export const POST = async (req: Request) => {
 
     const { access_token, user } = response.data;
 
-    (await cookies()).set("token", access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      maxAge: 60 * 60 * 24,
-    });
+    setToken(access_token);
 
     return NextResponse.json({ success: true, user }, { status: 200 });
   } catch (error) {
