@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useUser } from "@/context/UserContext";
 
 const userLogin = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { setUser } = useUser();
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -18,9 +20,12 @@ const userLogin = () => {
       });
 
       const data = await res.json();
+      setUser(data.user);
 
       if (res.ok) {
         toast.success(data.message);
+        setUser(data.user);
+
         setTimeout(() => {
           router.push("/dashboard");
         }, 2000);

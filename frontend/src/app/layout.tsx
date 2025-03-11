@@ -5,6 +5,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { UserProvider } from "@/context/UserContext";
 
 export const metadata: Metadata = {
   title: "Portal de notícias",
@@ -17,11 +18,11 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="pt-BR">
-      <body>
-        {children}
-      </body>
-    </html>
+    <UserProvider>
+      <html lang="pt-BR">
+        <body>{children}</body>
+      </html>
+    </UserProvider>
   );
 };
 

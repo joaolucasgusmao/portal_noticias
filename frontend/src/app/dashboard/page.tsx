@@ -20,9 +20,12 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { useUser } from "@/context/UserContext";
 
 const DashboardPage: React.FC = () => {
   const isAuthenticated = auth();
+  const { user } = useUser();
+
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [openNews, setOpenNews] = useState<boolean>(false);
@@ -52,6 +55,9 @@ const DashboardPage: React.FC = () => {
         >
           <MenuIcon sx={{ fontSize: "2rem" }} />
         </IconButton>
+        <p className="text-[var(--primary)] font-bold text-base">
+          Bem vindo, {user?.name}!
+        </p>
       </header>
 
       <Drawer
@@ -93,6 +99,7 @@ const DashboardPage: React.FC = () => {
               <HomeRoundedIcon fontSize="small" />
               <ListItemText
                 primary="Home"
+                onClick={() => router.push("/")}
                 sx={{
                   "& .MuiListItemText-primary": {
                     fontSize: "1rem",

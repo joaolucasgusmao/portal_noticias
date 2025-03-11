@@ -14,6 +14,7 @@ export async function POST(req: Request) {
   if (res.ok && data.access_token) {
     const response = NextResponse.json({
       message: "Login efetuado com sucesso!",
+      user: data.user,
     });
 
     response.cookies.set("token", data.access_token, {
