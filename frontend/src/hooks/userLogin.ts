@@ -20,11 +20,14 @@ const userLogin = () => {
       });
 
       const data = await res.json();
-      setUser(data.user);
 
       if (res.ok) {
         toast.success(data.message);
-        setUser(data.user);
+
+        if (data.user) {
+          const { name, email, avatar } = data.user;
+          setUser({ name, email, avatar });
+        }
 
         setTimeout(() => {
           router.push("/dashboard");
