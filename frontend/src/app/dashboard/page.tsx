@@ -9,6 +9,8 @@ import {
   ListItem,
   ListItemText,
   Collapse,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -21,6 +23,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { useUser } from "@/context/UserContext";
+import Image from "next/image";
+import { LogoutRounded } from "@mui/icons-material";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import Link from "next/link";
 
 const DashboardPage: React.FC = () => {
   const isAuthenticated = auth();
@@ -31,12 +37,26 @@ const DashboardPage: React.FC = () => {
   const [openNews, setOpenNews] = useState<boolean>(false);
   const [openBanners, setOpenBanners] = useState<boolean>(false);
   const [openUsers, setOpenUsers] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openUserMenu = Boolean(anchorEl);
 
   useEffect(() => {
     if (isAuthenticated === false) {
       router.push("/login");
     }
   }, [isAuthenticated, router]);
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    router.push("/login");
+  };
 
   if (isAuthenticated === null || isAuthenticated === false) {
     return (
@@ -55,9 +75,84 @@ const DashboardPage: React.FC = () => {
         >
           <MenuIcon sx={{ fontSize: "2rem" }} />
         </IconButton>
-        <p className="text-[var(--primary)] font-bold text-base">
-          Bem vindo, {user?.name}!
-        </p>
+        <Box
+          className="flex items-center justify-center gap-2 relative cursor-pointer"
+          onClick={handleOpenUserMenu}
+        >
+          <Image
+            src={user?.avatar ?? "/user.png"}
+            width={40}
+            height={40}
+            alt="Avatar"
+            className="cursor-pointer rounded-full"
+          />
+          <Box className="hidden sm:flex flex-col justify-center">
+            <p className="text-sm font-medium text-[var(--text-secondary)]">
+              {user?.name}
+            </p>
+            <span className="text-xs font-medium text-[var(--text-secondary)]">
+              {user?.email}
+            </span>
+          </Box>
+        </Box>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={openUserMenu}
+          onClose={handleCloseUserMenu}
+          PaperProps={{
+            sx: {
+              backgroundColor: "var(--background)",
+              color: "var(--primary)",
+              marginLeft: { xs: "0.7rem", sm: "0rem" },
+              marginTop: "0.6rem",
+              width: "10rem",
+            },
+          }}
+        >
+          <MenuItem
+            onClick={() => router.push("/perfil")}
+            className="flex items-center gap-2"
+            sx={{
+              transition:
+                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(1.02)",
+              },
+              "&:active": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(0.98)",
+              },
+            }}
+          >
+            <AccountCircleRoundedIcon fontSize="small" />
+            <Link href="#" className="text-sm font-medium">
+              Perfil
+            </Link>
+          </MenuItem>
+          <MenuItem
+            onClick={handleLogout}
+            className="flex items-center gap-2"
+            sx={{
+              transition:
+                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(1.02)",
+              },
+              "&:active": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(0.98)",
+              },
+            }}
+          >
+            <LogoutRounded fontSize="small" />
+            <Link href="#" className="text-sm font-medium">
+              Sair
+            </Link>
+          </MenuItem>
+        </Menu>
       </header>
 
       <Drawer
@@ -71,7 +166,7 @@ const DashboardPage: React.FC = () => {
           },
         }}
       >
-        <Box className="w-64 p-4 border-b-2 border-b-[var(--card-bg)]">
+        <Box className="w-full p-4 border-b-2 border-b-[var(--card-bg)] text-center">
           <h2 className="text-lg font-bold text-[var(--primary)]">
             Portal de Notícias
           </h2>
@@ -103,7 +198,7 @@ const DashboardPage: React.FC = () => {
                 sx={{
                   "& .MuiListItemText-primary": {
                     fontSize: "1rem",
-                    fontWeight: "bold",
+                    fontWeight: "700",
                   },
                 }}
               />
@@ -134,6 +229,7 @@ const DashboardPage: React.FC = () => {
                 sx={{
                   "& .MuiListItemText-primary": {
                     fontSize: "1rem",
+                    fontWeight: "700",
                   },
                 }}
               />
@@ -164,6 +260,7 @@ const DashboardPage: React.FC = () => {
                     sx={{
                       "& .MuiListItemText-primary": {
                         fontSize: "0.9rem",
+                        fontWeight: "500",
                       },
                     }}
                   />
@@ -191,6 +288,7 @@ const DashboardPage: React.FC = () => {
                     sx={{
                       "& .MuiListItemText-primary": {
                         fontSize: "0.9rem",
+                        fontWeight: "500",
                       },
                     }}
                   />
@@ -218,6 +316,7 @@ const DashboardPage: React.FC = () => {
                     sx={{
                       "& .MuiListItemText-primary": {
                         fontSize: "0.9rem",
+                        fontWeight: "500",
                       },
                     }}
                   />
@@ -250,6 +349,7 @@ const DashboardPage: React.FC = () => {
                 sx={{
                   "& .MuiListItemText-primary": {
                     fontSize: "1rem",
+                    fontWeight: "700",
                   },
                 }}
               />
@@ -280,6 +380,7 @@ const DashboardPage: React.FC = () => {
                     sx={{
                       "& .MuiListItemText-primary": {
                         fontSize: "0.9rem",
+                        fontWeight: "500",
                       },
                     }}
                   />
@@ -307,6 +408,7 @@ const DashboardPage: React.FC = () => {
                     sx={{
                       "& .MuiListItemText-primary": {
                         fontSize: "0.9rem",
+                        fontWeight: "500",
                       },
                     }}
                   />
@@ -339,6 +441,7 @@ const DashboardPage: React.FC = () => {
                 sx={{
                   "& .MuiListItemText-primary": {
                     fontSize: "1rem",
+                    fontWeight: "700",
                   },
                 }}
               />
@@ -372,6 +475,7 @@ const DashboardPage: React.FC = () => {
                       gap: "0.5rem",
                       "& .MuiListItemText-primary": {
                         fontSize: "0.9rem",
+                        fontWeight: "500",
                       },
                     }}
                   />
@@ -399,6 +503,7 @@ const DashboardPage: React.FC = () => {
                     sx={{
                       "& .MuiListItemText-primary": {
                         fontSize: "0.9rem",
+                        fontWeight: "500",
                       },
                     }}
                   />
