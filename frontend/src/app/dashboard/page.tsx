@@ -70,8 +70,6 @@ const DashboardPage: React.FC = () => {
     setOpenUserMenu(false);
   };
 
-  console.log(openUserMenu);
-
   const handleLogout = () => {
     router.push("/login");
   };
@@ -97,9 +95,7 @@ const DashboardPage: React.FC = () => {
               <MenuIcon sx={{ fontSize: "2rem", color: "var(--primary)" }} />
             )}
           </IconButton>
-          <h1 className="text-[var(--primary)] text-xl font-bold">
-            Portal de Notícias
-          </h1>
+          <h1 className="text-[var(--primary)] text-xl font-bold">Sua Logo</h1>
         </Box>
         <Box
           className="flex items-center justify-center gap-2 relative cursor-pointer"
