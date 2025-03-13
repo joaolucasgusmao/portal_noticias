@@ -11,6 +11,7 @@ import {
   Collapse,
   Menu,
   MenuItem,
+  Tooltip,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -27,6 +28,7 @@ import Image from "next/image";
 import { LogoutRounded } from "@mui/icons-material";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import Link from "next/link";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
 const DashboardPage: React.FC = () => {
   const isAuthenticated = auth();
@@ -50,6 +52,18 @@ const DashboardPage: React.FC = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleToggleMenu = () => {
+    setOpen((prev) => {
+      const newOpen = !prev;
+      if (!newOpen) {
+        setOpenNews(false);
+        setOpenBanners(false);
+        setOpenUsers(false);
+      }
+      return newOpen;
+    });
+  };
+
   const handleCloseUserMenu = () => {
     setAnchorEl(null);
   };
@@ -68,13 +82,22 @@ const DashboardPage: React.FC = () => {
 
   return (
     <>
-      <header className="flex items-center justify-between px-4 bg-[var(--background)] h-14 border-b-2 border-b-[var(--card-bg)]">
-        <IconButton
-          onClick={() => setOpen(true)}
-          sx={{ color: "var(--primary)" }}
-        >
-          <MenuIcon sx={{ fontSize: "2rem" }} />
-        </IconButton>
+      <header className="top-0 w-full z-50 flex items-center justify-between px-4 bg-[var(--background)] h-14 border-b-2 border-b-[var(--card-bg)] fixed">
+        <Box className="flex items-center gap-4">
+          <IconButton
+            onClick={handleToggleMenu}
+            sx={{ color: "var(--primary)" }}
+          >
+            {open ? (
+              <MenuOpenIcon sx={{ fontSize: "2rem" }} />
+            ) : (
+              <MenuIcon sx={{ fontSize: "2rem" }} />
+            )}
+          </IconButton>
+          <h1 className="text-[var(--primary)] text-xl font-bold">
+            Portal de Notícias
+          </h1>
+        </Box>
         <Box
           className="flex items-center justify-center gap-2 relative cursor-pointer"
           onClick={handleOpenUserMenu}
@@ -102,16 +125,14 @@ const DashboardPage: React.FC = () => {
           onClose={handleCloseUserMenu}
           PaperProps={{
             sx: {
-              backgroundColor: "var(--background)",
-              color: "var(--primary)",
-              marginLeft: { xs: "0.7rem", sm: "0rem" },
-              marginTop: "0.6rem",
-              width: "10rem",
+              backgroundColor: "var(--background-2)",
+              marginLeft: { xs: "1rem", sm: "0.8rem" },
+              marginTop: "0.7rem",
+              width: { xs: "8rem", sm: "9rem" },
             },
           }}
         >
           <MenuItem
-            onClick={() => router.push("/perfil")}
             className="flex items-center gap-2"
             sx={{
               transition:
@@ -126,8 +147,11 @@ const DashboardPage: React.FC = () => {
               },
             }}
           >
-            <AccountCircleRoundedIcon fontSize="small" />
-            <Link href="#" className="text-sm font-medium">
+            <AccountCircleRoundedIcon className="text-[var(--primary)]" />
+            <Link
+              href="#"
+              className="text-sm font-medium text-[var(--primary)]"
+            >
               Perfil
             </Link>
           </MenuItem>
@@ -147,8 +171,11 @@ const DashboardPage: React.FC = () => {
               },
             }}
           >
-            <LogoutRounded fontSize="small" />
-            <Link href="#" className="text-sm font-medium">
+            <LogoutRounded className="text-[var(--primary)]" />
+            <Link
+              href="#"
+              className="text-sm font-medium text-[var(--primary)]"
+            >
               Sair
             </Link>
           </MenuItem>
@@ -156,57 +183,105 @@ const DashboardPage: React.FC = () => {
       </header>
 
       <Drawer
-        anchor="left"
-        open={open}
-        onClose={() => setOpen(false)}
+        variant="permanent"
         sx={{
+          width: open ? 250 : { xs: 0, sm: 60 },
+          flexShrink: 0,
           "& .MuiDrawer-paper": {
-            backgroundColor: "var(--background)",
+            width: open ? 250 : { xs: 0, sm: 60 },
+            transition: "width 0.3s",
+            overflowX: "hidden",
+            marginTop: "56px",
+            height: "calc(100% - 56px)",
+            backgroundColor: "var(--background-2)",
             color: "var(--primary)",
           },
         }}
       >
-        <Box className="w-full p-4 border-b-2 border-b-[var(--card-bg)] text-center">
-          <h2 className="text-lg font-bold text-[var(--primary)]">
-            Portal de Notícias
-          </h2>
-        </Box>
-        <Box className="w-64 px-4 py-3">
-          <List>
-            <ListItem
-              component="button"
-              sx={{
-                color: "var(--primary)",
-                cursor: "pointer",
-                gap: "0.5rem",
-                transition:
-                  "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "var(--card-bg)",
-                  transform: "scale(1.02)",
-                },
-                "&:active": {
-                  backgroundColor: "var(--card-bg)",
-                  transform: "scale(0.98)",
-                },
-              }}
-            >
-              <HomeRoundedIcon fontSize="small" />
+        <Tooltip title="" placement="right" disableHoverListener={open}>
+          <ListItem
+            component="button"
+            sx={{
+              color: "var(--primary)",
+              cursor: "pointer",
+              gap: "0.5rem",
+              transition:
+                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(1.02)",
+              },
+              "&:active": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(0.98)",
+              },
+              marginTop: "0.7rem",
+            }}
+          >
+            <HomeRoundedIcon onClick={() => setOpen(true)} />
+            {open && (
               <ListItemText
                 primary="Home"
-                onClick={() => router.push("/")}
                 sx={{
+                  marginLeft: 1,
                   "& .MuiListItemText-primary": {
                     fontSize: "1rem",
                     fontWeight: "700",
                   },
                 }}
               />
-            </ListItem>
+            )}
+          </ListItem>
+        </Tooltip>
 
+        <Tooltip title="" placement="right" disableHoverListener={open}>
+          <ListItem
+            component="button"
+            onClick={() => setOpenNews(!openNews)}
+            sx={{
+              color: "var(--primary)",
+              cursor: "pointer",
+              gap: "0.5rem",
+              transition:
+                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(1.02)",
+              },
+              "&:active": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(0.98)",
+              },
+              marginTop: "0.7rem",
+            }}
+          >
+            <ArticleRoundedIcon onClick={() => setOpen(true)} />
+            {open && (
+              <>
+                <ListItemText
+                  primary="Notícias"
+                  sx={{
+                    padding: 0, // Remove o padding do ListItemText
+                    margin: 0,
+                    "& .MuiTypography-root": {
+                      padding: 0, // Remove padding do Typography interno
+                      margin: 0, // Remove margens caso existam
+                    },
+                    "& .MuiListItemText-primary": {
+                      fontSize: "1rem",
+                      fontWeight: "700",
+                    },
+                  }}
+                />
+                {openNews ? <ExpandLess /> : <ExpandMore />}
+              </>
+            )}
+          </ListItem>
+        </Tooltip>
+        <Collapse in={openNews && open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
             <ListItem
               component="button"
-              onClick={() => setOpenNews(!openNews)}
               sx={{
                 color: "var(--primary)",
                 cursor: "pointer",
@@ -221,112 +296,16 @@ const DashboardPage: React.FC = () => {
                   backgroundColor: "var(--card-bg)",
                   transform: "scale(0.98)",
                 },
+                "& .MuiListItemText-primary": {
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                },
               }}
             >
-              <ArticleRoundedIcon fontSize="small" />
-              <ListItemText
-                primary="Notícias"
-                sx={{
-                  "& .MuiListItemText-primary": {
-                    fontSize: "1rem",
-                    fontWeight: "700",
-                  },
-                }}
-              />
-              {openNews ? <ExpandLess /> : <ExpandMore />}
+              <ListItemText primary="Todas as notícias" />
             </ListItem>
-            <Collapse in={openNews} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItem
-                  component="button"
-                  sx={{
-                    color: "var(--primary)",
-                    cursor: "pointer",
-                    gap: "0.5rem",
-                    transition:
-                      "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(1.02)",
-                    },
-                    "&:active": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(0.98)",
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary="Todas as notícias"
-                    sx={{
-                      "& .MuiListItemText-primary": {
-                        fontSize: "0.9rem",
-                        fontWeight: "500",
-                      },
-                    }}
-                  />
-                </ListItem>
-                <ListItem
-                  component="button"
-                  sx={{
-                    color: "var(--primary)",
-                    cursor: "pointer",
-                    gap: "0.5rem",
-                    transition:
-                      "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(1.02)",
-                    },
-                    "&:active": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(0.98)",
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary="Adicionar nova notícia"
-                    sx={{
-                      "& .MuiListItemText-primary": {
-                        fontSize: "0.9rem",
-                        fontWeight: "500",
-                      },
-                    }}
-                  />
-                </ListItem>
-                <ListItem
-                  component="button"
-                  sx={{
-                    color: "var(--primary)",
-                    cursor: "pointer",
-                    gap: "0.5rem",
-                    transition:
-                      "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(1.02)",
-                    },
-                    "&:active": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(0.98)",
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary="Categorias"
-                    sx={{
-                      "& .MuiListItemText-primary": {
-                        fontSize: "0.9rem",
-                        fontWeight: "500",
-                      },
-                    }}
-                  />
-                </ListItem>
-              </List>
-            </Collapse>
-
             <ListItem
               component="button"
-              onClick={() => setOpenBanners(!openBanners)}
               sx={{
                 color: "var(--primary)",
                 cursor: "pointer",
@@ -341,84 +320,16 @@ const DashboardPage: React.FC = () => {
                   backgroundColor: "var(--card-bg)",
                   transform: "scale(0.98)",
                 },
+                "& .MuiListItemText-primary": {
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                },
               }}
             >
-              <ImageRoundedIcon fontSize="small" />
-              <ListItemText
-                primary="Banners"
-                sx={{
-                  "& .MuiListItemText-primary": {
-                    fontSize: "1rem",
-                    fontWeight: "700",
-                  },
-                }}
-              />
-              {openBanners ? <ExpandLess /> : <ExpandMore />}
+              <ListItemText primary="Adicionar nova notícia" />
             </ListItem>
-            <Collapse in={openBanners} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItem
-                  component="button"
-                  sx={{
-                    color: "var(--primary)",
-                    cursor: "pointer",
-                    gap: "0.5rem",
-                    transition:
-                      "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(1.02)",
-                    },
-                    "&:active": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(0.98)",
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary="Todos os banners"
-                    sx={{
-                      "& .MuiListItemText-primary": {
-                        fontSize: "0.9rem",
-                        fontWeight: "500",
-                      },
-                    }}
-                  />
-                </ListItem>
-                <ListItem
-                  component="button"
-                  sx={{
-                    color: "var(--primary)",
-                    cursor: "pointer",
-                    gap: "0.5rem",
-                    transition:
-                      "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(1.02)",
-                    },
-                    "&:active": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(0.98)",
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary="Adicionar novo banner"
-                    sx={{
-                      "& .MuiListItemText-primary": {
-                        fontSize: "0.9rem",
-                        fontWeight: "500",
-                      },
-                    }}
-                  />
-                </ListItem>
-              </List>
-            </Collapse>
-
             <ListItem
               component="button"
-              onClick={() => setOpenUsers(!openUsers)}
               sx={{
                 color: "var(--primary)",
                 cursor: "pointer",
@@ -433,87 +344,210 @@ const DashboardPage: React.FC = () => {
                   backgroundColor: "var(--card-bg)",
                   transform: "scale(0.98)",
                 },
+                "& .MuiListItemText-primary": {
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                },
               }}
             >
-              <GroupRoundedIcon fontSize="small" />
-              <ListItemText
-                primary="Usuários"
-                sx={{
-                  "& .MuiListItemText-primary": {
-                    fontSize: "1rem",
-                    fontWeight: "700",
-                  },
-                }}
-              />
-              {openUsers ? <ExpandLess /> : <ExpandMore />}
+              <ListItemText primary="Categorias" />
             </ListItem>
-            <Collapse in={openUsers} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItem
-                  component="button"
-                  sx={{
-                    color: "var(--primary)",
-                    cursor: "pointer",
-                    gap: "0.5rem",
-                    transition:
-                      "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(1.02)",
-                    },
-                    "&:active": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(0.98)",
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary="Todos os usuários"
-                    sx={{
-                      color: "var(--primary)",
-                      cursor: "pointer",
-                      gap: "0.5rem",
-                      "& .MuiListItemText-primary": {
-                        fontSize: "0.9rem",
-                        fontWeight: "500",
-                      },
-                    }}
-                  />
-                </ListItem>
-                <ListItem
-                  component="button"
-                  sx={{
-                    color: "var(--primary)",
-                    cursor: "pointer",
-                    gap: "0.5rem",
-                    transition:
-                      "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(1.02)",
-                    },
-                    "&:active": {
-                      backgroundColor: "var(--card-bg)",
-                      transform: "scale(0.98)",
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary="Adicionar novo usuário"
-                    sx={{
-                      "& .MuiListItemText-primary": {
-                        fontSize: "0.9rem",
-                        fontWeight: "500",
-                      },
-                    }}
-                  />
-                </ListItem>
-              </List>
-            </Collapse>
           </List>
-        </Box>
+        </Collapse>
+        <Tooltip title="" placement="right" disableHoverListener={open}>
+          <ListItem
+            component="button"
+            onClick={() => setOpenBanners(!openBanners)}
+            sx={{
+              color: "var(--primary)",
+              cursor: "pointer",
+              gap: "0.5rem",
+              transition:
+                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(1.02)",
+              },
+              "&:active": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(0.98)",
+              },
+              marginTop: "0.7rem",
+            }}
+          >
+            <ImageRoundedIcon onClick={() => setOpen(true)} />
+            {open && (
+              <>
+                <ListItemText
+                  primary="Banners"
+                  sx={{
+                    padding: 0, // Remove o padding do ListItemText
+                    margin: 0,
+                    "& .MuiTypography-root": {
+                      padding: 0, // Remove padding do Typography interno
+                      margin: 0, // Remove margens caso existam
+                    },
+                    "& .MuiListItemText-primary": {
+                      fontSize: "1rem",
+                      fontWeight: "700",
+                    },
+                  }}
+                />
+                {openBanners ? <ExpandLess /> : <ExpandMore />}
+              </>
+            )}
+          </ListItem>
+        </Tooltip>
+        <Collapse in={openBanners && open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem
+              component="button"
+              sx={{
+                color: "var(--primary)",
+                cursor: "pointer",
+                gap: "0.5rem",
+                transition:
+                  "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "var(--card-bg)",
+                  transform: "scale(1.02)",
+                },
+                "&:active": {
+                  backgroundColor: "var(--card-bg)",
+                  transform: "scale(0.98)",
+                },
+                "& .MuiListItemText-primary": {
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                },
+              }}
+            >
+              <ListItemText primary="Todos os banners" />
+            </ListItem>
+            <ListItem
+              component="button"
+              sx={{
+                color: "var(--primary)",
+                cursor: "pointer",
+                gap: "0.5rem",
+                transition:
+                  "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "var(--card-bg)",
+                  transform: "scale(1.02)",
+                },
+                "&:active": {
+                  backgroundColor: "var(--card-bg)",
+                  transform: "scale(0.98)",
+                },
+                "& .MuiListItemText-primary": {
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                },
+              }}
+            >
+              <ListItemText primary="Adicionar novo banner" />
+            </ListItem>
+          </List>
+        </Collapse>
+        <Tooltip title="" placement="right" disableHoverListener={open}>
+          <ListItem
+            component="button"
+            onClick={() => setOpenUsers(!openUsers)}
+            sx={{
+              color: "var(--primary)",
+              cursor: "pointer",
+              gap: "0.5rem",
+              transition:
+                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(1.02)",
+              },
+              "&:active": {
+                backgroundColor: "var(--card-bg)",
+                transform: "scale(0.98)",
+              },
+              marginTop: "0.7rem",
+            }}
+          >
+            <GroupRoundedIcon onClick={() => setOpen(true)} />
+            {open && (
+              <>
+                <ListItemText
+                  primary="Usuários"
+                  sx={{
+                    padding: 0, // Remove o padding do ListItemText
+                    margin: 0,
+                    "& .MuiTypography-root": {
+                      padding: 0, // Remove padding do Typography interno
+                      margin: 0, // Remove margens caso existam
+                    },
+                    "& .MuiListItemText-primary": {
+                      fontSize: "1rem",
+                      fontWeight: "700",
+                    },
+                  }}
+                />
+                {openUsers ? <ExpandLess /> : <ExpandMore />}
+              </>
+            )}
+          </ListItem>
+        </Tooltip>
+        <Collapse in={openUsers && open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem
+              component="button"
+              sx={{
+                color: "var(--primary)",
+                cursor: "pointer",
+                gap: "0.5rem",
+                transition:
+                  "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "var(--card-bg)",
+                  transform: "scale(1.02)",
+                },
+                "&:active": {
+                  backgroundColor: "var(--card-bg)",
+                  transform: "scale(0.98)",
+                },
+                "& .MuiListItemText-primary": {
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                },
+              }}
+            >
+              <ListItemText primary="Todos os usuários" />
+            </ListItem>
+            <ListItem
+              component="button"
+              sx={{
+                color: "var(--primary)",
+                cursor: "pointer",
+                gap: "0.5rem",
+                transition:
+                  "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "var(--card-bg)",
+                  transform: "scale(1.02)",
+                },
+                "&:active": {
+                  backgroundColor: "var(--card-bg)",
+                  transform: "scale(0.98)",
+                },
+                "& .MuiListItemText-primary": {
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                },
+              }}
+            >
+              <ListItemText primary="Adicionar novo usuário" />
+            </ListItem>
+          </List>
+        </Collapse>
       </Drawer>
-      <main className="min-h-screen flex items-center justify-center bg-[var(--background)]"></main>
+      <main className="min-h-screen flex items-center justify-center bg-[var(--background)] pt-14"></main>
     </>
   );
 };
