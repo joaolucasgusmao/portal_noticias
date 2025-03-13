@@ -39,18 +39,14 @@ const DashboardPage: React.FC = () => {
   const [openNews, setOpenNews] = useState<boolean>(false);
   const [openBanners, setOpenBanners] = useState<boolean>(false);
   const [openUsers, setOpenUsers] = useState<boolean>(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const openUserMenu = Boolean(anchorEl);
 
   useEffect(() => {
     if (isAuthenticated === false) {
       router.push("/login");
     }
   }, [isAuthenticated, router]);
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleToggleMenu = () => {
     setOpen((prev) => {
@@ -64,9 +60,17 @@ const DashboardPage: React.FC = () => {
     });
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorEl(null);
+  const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpenUserMenu(true);
   };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpenUserMenu(false);
+  };
+
+  console.log(openUserMenu);
 
   const handleLogout = () => {
     router.push("/login");
@@ -84,14 +88,13 @@ const DashboardPage: React.FC = () => {
     <>
       <header className="top-0 w-full z-50 flex items-center justify-between px-4 bg-[var(--background)] h-14 border-b-2 border-b-[var(--card-bg)] fixed">
         <Box className="flex items-center gap-4">
-          <IconButton
-            onClick={handleToggleMenu}
-            sx={{ color: "var(--primary)" }}
-          >
+          <IconButton onClick={handleToggleMenu}>
             {open ? (
-              <MenuOpenIcon sx={{ fontSize: "2rem" }} />
+              <MenuOpenIcon
+                sx={{ fontSize: "2rem", color: "var(--primary)" }}
+              />
             ) : (
-              <MenuIcon sx={{ fontSize: "2rem" }} />
+              <MenuIcon sx={{ fontSize: "2rem", color: "var(--primary)" }} />
             )}
           </IconButton>
           <h1 className="text-[var(--primary)] text-xl font-bold">
@@ -100,7 +103,7 @@ const DashboardPage: React.FC = () => {
         </Box>
         <Box
           className="flex items-center justify-center gap-2 relative cursor-pointer"
-          onClick={handleOpenUserMenu}
+          onMouseEnter={handleMouseEnter}
         >
           <Image
             src={user?.avatar ?? "/user.png"}
@@ -122,7 +125,9 @@ const DashboardPage: React.FC = () => {
         <Menu
           anchorEl={anchorEl}
           open={openUserMenu}
-          onClose={handleCloseUserMenu}
+          onClose={handleClose}
+          onMouseLeave={handleClose}
+          disableAutoFocusItem
           PaperProps={{
             sx: {
               backgroundColor: "var(--background-2)",
@@ -159,6 +164,7 @@ const DashboardPage: React.FC = () => {
             onClick={handleLogout}
             className="flex items-center gap-2"
             sx={{
+              color: "var(--primary)",
               transition:
                 "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
               "&:hover": {
@@ -223,7 +229,12 @@ const DashboardPage: React.FC = () => {
               <ListItemText
                 primary="Home"
                 sx={{
-                  marginLeft: 1,
+                  padding: "0 !important",
+                  margin: "0 !important",
+                  "& .MuiTypography-root": {
+                    padding: "0 !important",
+                    margin: "0 !important",
+                  },
                   "& .MuiListItemText-primary": {
                     fontSize: "1rem",
                     fontWeight: "700",
@@ -261,11 +272,11 @@ const DashboardPage: React.FC = () => {
                 <ListItemText
                   primary="Notícias"
                   sx={{
-                    padding: 0, // Remove o padding do ListItemText
+                    padding: 0,
                     margin: 0,
                     "& .MuiTypography-root": {
-                      padding: 0, // Remove padding do Typography interno
-                      margin: 0, // Remove margens caso existam
+                      padding: 0,
+                      margin: 0,
                     },
                     "& .MuiListItemText-primary": {
                       fontSize: "1rem",
