@@ -36,11 +36,13 @@ const DashboardPage: React.FC = () => {
   const { user } = useUser();
 
   const router = useRouter();
+
   const [open, setOpen] = useState<boolean>(false);
   const [openNews, setOpenNews] = useState<boolean>(false);
   const [openBanners, setOpenBanners] = useState<boolean>(false);
   const [openUsers, setOpenUsers] = useState<boolean>(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
@@ -103,9 +105,9 @@ const DashboardPage: React.FC = () => {
           onMouseEnter={handleMouseEnter}
         >
           <Image
-            src={user?.avatar ?? "/user.png"}
-            width={40}
-            height={40}
+            src={user?.avatar ? user.avatar : "/user.png"}
+            width={35}
+            height={35}
             alt="Avatar"
             className="cursor-pointer rounded-full"
           />
