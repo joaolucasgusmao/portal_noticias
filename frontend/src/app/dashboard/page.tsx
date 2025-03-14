@@ -29,6 +29,7 @@ import { LogoutRounded } from "@mui/icons-material";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import Link from "next/link";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import logout from "@/lib/logout";
 
 const DashboardPage: React.FC = () => {
   const isAuthenticated = auth();
@@ -71,7 +72,7 @@ const DashboardPage: React.FC = () => {
   };
 
   const handleLogout = () => {
-    router.push("/login");
+    logout();
   };
 
   if (isAuthenticated === null || isAuthenticated === false) {
@@ -157,7 +158,6 @@ const DashboardPage: React.FC = () => {
             </Link>
           </MenuItem>
           <MenuItem
-            onClick={handleLogout}
             className="flex items-center gap-2"
             sx={{
               color: "var(--primary)",
@@ -175,7 +175,8 @@ const DashboardPage: React.FC = () => {
           >
             <LogoutRounded className="text-[var(--primary)]" />
             <Link
-              href="#"
+              onClick={handleLogout}
+              href="/login"
               className="text-sm font-medium text-[var(--primary)]"
             >
               Sair
