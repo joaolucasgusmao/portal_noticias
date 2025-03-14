@@ -1,11 +1,11 @@
 import React from "react";
 import { TextField as MUITextField, TextFieldProps } from "@mui/material";
 
-type TextFieldComponentProps = TextFieldProps & {
+type InputProps = TextFieldProps & {
   label: string;
 };
 
-const TextFieldComponent: React.FC<TextFieldComponentProps> = ({
+const Input: React.FC<InputProps> = ({
   label,
   ...props
 }) => {
@@ -20,7 +20,7 @@ const TextFieldComponent: React.FC<TextFieldComponentProps> = ({
         backgroundColor: "var(--input-bg)",
         "& .MuiOutlinedInput-root": {
           "& fieldset": {
-            borderColor: "var(--border)",
+            borderColor: "var(--input-border)",
             transition: "border-color 0.3s ease",
           },
           "&:hover fieldset": {
@@ -31,7 +31,7 @@ const TextFieldComponent: React.FC<TextFieldComponentProps> = ({
           },
         },
         "& .MuiInputLabel-root": {
-          color: "var(--text-secondary)",
+          color: "var(--gray)",
           transition: "color 0.3s ease, transform 0.3s ease",
           fontSize: "1rem",
         },
@@ -40,11 +40,11 @@ const TextFieldComponent: React.FC<TextFieldComponentProps> = ({
           fontSize: "1.3rem",
         },
         "& .MuiInputBase-input": {
-          color: "var(--text-secondary)",
+          color: "var(--gray)",
         },
       }}
     />
   );
 };
 
-export default TextFieldComponent;
+export default Input;

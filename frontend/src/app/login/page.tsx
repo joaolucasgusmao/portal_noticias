@@ -24,7 +24,7 @@ const LoginPage: React.FC = () => {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      sx={{ backgroundColor: "var(--background)" }}
+      sx={{ backgroundColor: "var(--black)" }}
       p={2}
     >
       <ToastContainer position="top-right" autoClose={1000} theme="dark" />
@@ -32,7 +32,7 @@ const LoginPage: React.FC = () => {
       <Paper
         elevation={4}
         sx={{
-          backgroundColor: "var(--card-bg)",
+          backgroundColor: "var(--black-3)",
           width: { xs: "100%", sm: "500px" },
           p: 4,
           borderRadius: 3,

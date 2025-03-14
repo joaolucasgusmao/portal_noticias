@@ -25,8 +25,8 @@ const userLogin = () => {
         toast.success(data.message);
 
         if (data.user) {
-          const { name, email, avatar } = data.user;
-          setUser({ name, email, avatar });
+          const { name, email, avatar, is_admin } = data.user;
+          setUser({ name, email, avatar, is_admin });
         }
 
         setTimeout(() => {

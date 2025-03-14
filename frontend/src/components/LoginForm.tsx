@@ -1,7 +1,8 @@
 import React from "react";
-import TextFieldComponent from "./TextFieldComponent";
-import ButtonComponent from "./ButtonComponent";
-import ShowPasswordButton from "./ShowPasswordButton";
+import Input from "./commons/Input";
+import Button from "./commons/Button";
+import EyeIcon from "./commons/EyeIcon";
+import { Box } from "@mui/material";
 
 interface LoginFormProps {
   email: string;
@@ -23,28 +24,28 @@ const LoginForm: React.FC<LoginFormProps> = ({
   handleClickShowPassword,
 }) => {
   return (
-    <div>
-      <TextFieldComponent
+    <Box>
+      <Input
         label="E-mail"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(event) => setEmail(event.target.value)}
       />
-      <TextFieldComponent
+      <Input
         label="Senha"
         type={showPassword ? "text" : "password"}
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(event) => setPassword(event.target.value)}
         InputProps={{
           endAdornment: (
-            <ShowPasswordButton
+            <EyeIcon
               showPassword={showPassword}
               onClick={handleClickShowPassword}
             />
           ),
         }}
       />
-      <ButtonComponent label="Entrar" onClick={handleLogin} fullWidth />
-    </div>
+      <Button label="Entrar" onClick={handleLogin} fullWidth />
+    </Box>
   );
 };
 

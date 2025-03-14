@@ -4,16 +4,12 @@ import { auth } from "@/lib/auth";
 import {
   Box,
   Drawer,
-  IconButton,
   List,
   ListItem,
   ListItemText,
   Collapse,
-  Menu,
-  MenuItem,
   Tooltip,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import ImageRoundedIcon from "@mui/icons-material/ImageRounded";
@@ -24,12 +20,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { useUser } from "@/context/UserContext";
-import Image from "next/image";
-import { LogoutRounded } from "@mui/icons-material";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import Link from "next/link";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import logout from "@/lib/logout";
+import Header from "@/components/Header";
+import SidebarIcon from "@/components/SidebarComponent/SidebarIcon";
+import UserMenuBox from "@/components/UserMenuComponent/UserMenuBox";
+import UserMenu from "@/components/UserMenuComponent/UserMenu";
 
 const DashboardPage: React.FC = () => {
   const isAuthenticated = auth();
@@ -63,9 +58,9 @@ const DashboardPage: React.FC = () => {
     });
   };
 
-  const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
+  const handleToggleUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-    setOpenUserMenu(true);
+    setOpenUserMenu((prev) => !prev);
   };
 
   const handleClose = () => {
@@ -75,11 +70,12 @@ const DashboardPage: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    router.push("/login");
   };
 
   if (isAuthenticated === null || isAuthenticated === false) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--black)]">
         <PropagateLoader color="var(--primary)" />
       </div>
     );
@@ -87,105 +83,25 @@ const DashboardPage: React.FC = () => {
 
   return (
     <>
-      <header className="top-0 w-full z-50 flex items-center justify-between px-4 bg-[var(--background)] h-14 border-b-2 border-b-[var(--card-bg)] fixed">
+      <Header>
         <Box className="flex items-center gap-4">
-          <IconButton onClick={handleToggleMenu}>
-            {open ? (
-              <MenuOpenIcon
-                sx={{ fontSize: "2rem", color: "var(--primary)" }}
-              />
-            ) : (
-              <MenuIcon sx={{ fontSize: "2rem", color: "var(--primary)" }} />
-            )}
-          </IconButton>
+          <SidebarIcon open={open} handleToggleMenu={handleToggleMenu} />
           <h1 className="text-[var(--primary)] text-xl font-bold">Sua Logo</h1>
         </Box>
-        <Box
-          className="flex items-center justify-center gap-2 relative cursor-pointer"
-          onMouseEnter={handleMouseEnter}
-        >
-          <Image
-            src={user?.avatar ? user.avatar : "/user.png"}
-            width={35}
-            height={35}
-            alt="Avatar"
-            className="cursor-pointer rounded-full"
-          />
-          <Box className="hidden sm:flex flex-col justify-center">
-            <p className="text-sm font-medium text-[var(--text-secondary)]">
-              {user?.name}
-            </p>
-            <span className="text-xs font-medium text-[var(--text-secondary)]">
-              {user?.email}
-            </span>
-          </Box>
-        </Box>
+        <UserMenuBox
+          handleToggleUserMenu={handleToggleUserMenu}
+          avatar={user?.avatar}
+          email={user?.email}
+          name={user?.name}
+        />
 
-        <Menu
+        <UserMenu
           anchorEl={anchorEl}
-          open={openUserMenu}
-          onClose={handleClose}
-          onMouseLeave={handleClose}
-          disableAutoFocusItem
-          PaperProps={{
-            sx: {
-              backgroundColor: "var(--background-2)",
-              marginLeft: { xs: "1rem", sm: "0.8rem" },
-              marginTop: "0.7rem",
-              width: { xs: "8rem", sm: "9rem" },
-            },
-          }}
-        >
-          <MenuItem
-            className="flex items-center gap-2"
-            sx={{
-              transition:
-                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-              "&:hover": {
-                backgroundColor: "var(--card-bg)",
-                transform: "scale(1.02)",
-              },
-              "&:active": {
-                backgroundColor: "var(--card-bg)",
-                transform: "scale(0.98)",
-              },
-            }}
-          >
-            <AccountCircleRoundedIcon className="text-[var(--primary)]" />
-            <Link
-              href="#"
-              className="text-sm font-medium text-[var(--primary)]"
-            >
-              Perfil
-            </Link>
-          </MenuItem>
-          <MenuItem
-            className="flex items-center gap-2"
-            sx={{
-              color: "var(--primary)",
-              transition:
-                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-              "&:hover": {
-                backgroundColor: "var(--card-bg)",
-                transform: "scale(1.02)",
-              },
-              "&:active": {
-                backgroundColor: "var(--card-bg)",
-                transform: "scale(0.98)",
-              },
-            }}
-          >
-            <LogoutRounded className="text-[var(--primary)]" />
-            <Link
-              onClick={handleLogout}
-              href="/login"
-              className="text-sm font-medium text-[var(--primary)]"
-            >
-              Sair
-            </Link>
-          </MenuItem>
-        </Menu>
-      </header>
+          handleClose={handleClose}
+          handleLogout={handleLogout}
+          openUserMenu={openUserMenu}
+        />
+      </Header>
 
       <Drawer
         variant="permanent"
@@ -198,7 +114,7 @@ const DashboardPage: React.FC = () => {
             overflowX: "hidden",
             marginTop: "56px",
             height: "calc(100% - 56px)",
-            backgroundColor: "var(--background-2)",
+            backgroundColor: "var(--black-2)",
             color: "var(--primary)",
           },
         }}
@@ -213,11 +129,11 @@ const DashboardPage: React.FC = () => {
               transition:
                 "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
               "&:hover": {
-                backgroundColor: "var(--card-bg)",
+                backgroundColor: "var(--black-3)",
                 transform: "scale(1.02)",
               },
               "&:active": {
-                backgroundColor: "var(--card-bg)",
+                backgroundColor: "var(--black-3)",
                 transform: "scale(0.98)",
               },
               marginTop: "0.7rem",
@@ -255,11 +171,11 @@ const DashboardPage: React.FC = () => {
               transition:
                 "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
               "&:hover": {
-                backgroundColor: "var(--card-bg)",
+                backgroundColor: "var(--black-3)",
                 transform: "scale(1.02)",
               },
               "&:active": {
-                backgroundColor: "var(--card-bg)",
+                backgroundColor: "var(--black-3)",
                 transform: "scale(0.98)",
               },
               marginTop: "0.7rem",
@@ -299,11 +215,11 @@ const DashboardPage: React.FC = () => {
                 transition:
                   "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
                 "&:hover": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(1.02)",
                 },
                 "&:active": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(0.98)",
                 },
                 "& .MuiListItemText-primary": {
@@ -323,11 +239,11 @@ const DashboardPage: React.FC = () => {
                 transition:
                   "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
                 "&:hover": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(1.02)",
                 },
                 "&:active": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(0.98)",
                 },
                 "& .MuiListItemText-primary": {
@@ -338,30 +254,32 @@ const DashboardPage: React.FC = () => {
             >
               <ListItemText primary="Adicionar nova notícia" />
             </ListItem>
-            <ListItem
-              component="button"
-              sx={{
-                color: "var(--primary)",
-                cursor: "pointer",
-                gap: "0.5rem",
-                transition:
-                  "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "var(--card-bg)",
-                  transform: "scale(1.02)",
-                },
-                "&:active": {
-                  backgroundColor: "var(--card-bg)",
-                  transform: "scale(0.98)",
-                },
-                "& .MuiListItemText-primary": {
-                  fontSize: "0.9rem",
-                  fontWeight: "500",
-                },
-              }}
-            >
-              <ListItemText primary="Categorias" />
-            </ListItem>
+            {user?.is_admin ? (
+              <ListItem
+                component="button"
+                sx={{
+                  color: "var(--primary)",
+                  cursor: "pointer",
+                  gap: "0.5rem",
+                  transition:
+                    "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+                  "&:hover": {
+                    backgroundColor: "var(--black-3)",
+                    transform: "scale(1.02)",
+                  },
+                  "&:active": {
+                    backgroundColor: "var(--black-3)",
+                    transform: "scale(0.98)",
+                  },
+                  "& .MuiListItemText-primary": {
+                    fontSize: "0.9rem",
+                    fontWeight: "500",
+                  },
+                }}
+              >
+                <ListItemText primary="Categorias" />
+              </ListItem>
+            ) : null}
           </List>
         </Collapse>
         <Tooltip title="" placement="right" disableHoverListener={open}>
@@ -375,11 +293,11 @@ const DashboardPage: React.FC = () => {
               transition:
                 "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
               "&:hover": {
-                backgroundColor: "var(--card-bg)",
+                backgroundColor: "var(--black-3)",
                 transform: "scale(1.02)",
               },
               "&:active": {
-                backgroundColor: "var(--card-bg)",
+                backgroundColor: "var(--black-3)",
                 transform: "scale(0.98)",
               },
               marginTop: "0.7rem",
@@ -391,11 +309,11 @@ const DashboardPage: React.FC = () => {
                 <ListItemText
                   primary="Banners"
                   sx={{
-                    padding: 0, // Remove o padding do ListItemText
+                    padding: 0,
                     margin: 0,
                     "& .MuiTypography-root": {
-                      padding: 0, // Remove padding do Typography interno
-                      margin: 0, // Remove margens caso existam
+                      padding: 0,
+                      margin: 0,
                     },
                     "& .MuiListItemText-primary": {
                       fontSize: "1rem",
@@ -419,11 +337,11 @@ const DashboardPage: React.FC = () => {
                 transition:
                   "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
                 "&:hover": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(1.02)",
                 },
                 "&:active": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(0.98)",
                 },
                 "& .MuiListItemText-primary": {
@@ -443,11 +361,11 @@ const DashboardPage: React.FC = () => {
                 transition:
                   "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
                 "&:hover": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(1.02)",
                 },
                 "&:active": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(0.98)",
                 },
                 "& .MuiListItemText-primary": {
@@ -460,50 +378,53 @@ const DashboardPage: React.FC = () => {
             </ListItem>
           </List>
         </Collapse>
-        <Tooltip title="" placement="right" disableHoverListener={open}>
-          <ListItem
-            component="button"
-            onClick={() => setOpenUsers(!openUsers)}
-            sx={{
-              color: "var(--primary)",
-              cursor: "pointer",
-              gap: "0.5rem",
-              transition:
-                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-              "&:hover": {
-                backgroundColor: "var(--card-bg)",
-                transform: "scale(1.02)",
-              },
-              "&:active": {
-                backgroundColor: "var(--card-bg)",
-                transform: "scale(0.98)",
-              },
-              marginTop: "0.7rem",
-            }}
-          >
-            <GroupRoundedIcon onClick={() => setOpen(true)} />
-            {open && (
-              <>
-                <ListItemText
-                  primary="Usuários"
-                  sx={{
-                    padding: 0, // Remove o padding do ListItemText
-                    margin: 0,
-                    "& .MuiTypography-root": {
-                      padding: 0, // Remove padding do Typography interno
-                      margin: 0, // Remove margens caso existam
-                    },
-                    "& .MuiListItemText-primary": {
-                      fontSize: "1rem",
-                      fontWeight: "700",
-                    },
-                  }}
-                />
-                {openUsers ? <ExpandLess /> : <ExpandMore />}
-              </>
-            )}
-          </ListItem>
-        </Tooltip>
+        {user?.is_admin ? (
+          <Tooltip title="" placement="right" disableHoverListener={open}>
+            <ListItem
+              component="button"
+              onClick={() => setOpenUsers(!openUsers)}
+              sx={{
+                color: "var(--primary)",
+                cursor: "pointer",
+                gap: "0.5rem",
+                transition:
+                  "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "var(--black-3)",
+                  transform: "scale(1.02)",
+                },
+                "&:active": {
+                  backgroundColor: "var(--black-3)",
+                  transform: "scale(0.98)",
+                },
+                marginTop: "0.7rem",
+              }}
+            >
+              <GroupRoundedIcon onClick={() => setOpen(true)} />
+              {open && (
+                <>
+                  <ListItemText
+                    primary="Usuários"
+                    sx={{
+                      padding: 0,
+                      margin: 0,
+                      "& .MuiTypography-root": {
+                        padding: 0,
+                        margin: 0,
+                      },
+                      "& .MuiListItemText-primary": {
+                        fontSize: "1rem",
+                        fontWeight: "700",
+                      },
+                    }}
+                  />
+                  {openUsers ? <ExpandLess /> : <ExpandMore />}
+                </>
+              )}
+            </ListItem>
+          </Tooltip>
+        ) : null}
+
         <Collapse in={openUsers && open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem
@@ -515,11 +436,11 @@ const DashboardPage: React.FC = () => {
                 transition:
                   "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
                 "&:hover": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(1.02)",
                 },
                 "&:active": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(0.98)",
                 },
                 "& .MuiListItemText-primary": {
@@ -539,11 +460,11 @@ const DashboardPage: React.FC = () => {
                 transition:
                   "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
                 "&:hover": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(1.02)",
                 },
                 "&:active": {
-                  backgroundColor: "var(--card-bg)",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(0.98)",
                 },
                 "& .MuiListItemText-primary": {
@@ -557,7 +478,7 @@ const DashboardPage: React.FC = () => {
           </List>
         </Collapse>
       </Drawer>
-      <main className="min-h-screen flex items-center justify-center bg-[var(--background)] pt-14"></main>
+      <main className="min-h-screen flex items-center justify-center bg-[var(--black)] pt-14"></main>
     </>
   );
 };
