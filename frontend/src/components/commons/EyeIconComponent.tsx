@@ -2,12 +2,12 @@ import React from "react";
 import { IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-interface EyeIconProps {
+interface EyeIconComponentProps {
   showPassword: boolean;
   onClick: () => void;
 }
 
-const EyeIcon: React.FC<EyeIconProps> = ({
+const EyeIconComponent: React.FC<EyeIconComponentProps> = ({
   showPassword,
   onClick,
 }) => {
@@ -26,4 +26,4 @@ const EyeIcon: React.FC<EyeIconProps> = ({
   );
 };
 
-export default EyeIcon;
+export default EyeIconComponent;

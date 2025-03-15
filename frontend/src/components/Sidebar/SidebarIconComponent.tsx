@@ -2,12 +2,12 @@ import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
-interface SidebarIconProps {
+interface SidebarComponentIconProps {
   open: boolean;
   handleToggleMenu: () => void;
 }
 
-const SidebarIcon: React.FC<SidebarIconProps> = ({
+const SidebarIconComponent: React.FC<SidebarComponentIconProps> = ({
   open,
   handleToggleMenu,
 }) => {
@@ -22,4 +22,4 @@ const SidebarIcon: React.FC<SidebarIconProps> = ({
   );
 };
 
-export default SidebarIcon;
+export default SidebarIconComponent;

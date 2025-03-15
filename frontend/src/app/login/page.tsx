@@ -2,10 +2,10 @@
 
 import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
-import LoginForm from "@/components/LoginForm";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userLogin from "@/hooks/userLogin";
+import LoginFormComponent from "@/components/LoginComponentForm";
 
 const LoginPage: React.FC = () => {
   const {
@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
         >
           Login
         </Typography>
-        <LoginForm
+        <LoginFormComponent
           email={email}
           setEmail={setEmail}
           password={password}

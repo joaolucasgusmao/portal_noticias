@@ -1,19 +1,19 @@
 import { Box } from "@mui/material";
 import Image from "next/image";
 
-interface UserMenuBoxProps {
+interface UserMenuBoxComponentProps {
   handleToggleUserMenu: (event: React.MouseEvent<HTMLElement>) => void;
   name?: string;
   email?: string;
   avatar?: string;
 }
 
-const UserMenuBox = ({
+const UserMenuBoxComponent = ({
   handleToggleUserMenu,
   name,
   email,
   avatar,
-}: UserMenuBoxProps) => {
+}: UserMenuBoxComponentProps) => {
   return (
     <Box
       className="flex items-center justify-center gap-2 relative cursor-pointer"
@@ -34,4 +34,4 @@ const UserMenuBox = ({
   );
 };
 
-export default UserMenuBox;
+export default UserMenuBoxComponent;

@@ -1,10 +1,10 @@
 import React from "react";
-import Input from "./commons/Input";
-import Button from "./commons/Button";
-import EyeIcon from "./commons/EyeIcon";
 import { Box } from "@mui/material";
+import ButtonComponent from "./commons/ButtonComponent";
+import EyeIconComponent from "./commons/EyeIconComponent";
+import InputComponent from "./commons/InputComponent";
 
-interface LoginFormProps {
+interface LoginFormComponentProps {
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   password: string;
@@ -14,7 +14,7 @@ interface LoginFormProps {
   handleClickShowPassword: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({
+const LoginFormComponent: React.FC<LoginFormComponentProps> = ({
   email,
   setEmail,
   password,
@@ -25,28 +25,28 @@ const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   return (
     <Box>
-      <Input
+      <InputComponent
         label="E-mail"
         value={email}
         onChange={(event) => setEmail(event.target.value)}
       />
-      <Input
+      <InputComponent
         label="Senha"
         type={showPassword ? "text" : "password"}
         value={password}
         onChange={(event) => setPassword(event.target.value)}
         InputProps={{
           endAdornment: (
-            <EyeIcon
+            <EyeIconComponent
               showPassword={showPassword}
               onClick={handleClickShowPassword}
             />
           ),
         }}
       />
-      <Button label="Entrar" onClick={handleLogin} fullWidth />
+      <ButtonComponent label="Entrar" onClick={handleLogin} fullWidth />
     </Box>
   );
 };
 
-export default LoginForm;
+export default LoginFormComponent;

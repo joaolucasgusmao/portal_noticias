@@ -3,14 +3,14 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import Link from "next/link";
 
-interface UserMenuProps {
+interface UserMenuComponentProps {
   anchorEl: null | HTMLElement;
   openUserMenu: boolean;
   handleClose: () => void;
   handleLogout: () => void;
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({
+const UserMenuComponent: React.FC<UserMenuComponentProps> = ({
   anchorEl,
   openUserMenu,
   handleClose,
@@ -74,4 +74,4 @@ const UserMenu: React.FC<UserMenuProps> = ({
   );
 };
 
-export default UserMenu;
+export default UserMenuComponent;

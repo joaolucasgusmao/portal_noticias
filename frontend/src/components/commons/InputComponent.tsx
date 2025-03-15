@@ -1,14 +1,11 @@
 import React from "react";
 import { TextField as MUITextField, TextFieldProps } from "@mui/material";
 
-type InputProps = TextFieldProps & {
+type InputComponentProps = TextFieldProps & {
   label: string;
 };
 
-const Input: React.FC<InputProps> = ({
-  label,
-  ...props
-}) => {
+const InputComponent: React.FC<InputComponentProps> = ({ label, ...props }) => {
   return (
     <MUITextField
       label={label}
@@ -47,4 +44,4 @@ const Input: React.FC<InputProps> = ({
   );
 };
 
-export default Input;
+export default InputComponent;

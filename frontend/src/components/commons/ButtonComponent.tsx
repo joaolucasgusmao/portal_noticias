@@ -1,11 +1,11 @@
 import React from "react";
 import { Button as MUIButton, ButtonProps } from "@mui/material";
 
-interface BtnProps extends ButtonProps {
+interface ButtonComponentProps extends ButtonProps {
   label: string;
 }
 
-const Button: React.FC<BtnProps> = ({ label, ...props }) => {
+const ButtonComponent: React.FC<ButtonComponentProps> = ({ label, ...props }) => {
   return (
     <MUIButton
       variant="contained"
@@ -28,4 +28,4 @@ const Button: React.FC<BtnProps> = ({ label, ...props }) => {
   );
 };
 
-export default Button;
+export default ButtonComponent;
