@@ -5,6 +5,8 @@ import {
   ListItem,
   ListItemText,
   Tooltip,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
@@ -41,14 +43,19 @@ const SidebarComponent = ({
   openUsers,
   user,
 }: SidebarIconComponentProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detecta telas menores que "sm"
+
   return (
     <Drawer
-      variant="permanent"
+      variant={isMobile ? "temporary" : "permanent"} // No mobile, vira modal
+      open={isMobile ? open : true} // No mobile, precisa ser controlado
+      onClose={() => setOpen(false)} // Fecha ao clicar fora no mobile
       sx={{
-        width: open ? 250 : { xs: 0, sm: 60 },
+        width: isMobile ? "auto" : open ? 250 : 60, // No mobile, largura automática
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: open ? 250 : { xs: 0, sm: 60 },
+          width: open ? 250 : isMobile ? "auto" : 60,
           transition: "width 0.3s",
           overflowX: "hidden",
           marginTop: "56px",

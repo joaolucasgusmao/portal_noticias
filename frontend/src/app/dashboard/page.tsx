@@ -1,7 +1,7 @@
 "use client";
 
 import { auth } from "@/lib/auth";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -27,6 +27,9 @@ const DashboardPage: React.FC = () => {
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (isAuthenticated === false) {
@@ -106,7 +109,17 @@ const DashboardPage: React.FC = () => {
         user={user}
       />
 
-      <main className="min-h-screen flex items-center justify-center bg-[var(--black)] pt-14"></main>
+      <main
+        className="min-h-screen w-full flex bg-[var(--black)] pt-24 transition-all duration-300"
+        style={{
+          marginLeft: isMobile ? "0" : open ? "250px" : "60px", // Sem margem no mobile
+          width: `calc(100% - ${isMobile ? "0px" : open ? "250px" : "60px"})`,
+        }}
+      >
+        <p className="text-[var(--primary)] font-bold text-2xl ml-16">
+          Seja bem-vindo, {user?.name}!
+        </p>
+      </main>
     </>
   );
 };
