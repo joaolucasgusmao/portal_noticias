@@ -15,6 +15,7 @@ import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { IUser } from "@/@types/user";
+import { useRouter } from "next/navigation";
 
 interface SidebarIconComponentProps {
   open: boolean;
@@ -44,15 +45,16 @@ const SidebarComponent = ({
   user,
 }: SidebarIconComponentProps) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detecta telas menores que "sm"
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const router = useRouter();
 
   return (
     <Drawer
-      variant={isMobile ? "temporary" : "permanent"} // No mobile, vira modal
-      open={isMobile ? open : true} // No mobile, precisa ser controlado
-      onClose={() => setOpen(false)} // Fecha ao clicar fora no mobile
+      variant={isMobile ? "temporary" : "permanent"}
+      open={isMobile ? open : true}
+      onClose={() => setOpen(false)}
       sx={{
-        width: isMobile ? "auto" : open ? 250 : 60, // No mobile, largura automática
+        width: isMobile ? "auto" : open ? 250 : 60,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: open ? 250 : isMobile ? "auto" : 60,
@@ -178,6 +180,7 @@ const SidebarComponent = ({
           </ListItem>
           <ListItem
             component="button"
+            onClick={() => router.push("/dashboard/news/create")}
             sx={{
               color: "var(--primary)",
               cursor: "pointer",

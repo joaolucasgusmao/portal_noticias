@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useUser } from "@/context/UserContext";
 
-const userLogin = () => {
+const useLogin = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -55,4 +55,4 @@ const userLogin = () => {
   };
 };
 
-export default userLogin;
+export default useLogin;

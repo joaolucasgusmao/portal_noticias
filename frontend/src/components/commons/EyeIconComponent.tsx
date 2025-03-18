@@ -18,9 +18,9 @@ const EyeIconComponent: React.FC<EyeIconComponentProps> = ({
       aria-label="toggle password visibility"
     >
       {showPassword ? (
-        <VisibilityOff sx={{ fontSize: "1.4rem" }} />
+        <VisibilityOff sx={{ fontSize: "1rem", color: "var(--gray)" }} />
       ) : (
-        <Visibility sx={{ fontSize: "1.4rem" }} />
+        <Visibility sx={{ fontSize: "1rem", color: "var(--gray)" }} />
       )}
     </IconButton>
   );

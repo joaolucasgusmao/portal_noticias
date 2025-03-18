@@ -4,7 +4,7 @@ import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import userLogin from "@/hooks/userLogin";
+import useLogin from "@/hooks/useLogin";
 import LoginFormComponent from "@/components/LoginComponentForm";
 
 const LoginPage: React.FC = () => {
@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
     showPassword,
     handleLogin,
     handleClickShowPassword,
-  } = userLogin();
+  } = useLogin();
 
   return (
     <Box
@@ -24,7 +24,7 @@ const LoginPage: React.FC = () => {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      sx={{ backgroundColor: "var(--black)" }}
+      sx={{ backgroundColor: "var(--black-2)" }}
       p={2}
     >
       <ToastContainer position="top-right" autoClose={1000} theme="dark" />
@@ -32,7 +32,7 @@ const LoginPage: React.FC = () => {
       <Paper
         elevation={4}
         sx={{
-          backgroundColor: "var(--black-3)",
+          backgroundColor: "var(--black)",
           width: { xs: "100%", sm: "500px" },
           p: 4,
           borderRadius: 3,

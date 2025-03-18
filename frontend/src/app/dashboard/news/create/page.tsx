@@ -1,5 +1,6 @@
 "use client";
 
+import CreateNewsComponentForm from "@/components/CreateNewsComponentForm";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/auth";
@@ -7,7 +8,7 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
 import DashboardLayout from "@/components/Layout/DashboardLayout";
 
-const DashboardPage: React.FC = () => {
+const NewsForm: React.FC = () => {
   const isAuthenticated = auth();
   const router = useRouter();
 
@@ -24,16 +25,15 @@ const DashboardPage: React.FC = () => {
       </div>
     );
   }
-
   return (
     <DashboardLayoutProvider>
       <DashboardLayout>
         <p className="text-[var(--primary)] font-bold text-2xl ml-8">
-          Oops! Estamos em desenvolvimento.
+          <CreateNewsComponentForm />
         </p>
       </DashboardLayout>
     </DashboardLayoutProvider>
   );
 };
 
-export default DashboardPage;
+export default NewsForm;

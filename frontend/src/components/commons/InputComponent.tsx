@@ -14,7 +14,7 @@ const InputComponent: React.FC<InputComponentProps> = ({ label, ...props }) => {
       {...props}
       sx={{
         mb: 2,
-        backgroundColor: "var(--input-bg)",
+        backgroundColor: "var(--black)",
         "& .MuiOutlinedInput-root": {
           "& fieldset": {
             borderColor: "var(--input-border)",
@@ -34,10 +34,14 @@ const InputComponent: React.FC<InputComponentProps> = ({ label, ...props }) => {
         },
         "& .MuiInputLabel-root.Mui-focused": {
           color: "var(--primary)",
-          fontSize: "1.3rem",
+          fontSize: "1rem",
         },
         "& .MuiInputBase-input": {
           color: "var(--gray)",
+        },
+        "& .MuiInputLabel-shrink": {
+          backgroundColor: "var(--black)",
+          padding: "0 6px",
         },
       }}
     />
