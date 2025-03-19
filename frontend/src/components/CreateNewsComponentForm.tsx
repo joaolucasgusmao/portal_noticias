@@ -104,161 +104,169 @@ const CreateNewsComponentForm: React.FC = () => {
     <>
       <Box
         display="flex"
-        justifyContent="center"
         flexDirection="column"
-        gap="8px"
+        gap="0.5rem"
         alignItems="center"
-        minHeight="100vh"
         sx={{ backgroundColor: "var(--black)" }}
         p={2}
       >
         <h1 className="text-[var(--primary)] font-bold text-2xl">
-          Nova Notícia
+          Criar nova Notícia
         </h1>
         <Box
           component="form"
           onSubmit={handleSubmit}
-          sx={{ maxWidth: 600, mx: "auto", mt: 4 }}
+          sx={{ maxWidth: 1200, mx: 7, mt: 4 }}
+          className="flex flex-col gap-4 items-center"
         >
-          <InputComponent
-            label="Chapéu"
-            name="hat"
-            value={formData.hat}
-            onChange={handleChange}
-          />
-          <InputComponent
-            label="Título"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-          <InputComponent
-            label="Resumo"
-            name="summary"
-            value={formData.summary}
-            onChange={handleChange}
-            multiline
-            rows={6}
-          />
-          <InputComponent
-            label="URL da Imagem"
-            name="image"
-            value={formData.image}
-            onChange={handleChange}
-          />
-          <InputComponent
-            label="Conteúdo"
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            multiline
-            rows={5}
-            required
-          />
-          <InputComponent
-            label="Legenda"
-            name="caption"
-            value={formData.caption}
-            onChange={handleChange}
-          />
-          <Box>
-            <InputComponent
-              label="Tópicos (Separe por vírgula ou aperte enter)"
-              name="topics"
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-            />
+          <Box className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <Box>
+              <InputComponent
+                label="Título"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+              />
+              <InputComponent
+                label="Chapéu"
+                name="hat"
+                value={formData.hat}
+                onChange={handleChange}
+              />
+              <InputComponent
+                label="Resumo"
+                name="summary"
+                value={formData.summary}
+                onChange={handleChange}
+                multiline
+                rows={3}
+              />
+              <InputComponent
+                label="URL da Imagem *"
+                name="image"
+                value={formData.image}
+                onChange={handleChange}
+              />
+              <InputComponent
+                label="Legenda"
+                name="caption"
+                value={formData.caption}
+                onChange={handleChange}
+              />
 
-            <Box className="mb-4 flex gap-4">
-              {formData.topics.map((topic, index) => (
-                <Chip
-                  key={index}
-                  label={topic}
-                  onDelete={() => handleDeleteTopic(topic)}
-                  className="text-[var(--gray)]! text-sm! bg-[var(--black)]! border-2! border-[var(--input-border)]!"
-                  variant="outlined"
-                  sx={{
-                    "& .MuiChip-deleteIcon": {
-                      color: "var(--primary)",
-                      "&:hover": {
-                        color: "var(--primary-hover)",
-                      },
-                    },
-                  }}
+              <Box>
+                <InputComponent
+                  label="Tópicos (Separe por vírgula ou aperte enter)"
+                  name="topics"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 />
-              ))}
+                <Box className="mt-2 flex flex-wrap gap-2 mb-4">
+                  {formData.topics.map((topic, index) => (
+                    <Chip
+                      key={index}
+                      label={topic}
+                      onDelete={() => handleDeleteTopic(topic)}
+                      variant="outlined"
+                      className="text-[var(--gray)]! text-sm! bg-[var(--black)]! border-2! border-[var(--input-border)]!"
+                      sx={{
+                        "& .MuiChip-deleteIcon": {
+                          color: "var(--primary)",
+                          "&:hover": {
+                            color: "var(--primary-hover)",
+                          },
+                        },
+                      }}
+                    />
+                  ))}
+                </Box>
+                <Box className="flex flex-col sm:flex-row gap-4">
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.is_fixed}
+                        onChange={handleChange}
+                        name="is_fixed"
+                        sx={{
+                          "& .MuiSwitch-switchBase.Mui-checked": {
+                            color: "var(--primary)",
+                          },
+                          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                            {
+                              backgroundColor: "var(--primary)",
+                            },
+                          "& .MuiSwitch-switchBase.Mui-disabled": {
+                            color: "var(--primary)",
+                          },
+                          "& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track":
+                            {
+                              backgroundColor: "var(--primary)",
+                              opacity: 1,
+                            },
+                        }}
+                      />
+                    }
+                    label="Fixar notícia"
+                    className="text-[var(--gray)]"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.is_draft}
+                        onChange={handleChange}
+                        name="is_draft"
+                        sx={{
+                          "& .MuiSwitch-switchBase.Mui-checked": {
+                            color: "var(--primary)",
+                          },
+                          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                            {
+                              backgroundColor: "var(--primary)",
+                            },
+                          "& .MuiSwitch-switchBase.Mui-disabled": {
+                            color: "var(--primary)",
+                          },
+                          "& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track":
+                            {
+                              backgroundColor: "var(--primary)",
+                              opacity: 1,
+                            },
+                        }}
+                      />
+                    }
+                    label="Rascunho"
+                    className="text-[var(--gray)]"
+                  />
+                </Box>
+                <Checkbox
+                  label="Categorias"
+                  value={formData.categories}
+                  options={categories}
+                  onChange={(selected) =>
+                    setFormData((prev) => ({ ...prev, categories: selected }))
+                  }
+                />
+              </Box>
+            </Box>
+            <Box>
+              <InputComponent
+                label="Conteúdo"
+                name="content"
+                value={formData.content}
+                onChange={handleChange}
+                multiline
+                rows={19}
+                required
+              />
             </Box>
           </Box>
 
-          <Checkbox
-            label="Categorias"
-            value={formData.categories}
-            options={categories}
-            onChange={(selected) =>
-              setFormData((prev) => ({ ...prev, categories: selected }))
-            }
-          />
-          <Box className="flex flex-col items-start sm:flex-row gap-2">
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={formData.is_fixed}
-                  onChange={handleChange}
-                  name="is_fixed"
-                  sx={{
-                    "& .MuiSwitch-switchBase.Mui-checked": {
-                      color: "var(--primary)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                      backgroundColor: "var(--primary)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-disabled": {
-                      color: "var(--primary)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track": {
-                      backgroundColor: "var(--primary)",
-                      opacity: 1,
-                    },
-                  }}
-                />
-              }
-              label="Fixar notícia"
-              className="text-[var(--gray)]"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={formData.is_draft}
-                  onChange={handleChange}
-                  name="is_draft"
-                  sx={{
-                    "& .MuiSwitch-switchBase.Mui-checked": {
-                      color: "var(--primary)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                      backgroundColor: "var(--primary)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-disabled": {
-                      color: "var(--primary)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track": {
-                      backgroundColor: "var(--primary)",
-                      opacity: 1,
-                    },
-                  }}
-                />
-              }
-              label="Rascunho"
-              className="text-[var(--gray)]"
-            />
-          </Box>
           <ButtonComponent
-            className="mt-2!"
             type="submit"
-            label="Criar Noticia"
-            fullWidth
+            label="Criar Notícia"
+            className="w-full! xl:w-2/6!"
           />
         </Box>
       </Box>

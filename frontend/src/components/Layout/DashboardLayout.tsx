@@ -9,7 +9,6 @@ import UserMenuBoxComponent from "@/components/UserMenu/UserMenuBoxComponent";
 import UserMenuComponent from "@/components/UserMenu/UserMenuComponent";
 import SidebarComponent from "@/components/Sidebar/SidebarComponent";
 import { ReactNode } from "react";
-import { useRouter } from "next/navigation";
 
 interface DashboardLayoutProps {
   children: ReactNode;

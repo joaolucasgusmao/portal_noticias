@@ -15,7 +15,6 @@ const Checkbox: React.FC<CheckboxProps> = ({
 }) => {
   const [selected, setSelected] = useState<number[]>(value);
 
-  // Sincroniza o estado interno quando a prop `value` muda
   useEffect(() => {
     setSelected(value);
   }, [value]);
@@ -32,7 +31,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   };
 
   return (
-    <div className="mb-4">
+    <div className="mt-4">
       <label className="text-[var(--gray)] text-base block mb-2">{label}</label>
       <div className="flex flex-wrap gap-5">
         {options.map((option) => {

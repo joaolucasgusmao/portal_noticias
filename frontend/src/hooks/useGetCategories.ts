@@ -30,6 +30,7 @@ const useGetCategories = () => {
       setCategories(data);
     } catch (err) {
       setError((err as Error).message);
+      console.log(err);
     }
   };
 

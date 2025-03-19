@@ -37,9 +37,9 @@ Route::middleware(["auth.custom"])->group(function () {
 // Categories
 Route::middleware(["auth.custom"])->group(function () {
     Route::post("/categories", [CategoryController::class, "store"])->middleware("admin");
-    Route::get("/categories", [CategoryController::class, "get"])->middleware("admin");
-    Route::get("/categories/paginate", [CategoryController::class, "getCategoriesPaginate"])->middleware("admin");
-    Route::get("/categories/{id}", [CategoryController::class, "retrieve"])->middleware("admin");
+    Route::get("/categories", [CategoryController::class, "get"]);
+    Route::get("/categories/paginate", [CategoryController::class, "getCategoriesPaginate"]);
+    Route::get("/categories/{id}", [CategoryController::class, "retrieve"]);
     Route::patch("/categories/{id}", [CategoryController::class, "update"])->middleware("admin");
     Route::delete("/categories/{id}", [CategoryController::class, "destroy"])->middleware("admin");
 });

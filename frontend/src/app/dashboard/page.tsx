@@ -4,18 +4,12 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/auth";
 import PropagateLoader from "react-spinners/PropagateLoader";
-import {
-  DashboardLayoutProvider,
-  useDashboardLayout,
-} from "@/context/DashboardLayoutContext";
+import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
 import DashboardLayout from "@/components/Layout/DashboardLayout";
-import { useMediaQuery, useTheme } from "@mui/material";
 
 const DashboardPage: React.FC = () => {
   const isAuthenticated = auth();
   const router = useRouter();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (isAuthenticated === false) {
