@@ -1,26 +1,49 @@
 import useGetCategories from "@/hooks/useGetCategories";
 import { useState } from "react";
 import InputComponent from "./commons/InputComponent";
-import { Box, FormControlLabel, Switch } from "@mui/material";
+import { Box, Chip, FormControlLabel, Switch } from "@mui/material";
 import ButtonComponent from "./commons/ButtonComponent";
-import SelectComponent from "./commons/SelectComponent";
-import HeaderComponent from "./HeaderComponent";
+import Checkbox from "./commons/CheckboxComponent";
+import { toast } from "react-toastify";
 
 const CreateNewsComponentForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<INews>({
     hat: "",
     title: "",
     summary: "",
     image: "",
     content: "",
     caption: "",
-    topics: "",
-    is_fixed: false,
+    topics: [],
+    categories: [],
     is_draft: false,
-    is_active: true,
-    user_id: "",
-    categories: [] as number[],
+    is_fixed: false,
   });
+  const [inputValue, setInputValue] = useState<string>("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "," || event.key === "Enter") {
+      event.preventDefault();
+      if (inputValue.trim() !== "") {
+        setFormData((prev) => ({
+          ...prev,
+          topics: [...prev.topics, inputValue.trim()],
+        }));
+        setInputValue("");
+      }
+    }
+  };
+
+  const handleDeleteTopic = (topicToDelete: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      topics: prev.topics.filter((topic) => topic !== topicToDelete),
+    }));
+  };
 
   const { categories } = useGetCategories();
 
@@ -34,30 +57,64 @@ const CreateNewsComponentForm: React.FC = () => {
 
     setFormData((prev) => ({
       ...prev,
-      [name as string]:
-        type === "checkbox"
-          ? (event.target as HTMLInputElement).checked
-          : value,
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(formData);
+
+    try {
+      const res = await fetch("/api/news/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Erro ao criar a notícia");
+      }
+
+      toast.success("Notícia criada com sucesso!");
+
+      setFormData({
+        hat: "",
+        title: "",
+        summary: "",
+        image: "",
+        content: "",
+        caption: "",
+        topics: [],
+        categories: [],
+        is_draft: false,
+        is_fixed: false,
+      });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Erro ao criar notícia!"
+      );
+    }
   };
+
   return (
     <>
-      <HeaderComponent>
-
-      </HeaderComponent>
       <Box
         display="flex"
         justifyContent="center"
+        flexDirection="column"
+        gap="8px"
         alignItems="center"
         minHeight="100vh"
         sx={{ backgroundColor: "var(--black)" }}
         p={2}
       >
+        <h1 className="text-[var(--primary)] font-bold text-2xl">
+          Nova Notícia
+        </h1>
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -65,7 +122,7 @@ const CreateNewsComponentForm: React.FC = () => {
         >
           <InputComponent
             label="Chapéu"
-            name="Chapéu"
+            name="hat"
             value={formData.hat}
             onChange={handleChange}
           />
@@ -105,14 +162,37 @@ const CreateNewsComponentForm: React.FC = () => {
             value={formData.caption}
             onChange={handleChange}
           />
-          <InputComponent
-            label="Tópicos (separados por vírgula)"
-            name="topics"
-            value={formData.topics}
-            onChange={handleChange}
-          />
+          <Box>
+            <InputComponent
+              label="Tópicos (Separe por vírgula ou aperte enter)"
+              name="topics"
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+            />
 
-          <SelectComponent
+            <Box className="mb-4 flex gap-4">
+              {formData.topics.map((topic, index) => (
+                <Chip
+                  key={index}
+                  label={topic}
+                  onDelete={() => handleDeleteTopic(topic)}
+                  className="text-[var(--gray)]! text-sm! bg-[var(--black)]! border-2! border-[var(--input-border)]!"
+                  variant="outlined"
+                  sx={{
+                    "& .MuiChip-deleteIcon": {
+                      color: "var(--primary)",
+                      "&:hover": {
+                        color: "var(--primary-hover)",
+                      },
+                    },
+                  }}
+                />
+              ))}
+            </Box>
+          </Box>
+
+          <Checkbox
             label="Categorias"
             value={formData.categories}
             options={categories}
@@ -171,32 +251,6 @@ const CreateNewsComponentForm: React.FC = () => {
                 />
               }
               label="Rascunho"
-              className="text-[var(--gray)]"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={formData.is_active}
-                  onChange={handleChange}
-                  name="is_active"
-                  sx={{
-                    "& .MuiSwitch-switchBase.Mui-checked": {
-                      color: "var(--primary)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                      backgroundColor: "var(--primary)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-disabled": {
-                      color: "var(--primary!)",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track": {
-                      backgroundColor: "var(--primary!)",
-                      opacity: 1,
-                    },
-                  }}
-                />
-              }
-              label="Ativo"
               className="text-[var(--gray)]"
             />
           </Box>

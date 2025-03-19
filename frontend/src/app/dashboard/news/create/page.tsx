@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
 import DashboardLayout from "@/components/Layout/DashboardLayout";
+import { ToastContainer } from "react-toastify";
 
 const NewsForm: React.FC = () => {
   const isAuthenticated = auth();
@@ -27,10 +28,9 @@ const NewsForm: React.FC = () => {
   }
   return (
     <DashboardLayoutProvider>
-      <DashboardLayout>
-        <p className="text-[var(--primary)] font-bold text-2xl ml-8">
-          <CreateNewsComponentForm />
-        </p>
+      <DashboardLayout useSidebar={false}>
+        <ToastContainer position="top-right" autoClose={1000} theme="dark" />
+        <CreateNewsComponentForm />
       </DashboardLayout>
     </DashboardLayoutProvider>
   );

@@ -13,9 +13,13 @@ import { useRouter } from "next/navigation";
 
 interface DashboardLayoutProps {
   children: ReactNode;
+  useSidebar?: boolean;
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({
+  children,
+  useSidebar,
+}) => {
   const { user } = useUser();
   const {
     open,
@@ -75,10 +79,21 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       />
 
       <main
-        className="min-h-screen w-full flex justify-center items-center bg-[var(--black)] pt-20 transition-all duration-300"
+        className={`min-h-screen w-full flex transition-all duration-300 pt-20 bg-[var(--black)] 
+    ${
+      useSidebar ? "justify-start items-start" : "justify-center items-center"
+    }`}
         style={{
-          marginLeft: isMobile ? "0" : open ? "250px" : "60px",
-          width: `calc(100% - ${isMobile ? "0px" : open ? "250px" : "60px"})`,
+          marginLeft: useSidebar
+            ? isMobile
+              ? "0"
+              : open
+              ? "250px"
+              : "60px"
+            : "0", // ✅ Aplica somente se useSidebar for true
+          width: useSidebar
+            ? `calc(100% - ${isMobile ? "0px" : open ? "250px" : "60px"})`
+            : "100%", // ✅ Em outras páginas, mantém largura total
         }}
       >
         {children}
