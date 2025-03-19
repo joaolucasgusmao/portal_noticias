@@ -265,7 +265,7 @@ const CreateNewsComponentForm: React.FC = () => {
 
           <ButtonComponent
             type="submit"
-            label="Criar Notícia"
+            label="Publicar"
             className="w-full! xl:w-2/6!"
           />
         </Box>
