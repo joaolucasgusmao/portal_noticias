@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "@/lib/auth";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
-import DashboardLayout from "@/components/Layout/DashboardLayout";
+import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
 
 const DashboardPage: React.FC = () => {
   const isAuthenticated = auth();

@@ -39,7 +39,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
           return (
             <label
               key={option.id}
-              className="flex items-center hover:scale-105 gap-2 p-2 text-base rounded-md cursor-pointer transition-all duration-300 bg-[var(--black-3)] text-[var(--gray)]"
+              className="flex items-center hover:scale-105 gap-2 p-2 text-base rounded-md transition-all duration-300 bg-[var(--black-3)] text-[var(--gray)]"
             >
               <input
                 type="checkbox"

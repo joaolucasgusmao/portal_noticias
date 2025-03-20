@@ -3,11 +3,11 @@
 import { useDashboardLayout } from "@/context/DashboardLayoutContext";
 import { useUser } from "@/context/UserContext";
 import { useMediaQuery, useTheme, Box } from "@mui/material";
-import HeaderComponent from "@/components/HeaderComponent";
-import SidebarIconComponent from "@/components/Sidebar/SidebarIconComponent";
-import UserMenuBoxComponent from "@/components/UserMenu/UserMenuBoxComponent";
-import UserMenuComponent from "@/components/UserMenu/UserMenuComponent";
-import SidebarComponent from "@/components/Sidebar/SidebarComponent";
+import HeaderComponent from "@/components/Dashboard/HeaderComponent";
+import SidebarIconComponent from "@/components/Dashboard/Sidebar/SidebarIconComponent";
+import UserMenuBoxComponent from "@/components/Dashboard/UserMenu/UserMenuBoxComponent";
+import UserMenuComponent from "@/components/Dashboard/UserMenu/UserMenuComponent";
+import SidebarComponent from "@/components/Dashboard/Sidebar/SidebarComponent";
 import { ReactNode } from "react";
 
 interface DashboardLayoutProps {

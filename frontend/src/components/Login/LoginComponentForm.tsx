@@ -1,8 +1,8 @@
 import React from "react";
 import { Box } from "@mui/material";
-import ButtonComponent from "./commons/ButtonComponent";
-import EyeIconComponent from "./commons/EyeIconComponent";
-import InputComponent from "./commons/InputComponent";
+import ButtonComponent from "../Dashboard/commons/ButtonComponent";
+import EyeIconComponent from "../Dashboard/commons/EyeIconComponent";
+import InputComponent from "../Dashboard/commons/InputComponent";
 
 interface LoginFormComponentProps {
   email: string;

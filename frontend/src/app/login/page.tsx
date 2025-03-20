@@ -5,7 +5,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useLogin from "@/hooks/useLogin";
-import LoginFormComponent from "@/components/LoginComponentForm";
+import LoginFormComponent from "@/components/Login/LoginComponentForm";
 
 const LoginPage: React.FC = () => {
   const {

@@ -1,9 +1,9 @@
 import useGetCategories from "@/hooks/useGetCategories";
 import { useState } from "react";
-import InputComponent from "./commons/InputComponent";
+import InputComponent from "../commons/InputComponent";
 import { Box, Chip, FormControlLabel, Switch } from "@mui/material";
-import ButtonComponent from "./commons/ButtonComponent";
-import Checkbox from "./commons/CheckboxComponent";
+import ButtonComponent from "../commons/ButtonComponent";
+import Checkbox from "../commons/CheckboxComponent";
 import { toast } from "react-toastify";
 
 const CreateNewsComponentForm: React.FC = () => {
@@ -63,6 +63,7 @@ const CreateNewsComponentForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    console.log(formData);
 
     try {
       const res = await fetch("/api/news/create", {
@@ -143,7 +144,7 @@ const CreateNewsComponentForm: React.FC = () => {
                 rows={3}
               />
               <InputComponent
-                label="URL da Imagem *"
+                label="Link da Imagem *"
                 name="image"
                 value={formData.image}
                 onChange={handleChange}
@@ -252,7 +253,7 @@ const CreateNewsComponentForm: React.FC = () => {
             </Box>
             <Box>
               <InputComponent
-                label="Conteúdo"
+                label="Escreva seu Conteúdo aqui"
                 name="content"
                 value={formData.content}
                 onChange={handleChange}

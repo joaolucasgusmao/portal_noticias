@@ -1,12 +1,12 @@
 "use client";
 
-import CreateNewsComponentForm from "@/components/CreateNewsComponentForm";
+import CreateNewsComponentForm from "@/components/Dashboard/Forms/CreateNewsComponentForm";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/auth";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
-import DashboardLayout from "@/components/Layout/DashboardLayout";
+import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
 import { ToastContainer } from "react-toastify";
 
 const NewsForm: React.FC = () => {
