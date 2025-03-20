@@ -3,15 +3,16 @@
 namespace App\Services;
 
 use App\Exceptions\AppError;
+use App\Http\Resources\NewsResource;
 use App\Models\News;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class NewsService
 {
 
-    public function store(array $data, Request $request): News
+    public function store(array $data, Request $request): JsonResource
     {
         $user = $request->user();
 
@@ -21,27 +22,29 @@ class NewsService
         $news = $user->news()->create($data);
 
         $news->categories()->sync($categories);
+        $news->load('user');
 
-        return $news;
+        return new NewsResource($news);
     }
 
-    public function get(): Collection
+    public function get(): AnonymousResourceCollection
     {
-        return News::oldest("id")->get();
+        $news = News::with('categories', 'user')->oldest("id")->get();
+        return NewsResource::collection($news);
     }
 
-    public function retrieve(int $id): News
+    public function retrieve(int $id): JsonResource
     {
-        $news = News::find($id);
+        $news = News::with('categories', 'user')->find($id);
 
         if (!$news) {
             throw new AppError("News not found.", 404);
         }
 
-        return $news;
+        return new NewsResource($news);
     }
 
-    public function update(int $id, array $data): News
+    public function update(int $id, array $data): JsonResource
     {
         $news = News::find($id);
 
@@ -56,7 +59,10 @@ class NewsService
         }
 
         $news->update($data);
-        return $news;
+
+        $news->load('user', 'categories');
+
+        return new NewsResource($news);
     }
 
     public function destroy(int $id): void
@@ -70,9 +76,9 @@ class NewsService
         $news->delete();
     }
 
-    public function getNewsByCategory(int $id): Collection
+    public function getNewsByCategory(int $id): AnonymousResourceCollection
     {
-        $news = News::whereHas('categories', function ($query) use ($id) {
+        $news = News::with('categories', 'user')->whereHas('categories', function ($query) use ($id) {
             $query->where('category_id', $id);
         })->get();
 
@@ -80,36 +86,40 @@ class NewsService
             throw new AppError("News not found.", 404);
         }
 
-        return $news;
+        return NewsResource::collection($news);
     }
 
-    public function getNewsByUser(Request $request, int $userId): Collection
+    public function getNewsByUser(Request $request, int $userId): AnonymousResourceCollection
     {
         $user = $request->user();
 
         if ($user->is_admin) {
-            $news = News::where('user_id', $userId)->get();
+            $news = News::with('categories', 'user')->where('user_id', $userId)->get();
 
             if ($news->isEmpty()) {
                 throw new AppError("News not found.", 404);
             }
 
-            return $news;
+            return NewsResource::collection($news);
         }
 
         if ($user->id !== $userId) {
             throw new AppError("Unauthorized", 401);
         }
 
-        if ($user->news->isEmpty()) {
+        $news = $user->news()->with('categories', 'user')->get();
+
+        if ($news->isEmpty()) {
             throw new AppError("News not found.", 404);
         }
 
-        return $user->news;
+        return NewsResource::collection($news);
     }
 
-    public function getNewsPaginate(): LengthAwarePaginator
+
+    public function getNewsPaginate(): AnonymousResourceCollection
     {
-        return News::paginate(10);
+        $news = News::with('categories', 'user')->paginate(10);
+        return NewsResource::collection($news);
     }
 }

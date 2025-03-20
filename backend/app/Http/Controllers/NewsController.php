@@ -6,6 +6,7 @@ use App\Http\Requests\NewsRequest;
 use App\Http\Requests\UserRequest;
 use App\Services\NewsService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class NewsController extends Controller
@@ -52,8 +53,8 @@ class NewsController extends Controller
         return response()->json($this->newsService->getNewsByUser($request, $userId), 200);
     }
 
-    public function getNewsPaginate(): JsonResponse
+    public function getNewsPaginate(): AnonymousResourceCollection
     {
-        return response()->json($this->newsService->getNewsPaginate(), 200);
+        return $this->newsService->getNewsPaginate();
     }
 }

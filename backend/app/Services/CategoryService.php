@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Exceptions\AppError;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryService
@@ -18,12 +21,12 @@ class CategoryService
         return Category::create($data);
     }
 
-    public function get(): Collection
+    public function get(): AnonymousResourceCollection
     {
-        return Category::oldest("id")->get();
+        return CategoryResource::collection(Category::oldest("id")->get());
     }
 
-    public function retrieve(int $id): Category
+    public function retrieve(int $id): JsonResource
     {
         $category = Category::find($id);
 
@@ -31,10 +34,10 @@ class CategoryService
             throw new AppError("Category not found.", 404);
         }
 
-        return $category;
+        return new CategoryResource($category);
     }
 
-    public function update(array $data, int $id): Category
+    public function update(array $data, int $id): JsonResource
     {
         $category = Category::find($id);
 
@@ -44,7 +47,7 @@ class CategoryService
 
         $category->update($data);
 
-        return $category;
+        return new CategoryResource($category);
     }
 
     public function destroy(int $id): void
@@ -58,8 +61,10 @@ class CategoryService
         $category->delete();
     }
 
-    public function getCategoriesPaginate(): LengthAwarePaginator
+
+    public function getCategoriesPaginate(): AnonymousResourceCollection
     {
-        return Category::paginate(10);
+        $categories = Category::paginate(10);
+        return CategoryResource::collection($categories);
     }
 }

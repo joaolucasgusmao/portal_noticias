@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class CategoryController extends Controller
@@ -41,8 +44,8 @@ class CategoryController extends Controller
         return response($this->categoryService->destroy($id), 204);
     }
 
-    public function getCategoriesPaginate(): JsonResponse
+    public function getCategoriesPaginate(): AnonymousResourceCollection
     {
-        return response()->json($this->categoryService->getCategoriesPaginate(), 200);
+        return $this->categoryService->getCategoriesPaginate();
     }
 }

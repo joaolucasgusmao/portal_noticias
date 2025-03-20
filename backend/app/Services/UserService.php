@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\AppError;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -71,7 +72,7 @@ class UserService
 
         return [
             "access_token" => $token,
-            "user" => $user
+            "user" => new UserResource($user)
         ];
     }
 

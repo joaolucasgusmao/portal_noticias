@@ -5,6 +5,7 @@ import { Box, Chip, FormControlLabel, Switch } from "@mui/material";
 import ButtonComponent from "../commons/ButtonComponent";
 import Checkbox from "../commons/CheckboxComponent";
 import { toast } from "react-toastify";
+import { INews } from "@/@types/news";
 
 const CreateNewsComponentForm: React.FC = () => {
   const [formData, setFormData] = useState<INews>({
@@ -31,7 +32,7 @@ const CreateNewsComponentForm: React.FC = () => {
       if (inputValue.trim() !== "") {
         setFormData((prev) => ({
           ...prev,
-          topics: [...prev.topics, inputValue.trim()],
+          topics: [...(prev.topics || []), inputValue.trim()],
         }));
         setInputValue("");
       }
@@ -41,11 +42,13 @@ const CreateNewsComponentForm: React.FC = () => {
   const handleDeleteTopic = (topicToDelete: string) => {
     setFormData((prev) => ({
       ...prev,
-      topics: prev.topics.filter((topic) => topic !== topicToDelete),
+      topics: prev.topics?.filter((topic) => topic !== topicToDelete),
     }));
   };
 
   const { categories } = useGetCategories();
+
+  console.log(categories);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
@@ -107,11 +110,10 @@ const CreateNewsComponentForm: React.FC = () => {
         display="flex"
         flexDirection="column"
         gap="0.5rem"
-        alignItems="center"
         sx={{ backgroundColor: "var(--black)" }}
         p={2}
       >
-        <h1 className="text-[var(--primary)] font-bold text-2xl">
+        <h1 className="text-[var(--primary)] font-bold text-2xl ml-14">
           Criar nova Notícia
         </h1>
         <Box
@@ -165,7 +167,7 @@ const CreateNewsComponentForm: React.FC = () => {
                   onKeyDown={handleKeyDown}
                 />
                 <Box className="mt-2 flex flex-wrap gap-2 mb-4">
-                  {formData.topics.map((topic, index) => (
+                  {formData.topics?.map((topic, index) => (
                     <Chip
                       key={index}
                       label={topic}
@@ -266,7 +268,7 @@ const CreateNewsComponentForm: React.FC = () => {
 
           <ButtonComponent
             type="submit"
-            label="Publicar"
+            label={formData.is_draft ? "Rascunho" : "Publicar"}
             className="w-full! xl:w-2/6!"
           />
         </Box>
