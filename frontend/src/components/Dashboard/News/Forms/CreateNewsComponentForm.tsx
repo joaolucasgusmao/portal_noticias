@@ -1,9 +1,9 @@
 import useGetCategories from "@/hooks/useGetCategories";
 import { useState } from "react";
-import InputComponent from "../commons/InputComponent";
+import InputComponent from "../../commons/InputComponent";
 import { Box, Chip, FormControlLabel, Switch } from "@mui/material";
-import ButtonComponent from "../commons/ButtonComponent";
-import Checkbox from "../commons/CheckboxComponent";
+import ButtonComponent from "../../commons/ButtonComponent";
+import Checkbox from "../../commons/CheckboxComponent";
 import { toast } from "react-toastify";
 import { INews } from "@/@types/news";
 
@@ -48,8 +48,6 @@ const CreateNewsComponentForm: React.FC = () => {
 
   const { categories } = useGetCategories();
 
-  console.log(categories);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
 
@@ -66,7 +64,6 @@ const CreateNewsComponentForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(formData);
 
     try {
       const res = await fetch("/api/news/create", {
@@ -119,7 +116,14 @@ const CreateNewsComponentForm: React.FC = () => {
         <Box
           component="form"
           onSubmit={handleSubmit}
-          sx={{ maxWidth: 1200, mx: 7, mt: 4 }}
+          sx={{
+            maxWidth: 1200,
+            mx: 7,
+            mt: 4,
+            "@media (max-width: 600px)": {
+              mx: 0,
+            },
+          }}
           className="flex flex-col gap-4 items-center"
         >
           <Box className="grid grid-cols-1 xl:grid-cols-2 gap-4">

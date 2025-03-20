@@ -1,4 +1,5 @@
 import { ICategory } from "./category";
+import { IUser } from "./user";
 
 export interface INews {
   hat?: string;
@@ -15,18 +16,17 @@ export interface INews {
 
 export interface INewsReturn {
   id: number;
-  hat?: string | null;
   title: string;
-  summary?: string | null;
+  hat?: string;
+  summary?: string;
   image: string;
-  content: string;
-  caption?: string | null;
+  caption?: string;
   topics?: string[];
+  content: string;
   is_fixed: boolean;
   is_draft: boolean;
-  user_id: number;
   is_active: boolean;
-  created_at: string;
-  updated_at: string;
   categories: ICategory[];
+  user: IUser;
+  created_at: string;
 }

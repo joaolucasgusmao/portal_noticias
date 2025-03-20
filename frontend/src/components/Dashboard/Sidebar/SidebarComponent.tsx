@@ -156,6 +156,7 @@ const SidebarComponent = ({
         <List component="div" disablePadding>
           <ListItem
             component="button"
+            onClick={() => router.push("/dashboard/news")}
             sx={{
               color: "var(--primary)",
               cursor: "pointer",

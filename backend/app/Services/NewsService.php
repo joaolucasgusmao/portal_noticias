@@ -16,13 +16,16 @@ class NewsService
     {
         $user = $request->user();
 
-        $categories = $data['categories'];
+        if (!empty($data['is_draft']) && $data['is_draft'] === true) {
+            $data['is_active'] = false;
+        }
+
+        $categories = $data['categories'] ?? [];
         unset($data['categories']);
 
         $news = $user->news()->create($data);
-
         $news->categories()->sync($categories);
-        $news->load('user');
+        $news->load('user', 'categories');
 
         return new NewsResource($news);
     }

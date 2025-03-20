@@ -89,10 +89,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               : open
               ? "250px"
               : "60px"
-            : "0", // ✅ Aplica somente se useSidebar for true
+            : "0",
           width: useSidebar
             ? `calc(100% - ${isMobile ? "0px" : open ? "250px" : "60px"})`
-            : "100%", // ✅ Em outras páginas, mantém largura total
+            : "100%",
         }}
       >
         {children}

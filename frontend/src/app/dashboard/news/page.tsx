@@ -1,15 +1,14 @@
 "use client";
 
-import CreateNewsComponentForm from "@/components/Dashboard/News/Forms/CreateNewsComponentForm";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
 import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
-import { ToastContainer } from "react-toastify";
+import ListNewsComponent from "@/components/Dashboard/News/ListNewsComponent";
 
-const CreateNewsPage: React.FC = () => {
+const NewsListPage: React.FC = () => {
   const isAuthenticated = useAuth();
   const router = useRouter();
 
@@ -29,11 +28,10 @@ const CreateNewsPage: React.FC = () => {
   return (
     <DashboardLayoutProvider>
       <DashboardLayout useSidebar={false}>
-        <ToastContainer position="top-right" autoClose={1000} theme="dark" />
-        <CreateNewsComponentForm />
+        <ListNewsComponent />
       </DashboardLayout>
     </DashboardLayoutProvider>
   );
 };
 
-export default CreateNewsPage;
+export default NewsListPage;

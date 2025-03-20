@@ -4,19 +4,16 @@ import useAuthToken from "@/hooks/useAuthToken";
 import { INews } from "@/@types/news";
 
 const useGetNews = () => {
-  const { token, loading } = useAuthToken();
+  const { loading } = useAuthToken();
   const [news, setNews] = useState<INews[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const handleGetNews = async () => {
-    if (!token) return;
-
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -36,7 +33,7 @@ const useGetNews = () => {
     if (!loading) {
       handleGetNews();
     }
-  }, [loading, token]);
+  }, [loading]);
 
   return { news, error, refetch: handleGetNews };
 };
