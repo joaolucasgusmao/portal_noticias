@@ -31,7 +31,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   };
 
   return (
-    <div className="mt-4">
+    <>
       <label className="text-[var(--gray)] text-base block mb-2">{label}</label>
       <div className="flex flex-wrap gap-5">
         {options.map((option) => {
@@ -52,7 +52,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 

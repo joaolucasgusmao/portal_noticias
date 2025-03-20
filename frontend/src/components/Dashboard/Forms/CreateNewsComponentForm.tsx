@@ -241,14 +241,6 @@ const CreateNewsComponentForm: React.FC = () => {
                     className="text-[var(--gray)]"
                   />
                 </Box>
-                <Checkbox
-                  label="Categorias"
-                  value={formData.categories}
-                  options={categories}
-                  onChange={(selected) =>
-                    setFormData((prev) => ({ ...prev, categories: selected }))
-                  }
-                />
               </Box>
             </Box>
             <Box>
@@ -258,8 +250,16 @@ const CreateNewsComponentForm: React.FC = () => {
                 value={formData.content}
                 onChange={handleChange}
                 multiline
-                rows={19}
+                rows={12.5}
                 required
+              />
+              <Checkbox
+                label="Categorias"
+                value={formData.categories}
+                options={categories}
+                onChange={(selected) =>
+                  setFormData((prev) => ({ ...prev, categories: selected }))
+                }
               />
             </Box>
           </Box>
