@@ -1,37 +1,27 @@
-"use client";
+import { INewsReturn } from "@/@types/news";
+import NewsListClient from "./NewsListClient";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
-import PropagateLoader from "react-spinners/PropagateLoader";
-import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
-import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
-import ListNewsComponent from "@/components/Dashboard/News/ListNewsComponent";
+const fetchNews = async (): Promise<INewsReturn[]> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news`, {
+      cache: "no-store",
+    });
 
-const NewsListPage: React.FC = () => {
-  const isAuthenticated = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      router.push("/login");
+    if (!response.ok) {
+      throw new Error("Erro ao buscar notícias");
     }
-  }, [isAuthenticated, router]);
 
-  if (isAuthenticated === null || isAuthenticated === false) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--black)]">
-        <PropagateLoader color="var(--primary)" />
-      </div>
-    );
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao buscar notícias:", error);
+    return [];
   }
-  return (
-    <DashboardLayoutProvider>
-      <DashboardLayout useSidebar={false}>
-        <ListNewsComponent />
-      </DashboardLayout>
-    </DashboardLayoutProvider>
-  );
+};
+
+const NewsListPage = async () => {
+  const news = await fetchNews(); 
+
+  return <NewsListClient news={news} />; 
 };
 
 export default NewsListPage;

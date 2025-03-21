@@ -5,7 +5,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 interface UserContextType {
   user: IUser | null;
-  setUser: (user: IUser | null) => void;
+  setUser: (user: IUser) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

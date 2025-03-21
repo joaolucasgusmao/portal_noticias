@@ -3,12 +3,15 @@ import { ICategory } from "@/@types/category";
 import useAuthToken from "@/hooks/useAuthToken";
 
 const useGetCategories = () => {
-  const { token, loading } = useAuthToken();
+  const { token, loading: authLoading } = useAuthToken();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleGetCategories = async () => {
     if (!token) return;
+
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -31,16 +34,18 @@ const useGetCategories = () => {
     } catch (err) {
       setError((err as Error).message);
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!loading) {
+    if (!authLoading && token) {
       handleGetCategories();
     }
-  }, [loading, token]);
+  }, [authLoading, token]);
 
-  return { categories, error, refetch: handleGetCategories };
+  return { categories, loading, error, refetch: handleGetCategories };
 };
 
 export default useGetCategories;

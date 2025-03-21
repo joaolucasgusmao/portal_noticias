@@ -1,11 +1,12 @@
 import useGetCategories from "@/hooks/useGetCategories";
 import { useState } from "react";
 import InputComponent from "../../commons/InputComponent";
-import { Box, Chip, FormControlLabel, Switch } from "@mui/material";
+import { Box, Chip, FormControlLabel, Switch, Typography } from "@mui/material";
 import ButtonComponent from "../../commons/ButtonComponent";
 import Checkbox from "../../commons/CheckboxComponent";
 import { toast } from "react-toastify";
 import { INews } from "@/@types/news";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const CreateNewsComponentForm: React.FC = () => {
   const [formData, setFormData] = useState<INews>({
@@ -46,7 +47,7 @@ const CreateNewsComponentForm: React.FC = () => {
     }));
   };
 
-  const { categories } = useGetCategories();
+  const { categories, loading, error } = useGetCategories();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
@@ -110,9 +111,16 @@ const CreateNewsComponentForm: React.FC = () => {
         sx={{ backgroundColor: "var(--black)" }}
         p={2}
       >
-        <h1 className="text-[var(--primary)] font-bold text-2xl ml-14">
+        <Typography
+          className="text-[var(--primary)] font-bold! text-xl!"
+          sx={{
+            "@media (min-width: 600px)": {
+              ml: 7,
+            },
+          }}
+        >
           Criar nova Notícia
-        </h1>
+        </Typography>
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -256,17 +264,23 @@ const CreateNewsComponentForm: React.FC = () => {
                 value={formData.content}
                 onChange={handleChange}
                 multiline
-                rows={12.5}
+                rows={12.4}
                 required
               />
-              <Checkbox
-                label="Categorias"
-                value={formData.categories}
-                options={categories}
-                onChange={(selected) =>
-                  setFormData((prev) => ({ ...prev, categories: selected }))
-                }
-              />
+              {loading ? (
+                <div className="mt-4 mb-5! sm:mt-10 sm:mb-0 flex justify-center items-center">
+                  <ClipLoader color="var(--primary)" size={40} />
+                </div>
+              ) : (
+                <Checkbox
+                  label="Categorias"
+                  value={formData.categories}
+                  options={categories}
+                  onChange={(selected) =>
+                    setFormData((prev) => ({ ...prev, categories: selected }))
+                  }
+                />
+              )}
             </Box>
           </Box>
 
