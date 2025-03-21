@@ -31,7 +31,8 @@ class NewsResource extends JsonResource
                 'name' => $category->name,
             ]),
             'user' => new UserResource($this->whenLoaded('user')),
-            'created_at' => $this->created_at->format('d/m/Y H:i'),
+            'created_at' => $this->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i'),
+
         ];
     }
 }

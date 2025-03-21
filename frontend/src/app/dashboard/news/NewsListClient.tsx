@@ -14,6 +14,8 @@ interface NewsListClientProps {
 }
 
 const NewsListClient = ({ news }: NewsListClientProps) => {
+
+  
   const isAuthenticated = useAuth();
   const router = useRouter();
 

@@ -32,7 +32,11 @@ class NewsService
 
     public function get(): AnonymousResourceCollection
     {
-        $news = News::with('categories', 'user')->oldest("id")->get();
+        $news = News::with(['categories', 'user'])
+            ->orderByDesc('is_fixed')
+            ->orderByDesc('is_draft')
+            ->orderByDesc('id')
+            ->paginate(10);
         return NewsResource::collection($news);
     }
 
@@ -122,7 +126,11 @@ class NewsService
 
     public function getNewsPaginate(): AnonymousResourceCollection
     {
-        $news = News::with('categories', 'user')->paginate(10);
+        $news = News::with(['categories', 'user'])
+            ->orderByDesc('is_fixed')
+            ->orderByDesc('is_draft')
+            ->orderByDesc('id')
+            ->paginate(10);
         return NewsResource::collection($news);
     }
 }

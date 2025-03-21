@@ -17,7 +17,8 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'created_at' => $this->created_at->format('d/m/Y H:i'),
+            'created_at' => $this->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i'),
+
         ];
     }
 }

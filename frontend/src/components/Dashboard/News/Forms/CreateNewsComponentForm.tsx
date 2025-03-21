@@ -1,5 +1,5 @@
 import useGetCategories from "@/hooks/useGetCategories";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputComponent from "../../commons/InputComponent";
 import { Box, Chip, FormControlLabel, Switch, Typography } from "@mui/material";
 import ButtonComponent from "../../commons/ButtonComponent";
@@ -22,6 +22,16 @@ const CreateNewsComponentForm: React.FC = () => {
     is_fixed: false,
   });
   const [inputValue, setInputValue] = useState<string>("");
+  const [showNoCategoriesMessage, setShowNoCategoriesMessage] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNoCategoriesMessage(true);
+    }, 1000); // Aguarda 1 segundo antes de exibir a mensagem
+
+    return () => clearTimeout(timer); // Limpa o timeout se o componente for desmontado
+  }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -271,7 +281,7 @@ const CreateNewsComponentForm: React.FC = () => {
                 <div className="mt-4 mb-5! sm:mt-10 sm:mb-0 flex justify-center items-center">
                   <ClipLoader color="var(--primary)" size={40} />
                 </div>
-              ) : (
+              ) : categories.length > 0 ? (
                 <Checkbox
                   label="Categorias"
                   value={formData.categories}
@@ -280,7 +290,13 @@ const CreateNewsComponentForm: React.FC = () => {
                     setFormData((prev) => ({ ...prev, categories: selected }))
                   }
                 />
-              )}
+              ) : showNoCategoriesMessage ? (
+                <div className="mt-4 mb-5! sm:mt-10 sm:mb-0 flex justify-center items-center">
+                  <p className="text-xl font-bold text-[var(--primary)]">
+                    Nenhuma Categoria cadastrada!
+                  </p>
+                </div>
+              ) : null}
             </Box>
           </Box>
 
