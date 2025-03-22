@@ -22,7 +22,7 @@ const ListNewsComponent = ({ news }: ListNewsComponentProps) => {
         </Link>
       </div>
       <div className="w-full border border-[var(--input-border)]">
-        <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 p-2 bg-[var(--black-2)] text-[var(--primary)] font-bold border-b border-[var(--input-border)]">
+        <div className="grid grid-cols-1 sm:grid-cols-5  p-2 bg-[var(--black-2)] text-[var(--primary)] font-bold border-b border-[var(--input-border)]">
           <h1 className="w-fit text-base text-center sm:text-left">Título</h1>
           <h1 className="w-fit text-base hidden xl:block ml-16 text-left">
             Status
@@ -41,9 +41,9 @@ const ListNewsComponent = ({ news }: ListNewsComponentProps) => {
           {news.map((newItem) => (
             <li
               key={newItem.id}
-              className="grid h-24 p-4 grid-cols-1 xl:grid-cols-5 xl:h-36! 2xl:h-28! xl:pb-6 gap-4 border-t border-[var(--input-border)] items-center first:border-t-0"
+              className="grid h-24 p-4 grid-cols-2 xl:grid-cols-5 xl:h-36! 2xl:h-28! xl:pb-6 gap-4 border-t border-[var(--input-border)] items-center first:border-t-0"
             >
-              <h2 className="text-left text-[var(--gray)] text-base font-semibold h-fit">
+              <h2 className="text-left text-xs w-full text-[var(--gray)] sm:text-base font-semibold h-fit">
                 {newItem.title.length > 80
                   ? newItem.title.slice(0, 80) + "..."
                   : newItem.title}
@@ -69,23 +69,25 @@ const ListNewsComponent = ({ news }: ListNewsComponentProps) => {
                 {newItem.categories.map((category) => category.name).join(", ")}
               </h2>
 
-              <div className="flex items-center gap-10">
-                <h2 className="text-[var(--gray)] text-sm font-semibold hidden xl:block text-left">
+              <div className="flex w-full h-fit justify-center items-center gap-4 xl:gap-20">
+                <h2 className="text-[var(--gray)] xl:text-base font-semibold hidden xl:block w-full whitespace-nowrap">
                   {newItem.created_at}
                 </h2>
-                <MoreVertRoundedIcon
-                  sx={{
-                    fontSize: "1.5rem",
-                    color: "var(--gray)",
-                    cursor: "pointer",
-                    transition:
-                      "transform 0.3s ease-in-out, color 0.3s ease-in-out",
-                    "&:hover": {
-                      color: "var(--primary)",
-                      transform: "scale(1.05)",
-                    },
-                  }}
-                />
+                <div className="flex w-full justify-end xl:justify-normal">
+                  <MoreVertRoundedIcon
+                    sx={{
+                      fontSize: "1.5rem",
+                      color: "var(--gray)",
+                      cursor: "pointer",
+                      transition:
+                        "transform 0.3s ease-in-out, color 0.3s ease-in-out",
+                      "&:hover": {
+                        color: "var(--primary)",
+                        transform: "scale(1.05)",
+                      },
+                    }}
+                  />
+                </div>
               </div>
             </li>
           ))}
