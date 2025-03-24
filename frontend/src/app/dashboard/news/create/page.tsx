@@ -28,7 +28,7 @@ const CreateNewsPage: React.FC = () => {
   }
   return (
     <DashboardLayoutProvider>
-      <DashboardLayout useSidebar={false}>
+      <DashboardLayout useSidebar={true}>
         <ToastContainer position="top-right" autoClose={1000} theme="dark" />
         <CreateNewsComponentForm />
       </DashboardLayout>

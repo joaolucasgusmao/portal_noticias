@@ -2,7 +2,7 @@
 
 import logout from "@/lib/logout";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface DashboardLayoutContextType {
   open: boolean;
@@ -32,7 +32,8 @@ export const DashboardLayoutProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+  const [open, setOpen] = useState<boolean>(!isMobile);
   const [openNews, setOpenNews] = useState<boolean>(false);
   const [openBanners, setOpenBanners] = useState<boolean>(false);
   const [openUsers, setOpenUsers] = useState<boolean>(false);
@@ -40,6 +41,15 @@ export const DashboardLayoutProvider = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setOpen(window.innerWidth > 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleToggleMenu = () => {
     setOpen((prev) => {

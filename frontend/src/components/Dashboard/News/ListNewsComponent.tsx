@@ -4,10 +4,13 @@ import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import { toast } from "react-toastify";
 
 interface ListNewsComponentProps {
   news: INewsReturn[];
-  pagination: Omit<IPaginate<INewsReturn>, "data">; // Pegamos tudo, menos "data"
+  pagination: Omit<IPaginate<INewsReturn>, "data">;
 }
 
 const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
@@ -20,11 +23,57 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
     router.push(`/dashboard/news?page=${page}`);
   };
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenuClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    newsId: number
+  ) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedNewsId(newsId);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSelectedNewsId(null);
+  };
+
+  const handleEdit = () => {
+    if (selectedNewsId) {
+      router.push(`/dashboard/news/edit/${selectedNewsId}`);
+    }
+    handleClose();
+  };
+
+  const handleDelete = async () => {
+    if (!selectedNewsId) return;
+
+    try {
+      const response = await fetch(`/api/news/${selectedNewsId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success(data.message);
+        router.refresh();
+      } else {
+        toast.error(data.error);
+      }
+    } catch (error) {
+      console.error("Erro ao excluir:", error);
+      toast.error("Erro interno do servidor.");
+    }
+    handleClose();
+  };
+
   return news.length > 0 ? (
-    <section className="w-full mx-10 mb-20">
+    <section className="w-full mx-10 mb-10">
       <div className="flex flex-row justify-between gap-8 my-4 items-center">
         <h1 className="text-base lg:text-2xl text-[var(--primary)] font-bold">
-          Noticias cadastradas
+          Notícias cadastradas
         </h1>
         <Link
           className="w-32 text-center md:w-32 text-xs xl md:text-base font-bold text-[var(--primary)] bg-[var(--black-2)] p-2 rounded-md border border-[var(--input-border)] 
@@ -56,7 +105,7 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
               key={newItem.id}
               className="grid h-24 p-4 grid-cols-2 xl:grid-cols-5 xl:h-36! 2xl:h-28! xl:pb-6 gap-4 border-t border-[var(--input-border)] items-center first:border-t-0"
             >
-              <h2 className="text-left text-xs w-full text-[var(--gray)] sm:text-base font-semibold h-fit">
+              <h2 className="text-left text-xs w-full text-[var(--gray)] lg:text-base font-semibold h-fit">
                 {newItem.title.length > 80
                   ? newItem.title.slice(0, 80) + "..."
                   : newItem.title}
@@ -82,24 +131,28 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
                 {newItem.categories.map((category) => category.name).join(", ")}
               </h2>
 
-              <div className="flex w-full h-fit justify-center items-center gap-4 xl:gap-20">
+              <div className="flex w-full h-fit justify-center items-center gap-4 xl:gap-8 2xl:gap-20">
                 <h2 className="text-[var(--gray)] xl:text-base font-semibold hidden xl:block w-full whitespace-nowrap">
                   {newItem.created_at}
                 </h2>
                 <div className="flex w-full justify-end xl:justify-normal">
-                  <MoreVertRoundedIcon
-                    sx={{
-                      fontSize: "1.5rem",
-                      color: "var(--gray)",
-                      cursor: "pointer",
-                      transition:
-                        "transform 0.3s ease-in-out, color 0.3s ease-in-out",
-                      "&:hover": {
-                        color: "var(--primary)",
-                        transform: "scale(1.05)",
-                      },
-                    }}
-                  />
+                  <IconButton
+                    onClick={(event) => handleMenuClick(event, newItem.id)}
+                  >
+                    <MoreVertRoundedIcon
+                      sx={{
+                        fontSize: "1.5rem",
+                        color: "var(--gray)",
+                        cursor: "pointer",
+                        transition:
+                          "transform 0.3s ease-in-out, color 0.3s ease-in-out",
+                        "&:hover": {
+                          color: "var(--primary)",
+                          transform: "scale(1.05)",
+                        },
+                      }}
+                    />
+                  </IconButton>
                 </div>
               </div>
             </li>
@@ -108,7 +161,6 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
       </div>
 
       <div className="flex gap-4 justify-start items-center sm:justify-end mt-10">
-        {/* Botão Anterior */}
         {meta.current_page > 1 && (
           <a onClick={() => goToPage(currentPage - 1)}>
             <ArrowCircleLeftIcon
@@ -131,7 +183,6 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
           Página {meta.current_page} de {meta.last_page} | Total: {meta.total}
         </span>
 
-        {/* Botão Próximo */}
         {meta.current_page < meta.last_page && (
           <a onClick={() => goToPage(currentPage + 1)}>
             <ArrowCircleRightIcon
@@ -150,18 +201,73 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
           </a>
         )}
       </div>
+      {/* Menu suspenso */}
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            backgroundColor: "var(--black-2)",
+            marginLeft: "-1.6rem !important",
+            marginTop: "0.7rem",
+            width: { xs: "8rem", sm: "9rem" },
+          },
+        }}
+      >
+        <MenuItem
+          sx={{
+            color: "var(--primary)",
+            fontWeight: "medium",
+            fontSize: "1rem",
+            transition:
+              "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+            "&:hover": {
+              backgroundColor: "var(--black-3)",
+              transform: "scale(1.02)",
+            },
+            "&:active": {
+              backgroundColor: "var(--black-3)",
+              transform: "scale(0.98)",
+            },
+          }}
+          onClick={handleEdit}
+        >
+          Editar Notícia
+        </MenuItem>
+        <MenuItem
+          sx={{
+            color: "var(--primary)",
+            fontWeight: "medium",
+            fontSize: "1rem",
+            transition:
+              "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+            "&:hover": {
+              backgroundColor: "var(--black-3)",
+              transform: "scale(1.02)",
+            },
+            "&:active": {
+              backgroundColor: "var(--black-3)",
+              transform: "scale(0.98)",
+            },
+          }}
+          onClick={handleDelete}
+        >
+          Excluir Notícia
+        </MenuItem>
+      </Menu>
     </section>
   ) : (
-    <div className="flex flex-col sm:flex-row sm:justify-between gap-4 w-full  mx-5">
+    <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-between gap-4 w-full  mx-5">
       <p className="text-2xl font-bold text-[var(--primary)]">
         Nenhuma Notícia cadastrada!
       </p>
       <Link
-        className="w-48 sm:max-w-none text-base font-bold text-[var(--primary)] bg-[var(--black-2)] p-2 rounded-md border border-[var(--input-border)] 
+        className="w-40 text-center sm:max-w-none text-base font-bold text-[var(--primary)] bg-[var(--black-2)] p-2 rounded-md border border-[var(--input-border)] 
              hover:bg-[var(--black-3)] hover:scale-105 transition-all duration-300"
         href={"/dashboard/news/create"}
       >
-        Adicionar nova notícia
+        Criar notícia
       </Link>
     </div>
   );

@@ -30,6 +30,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
     onChange(newValue);
   };
 
+  console.log(options);
+
   return (
     <>
       <label className="text-[var(--gray)] text-base block mb-2">{label}</label>

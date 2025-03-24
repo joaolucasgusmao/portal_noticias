@@ -6,16 +6,10 @@ import useAuth from "@/hooks/useAuth";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
 import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
-import ListNewsComponent from "@/components/Dashboard/News/ListNewsComponent";
-import { INewsReturn, IPaginate } from "@/@types/news";
 import { ToastContainer } from "react-toastify";
+import EditNewsComponentForm from "@/components/Dashboard/News/Forms/EditNewsComponentForm";
 
-interface NewsListClientProps {
-  news: INewsReturn[];
-  pagination: IPaginate<INewsReturn>;
-}
-
-const NewsListClient = ({ news, pagination }: NewsListClientProps) => {
+const EditNewsPage: React.FC = () => {
   const isAuthenticated = useAuth();
   const router = useRouter();
 
@@ -32,15 +26,14 @@ const NewsListClient = ({ news, pagination }: NewsListClientProps) => {
       </div>
     );
   }
-
   return (
     <DashboardLayoutProvider>
       <DashboardLayout useSidebar={true}>
         <ToastContainer position="top-right" autoClose={1000} theme="dark" />
-        <ListNewsComponent news={news} pagination={pagination} />
+        <EditNewsComponentForm />
       </DashboardLayout>
     </DashboardLayoutProvider>
   );
 };
 
-export default NewsListClient;
+export default EditNewsPage;
