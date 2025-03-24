@@ -7,15 +7,14 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
 import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
 import ListNewsComponent from "@/components/Dashboard/News/ListNewsComponent";
-import { INewsReturn } from "@/@types/news";
+import { INewsReturn, IPaginate } from "@/@types/news";
 
 interface NewsListClientProps {
   news: INewsReturn[];
+  pagination: IPaginate<INewsReturn>;
 }
 
-const NewsListClient = ({ news }: NewsListClientProps) => {
-
-  
+const NewsListClient = ({ news, pagination }: NewsListClientProps) => {
   const isAuthenticated = useAuth();
   const router = useRouter();
 
@@ -36,7 +35,7 @@ const NewsListClient = ({ news }: NewsListClientProps) => {
   return (
     <DashboardLayoutProvider>
       <DashboardLayout useSidebar={true}>
-        <ListNewsComponent news={news} />
+        <ListNewsComponent news={news} pagination={pagination} />
       </DashboardLayout>
     </DashboardLayoutProvider>
   );

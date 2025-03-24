@@ -1,12 +1,25 @@
-import { INewsReturn } from "@/@types/news";
+import { INewsReturn, IPaginate } from "@/@types/news";
 import Link from "next/link";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface ListNewsComponentProps {
   news: INewsReturn[];
+  pagination: Omit<IPaginate<INewsReturn>, "data">; // Pegamos tudo, menos "data"
 }
 
-const ListNewsComponent = ({ news }: ListNewsComponentProps) => {
+const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
+  const { meta } = pagination;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  const goToPage = (page: number) => {
+    router.push(`/dashboard/news?page=${page}`);
+  };
+
   return news.length > 0 ? (
     <section className="w-full mx-10 mb-20">
       <div className="flex flex-row justify-between gap-8 my-4 items-center">
@@ -92,6 +105,50 @@ const ListNewsComponent = ({ news }: ListNewsComponentProps) => {
             </li>
           ))}
         </ul>
+      </div>
+
+      <div className="flex gap-4 justify-start items-center sm:justify-end mt-10">
+        {/* Botão Anterior */}
+        {meta.current_page > 1 && (
+          <a onClick={() => goToPage(currentPage - 1)}>
+            <ArrowCircleLeftIcon
+              sx={{
+                fontSize: "2rem",
+                color: "var(--primary)",
+                cursor: "pointer",
+                transition:
+                  "transform 0.3s ease-in-out, color 0.3s ease-in-out",
+                "&:hover": {
+                  color: "var(--primary)",
+                  transform: "scale(1.05)",
+                },
+              }}
+            />
+          </a>
+        )}
+
+        <span className="text-[var(--primary)] text-base font-bold">
+          Página {meta.current_page} de {meta.last_page} | Total: {meta.total}
+        </span>
+
+        {/* Botão Próximo */}
+        {meta.current_page < meta.last_page && (
+          <a onClick={() => goToPage(currentPage + 1)}>
+            <ArrowCircleRightIcon
+              sx={{
+                fontSize: "2rem",
+                color: "var(--primary)",
+                cursor: "pointer",
+                transition:
+                  "transform 0.3s ease-in-out, color 0.3s ease-in-out",
+                "&:hover": {
+                  color: "var(--primary)",
+                  transform: "scale(1.05)",
+                },
+              }}
+            />
+          </a>
+        )}
       </div>
     </section>
   ) : (

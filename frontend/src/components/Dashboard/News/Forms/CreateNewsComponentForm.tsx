@@ -28,9 +28,9 @@ const CreateNewsComponentForm: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowNoCategoriesMessage(true);
-    }, 1000); // Aguarda 1 segundo antes de exibir a mensagem
+    }, 1000); 
 
-    return () => clearTimeout(timer); // Limpa o timeout se o componente for desmontado
+    return () => clearTimeout(timer); 
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,10 +1,11 @@
-import { INewsReturn } from "@/@types/news";
+import { INewsReturn, IPaginate } from "@/@types/news";
 import NewsListClient from "./NewsListClient";
 
-const fetchNews = async (): Promise<INewsReturn[]> => {
+// Função que busca as notícias
+const fetchNews = async (page: number): Promise<IPaginate<INewsReturn>> => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/news/paginate`,
+      `${process.env.NEXT_PUBLIC_API_URL}/news/paginate?page=${page}`,
       {
         cache: "no-store",
       }
@@ -14,19 +15,42 @@ const fetchNews = async (): Promise<INewsReturn[]> => {
       throw new Error("Erro ao buscar notícias");
     }
 
-    const result = await response.json();
-
-    return result.data;
+    return response.json();
   } catch (error) {
     console.error("Erro ao buscar notícias:", error);
-    return [];
+    return {
+      data: [],
+      meta: {
+        current_page: 1,
+        from: 0,
+        last_page: 1,
+        links: [],
+        path: "",
+        per_page: 10,
+        to: 0,
+        total: 0,
+      },
+      links: {
+        first: "",
+        last: "",
+        prev: null,
+        next: null,
+      },
+    };
   }
 };
 
-const NewsListPage = async () => {
-  const news = await fetchNews();
+const NewsListPage = async ({
+  searchParams,
+}: {
+  searchParams?: Record<string, string>;
+}) => {
+  // Aqui estamos acessando searchParams de forma segura
+  const page = searchParams?.page ? Number(searchParams.page) : 1;
 
-  return <NewsListClient news={news} />;
+  const result = await fetchNews(page);
+
+  return <NewsListClient news={result.data} pagination={result} />;
 };
 
 export default NewsListPage;
