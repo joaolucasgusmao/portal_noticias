@@ -44,7 +44,11 @@ const NewsListPage = async ({
 }: {
   searchParams?: Record<string, string>;
 }) => {
-  const page = searchParams?.page ? Number(searchParams.page) : 1;
+  const resolvedSearchParams = await searchParams;
+
+  const page = resolvedSearchParams?.page
+    ? Number(resolvedSearchParams.page)
+    : 1;
 
   const result = await fetchNews(page);
 

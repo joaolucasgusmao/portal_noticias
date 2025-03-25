@@ -9,7 +9,6 @@ import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
 import { ToastContainer } from "react-toastify";
 import EditNewsComponentForm from "@/components/Dashboard/News/Forms/EditNewsComponentForm";
 import { INewsReturn } from "@/@types/news";
-import { ICategory } from "@/@types/category";
 import useGetCategories from "@/hooks/useGetCategories";
 
 interface EditNewsPageProps {
@@ -17,7 +16,17 @@ interface EditNewsPageProps {
 }
 
 const EditNewsPage = ({ params }: EditNewsPageProps) => {
-  const { id } = params;
+  const [id, setId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchParams = async () => {
+      const resolvedParams = await params;
+      setId(resolvedParams.id);
+    };
+
+    fetchParams();
+  }, [params]);
+
   const [news, setNews] = useState<INewsReturn | null>(null);
   const [loading, setLoading] = useState(true);
   const isAuthenticated = useAuth();
