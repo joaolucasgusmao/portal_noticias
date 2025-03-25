@@ -1,86 +1,43 @@
-import useGetCategories from "@/hooks/useGetCategories";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InputComponent from "../../commons/InputComponent";
 import { Box, Chip, FormControlLabel, Switch, Typography } from "@mui/material";
 import ButtonComponent from "../../commons/ButtonComponent";
 import Checkbox from "../../commons/CheckboxComponent";
 import { toast } from "react-toastify";
 import { INews, INewsReturn } from "@/@types/news";
-import ClipLoader from "react-spinners/ClipLoader";
-import { useParams } from "next/navigation";
+import { ICategory } from "@/@types/category";
+import { useRouter } from "next/navigation";
+interface EditNewsProps {
+  news: INewsReturn;
+  categories: ICategory[];
+}
 
-const EditNewsComponentForm: React.FC = () => {
+const EditNewsComponentForm: React.FC<EditNewsProps> = ({
+  news,
+  categories,
+}) => {
   const [formData, setFormData] = useState<INews>({
-    hat: "",
-    title: "",
-    summary: "",
-    image: "",
-    content: "",
-    caption: "",
-    topics: [],
-    categories: [],
-    is_draft: false,
-    is_fixed: false,
+    hat: news.hat || "",
+    title: news.title || "",
+    summary: news.summary || "",
+    image: news.image || "",
+    content: news.content || "",
+    caption: news.caption || "",
+    topics: news.topics || [],
+    categories: news.categories.map((cat) => cat.id) || [],
+    is_draft: news.is_draft || false,
+    is_fixed: news.is_fixed || false,
   });
 
-  const { id } = useParams();
-  const [loadingNews, setLoadingNews] = useState<boolean>(true);
-  const [news, setNews] = useState<INewsReturn | null>(null);
+  const router = useRouter();
 
-  const { categories, loading, error } = useGetCategories();
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/news/14`
-        );
-        const data = await response.json();
-        setNews(data); // Armazena a notícia no estado
-      } catch (error) {
-        console.error("Erro ao buscar notícia:", error);
-      }
-    };
-
-    fetchNews();
-  }, []);
-
-  useEffect(() => {
-    if (news) {
-      setFormData({
-        hat: news.hat || "",
-        title: news.title || "",
-        summary: news.summary || "",
-        image: news.image || "",
-        content: news.content || "",
-        caption: news.caption || "",
-        topics: news.topics || [],
-        categories: news.categories.map((cat) => cat.id) || [],
-        is_draft: news.is_draft || false,
-        is_fixed: news.is_fixed || false,
-      });
-    }
-  }, [news]);
-
-  // Atualiza as categorias selecionadas quando a notícia for carregada
-  useEffect(() => {
-    if (news?.categories) {
-      setSelectedCategories(news.categories.map((cat) => cat.id));
-    }
-  }, [news]);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>(
+    news.categories.map((cat) => cat.id)
+  );
 
   const [inputValue, setInputValue] = useState<string>("");
   const [showNoCategoriesMessage, setShowNoCategoriesMessage] =
     useState<boolean>(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowNoCategoriesMessage(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -124,7 +81,7 @@ const EditNewsComponentForm: React.FC = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`/api/news/${id}`, {
+      const response = await fetch(`/api/news/${news.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -135,24 +92,19 @@ const EditNewsComponentForm: React.FC = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Erro ao editar a notícia");
+        throw new Error(data.error);
       }
-
-      toast.success("Notícia editada com sucesso!");
+      toast.success(data.message, {
+        onClose: () => {
+          router.push("/dashboard/news");
+        },
+      });
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Erro ao editar notícia!"
       );
     }
   };
-
-  if (loading) {
-    return (
-      <div className="ml-52 min-h-screen flex items-center justify-center bg-[var(--black)]">
-        <ClipLoader color="var(--primary)" />
-      </div>
-    );
-  }
 
   return (
     <>
@@ -317,11 +269,8 @@ const EditNewsComponentForm: React.FC = () => {
                 multiline
                 rows={12.4}
               />
-              {loading ? (
-                <div className="mt-4 mb-5! sm:mt-10 sm:mb-0 flex justify-center items-center">
-                  <ClipLoader color="var(--primary)" size={40} />
-                </div>
-              ) : categories.length > 0 ? (
+
+              {categories.length > 0 ? (
                 <Checkbox
                   label="Categorias"
                   value={selectedCategories}
@@ -342,7 +291,7 @@ const EditNewsComponentForm: React.FC = () => {
 
           <ButtonComponent
             type="submit"
-            label={formData.is_draft ? "Rascunho" : "Publicar"}
+            label={formData.is_draft ? "Editar Rascunho" : "Editar Notícia"}
             className="w-full! xl:w-2/6!"
           />
         </Box>

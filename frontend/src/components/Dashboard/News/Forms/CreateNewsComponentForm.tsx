@@ -7,6 +7,7 @@ import Checkbox from "../../commons/CheckboxComponent";
 import { toast } from "react-toastify";
 import { INews } from "@/@types/news";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useRouter } from "next/navigation";
 
 const CreateNewsComponentForm: React.FC = () => {
   const [formData, setFormData] = useState<INews>({
@@ -25,12 +26,14 @@ const CreateNewsComponentForm: React.FC = () => {
   const [showNoCategoriesMessage, setShowNoCategoriesMessage] =
     useState<boolean>(false);
 
+  const router = useRouter();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowNoCategoriesMessage(true);
-    }, 1000); 
+    }, 1000);
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +94,11 @@ const CreateNewsComponentForm: React.FC = () => {
         throw new Error(data.error || "Erro ao criar a notícia");
       }
 
-      toast.success("Notícia criada com sucesso!");
+      toast.success(data.message, {
+        onClose: () => {
+          router.push("/dashboard/news");
+        },
+      });
 
       setFormData({
         hat: "",
@@ -302,7 +309,7 @@ const CreateNewsComponentForm: React.FC = () => {
 
           <ButtonComponent
             type="submit"
-            label={formData.is_draft ? "Rascunho" : "Publicar"}
+            label={formData.is_draft ? "Salvar Rascunho" : "Publicar"}
             className="w-full! xl:w-2/6!"
           />
         </Box>

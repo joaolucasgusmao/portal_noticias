@@ -69,7 +69,15 @@ export async function PATCH(
       );
     }
 
-    return NextResponse.json(await res.json(), { status: 200 });
+    const updatedNews = await res.json();
+
+    return NextResponse.json(
+      { 
+        message: "Notícia editada com sucesso!",
+        data: updatedNews
+      },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json(
       { error: "Erro interno do servidor!" },
@@ -77,6 +85,7 @@ export async function PATCH(
     );
   }
 }
+
 
 export async function DELETE(
   req: Request,

@@ -103,7 +103,7 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
           {news.map((newItem) => (
             <li
               key={newItem.id}
-              className="grid h-24 p-4 grid-cols-2 xl:grid-cols-5 xl:h-36! 2xl:h-28! xl:pb-6 gap-4 border-t border-[var(--input-border)] items-center first:border-t-0"
+              className="grid h-24 p-4 grid-cols-2 xl:grid-cols-5 xl:h-36! 2xl:h-32! gap-4 border-t border-[var(--input-border)] items-center first:border-t-0"
             >
               <h2 className="text-left text-xs w-full text-[var(--gray)] lg:text-base font-semibold h-fit">
                 {newItem.title.length > 80
@@ -201,7 +201,7 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
           </a>
         )}
       </div>
-      {/* Menu suspenso */}
+
       <Menu
         anchorEl={anchorEl}
         open={open}

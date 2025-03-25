@@ -29,7 +29,10 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json(data, { status: 201 });
+    return NextResponse.json(
+      { message: "Notícia criada com sucesso!", data },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json(
       { error: "Erro interno do servidor!" },

@@ -1,7 +1,6 @@
 import { INewsReturn, IPaginate } from "@/@types/news";
 import NewsListClient from "./NewsListClient";
 
-// Função que busca as notícias
 const fetchNews = async (page: number): Promise<IPaginate<INewsReturn>> => {
   try {
     const response = await fetch(
@@ -45,7 +44,6 @@ const NewsListPage = async ({
 }: {
   searchParams?: Record<string, string>;
 }) => {
-  // Aqui estamos acessando searchParams de forma segura
   const page = searchParams?.page ? Number(searchParams.page) : 1;
 
   const result = await fetchNews(page);
