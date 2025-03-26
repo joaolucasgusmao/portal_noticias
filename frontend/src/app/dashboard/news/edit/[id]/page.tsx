@@ -19,12 +19,7 @@ const EditNewsPage = ({ params }: EditNewsPageProps) => {
   const [id, setId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchParams = async () => {
-      const resolvedParams = await params;
-      setId(resolvedParams.id);
-    };
-
-    fetchParams();
+    setId(params.id);
   }, [params]);
 
   const [news, setNews] = useState<INewsReturn | null>(null);
