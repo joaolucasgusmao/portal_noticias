@@ -3,16 +3,16 @@ import { cookies } from "next/headers";
 
 export async function GET(
   req: Request,
-  context: { params: { id: string } } 
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const token = (await cookies()).get("token")?.value; 
+    const token = (await cookies()).get("token")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
     }
 
-    const { id } = await context.params; 
+    const id = (await params).id;
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
       method: "GET",
@@ -38,7 +38,10 @@ export async function GET(
   }
 }
 
-export async function PATCH(req: Request, context: { params: { id: string } }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const token = (await cookies()).get("token")?.value;
 
@@ -46,7 +49,7 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
       return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
     }
 
-    const { id } = await context.params;
+    const id = (await params).id;
     const body = await req.json();
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
@@ -85,7 +88,7 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
 
 export async function DELETE(
   req: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = (await cookies()).get("token")?.value;
@@ -94,7 +97,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
     }
 
-    const { id } = await context.params;
+    const id = (await params).id;
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
       method: "DELETE",
