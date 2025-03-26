@@ -12,14 +12,19 @@ import { INewsReturn } from "@/@types/news";
 import useGetCategories from "@/hooks/useGetCategories";
 
 interface EditNewsPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const EditNewsPage = ({ params }: EditNewsPageProps) => {
   const [id, setId] = useState<string | null>(null);
 
   useEffect(() => {
-    setId(params.id);
+    const fetchParams = async () => {
+      const resolvedParams = await params;
+      setId(resolvedParams.id);
+    };
+
+    fetchParams();
   }, [params]);
 
   const [news, setNews] = useState<INewsReturn | null>(null);
