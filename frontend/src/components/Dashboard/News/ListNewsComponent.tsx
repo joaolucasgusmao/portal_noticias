@@ -5,8 +5,11 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Select } from "@mui/material";
 import { toast } from "react-toastify";
+import ButtonComponent from "../commons/ButtonComponent";
+import { ICategory } from "@/@types/category";
+import useGetCategories from "@/hooks/useGetCategories";
 
 interface ListNewsComponentProps {
   news: INewsReturn[];
@@ -19,8 +22,24 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
 
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    searchParams.get("categoryId") || null
+  );
+
+  const { categories, loading, error } = useGetCategories();
+
   const goToPage = (page: number) => {
-    router.push(`/dashboard/news?page=${page}`);
+    const params = new URLSearchParams();
+    params.set("page", page.toString());
+
+    if (selectedCategory) {
+      params.set("categoryId", selectedCategory);
+      router.push(
+        `/dashboard/news/category/${selectedCategory}/?${params.toString()}`
+      );
+    } else {
+      router.push(`/dashboard/news/?${params.toString()}`);
+    }
   };
 
   const [maxChars, setMaxChars] = useState(80);
@@ -33,7 +52,7 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
       setMaxChars(window.innerWidth >= 640 ? 80 : 70);
     };
 
-    handleResize(); // Chama a função na montagem
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
@@ -69,8 +88,11 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
 
       const data = await response.json();
       if (response.ok) {
-        toast.success(data.message);
-        router.refresh();
+        toast.success(data.message, {
+          onClose: () => {
+            router.refresh();
+          },
+        });
       } else {
         toast.error(data.error);
       }
@@ -84,9 +106,47 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
   return news.length > 0 ? (
     <section className="w-full mx-10 mb-10">
       <div className="flex flex-row justify-between gap-8 my-4 items-center">
-        <h1 className="text-base lg:text-2xl text-[var(--primary)] font-bold">
+        {/* <h1 className="text-base lg:text-2xl text-[var(--primary)] font-bold">
           Notícias cadastradas
-        </h1>
+        </h1> */}
+        <Select
+          value={selectedCategory || ""}
+          onChange={(event) => {
+            const newCategory = event.target.value;
+            setSelectedCategory(newCategory);
+            router.push(`/dashboard/news?page=1&categoryId=${newCategory}`);
+          }}
+          displayEmpty
+          sx={{
+            backgroundColor: "var(--black-2)",
+            borderRadius: "8px",
+            padding: "5px 8px",
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: "1rem",
+            border: "1px solid",
+            borderColor: "var(--input-border)",
+            color: "var(--primary)",
+            height: "2.5rem",
+            "& .MuiSelect-icon": {
+              right: 8,
+              color: "var(--primary)",
+            },
+            "&.Mui-focused, &:focus, &:active": {
+              borderColor: "var(--input-border) !important",
+              backgroundColor: "var(--black-2) !important",
+              boxShadow: "none !important",
+              outline: "none !important",
+            },
+          }}
+        >
+          <MenuItem value="">Todas</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.id} value={category.id}>
+              {category.name}
+            </MenuItem>
+          ))}
+        </Select>
         <Link
           className="w-32 text-center md:w-32 text-xs xl md:text-base font-bold text-[var(--primary)] bg-[var(--black-2)] p-2 rounded-md border border-[var(--input-border)] 
              hover:bg-[var(--black-3)] hover:scale-105 transition-all duration-300"
@@ -275,7 +335,7 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
         Nenhuma Notícia cadastrada!
       </p>
       <Link
-        className="w-40 text-center sm:max-w-none text-base font-bold text-[var(--primary)] bg-[var(--black-2)] p-2 rounded-md border border-[var(--input-border)] 
+        className="w-32 text-center sm:max-w-none text-base font-bold text-[var(--primary)] bg-[var(--black-2)] p-2 rounded-md border border-[var(--input-border)] 
              hover:bg-[var(--black-3)] hover:scale-105 transition-all duration-300"
         href={"/dashboard/news/create"}
       >

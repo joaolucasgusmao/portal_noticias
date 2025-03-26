@@ -39,6 +39,47 @@ const fetchNews = async (page: number): Promise<IPaginate<INewsReturn>> => {
   }
 };
 
+const fetchNewsByCategory = async (
+  page: number,
+  categoryId: string
+): Promise<IPaginate<INewsReturn>> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/news/category/${categoryId}?page=${page}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar notícias por categoria");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Erro ao buscar notícias por categoria:", error);
+    return {
+      data: [],
+      meta: {
+        current_page: 1,
+        from: 0,
+        last_page: 1,
+        links: [],
+        path: "",
+        per_page: 10,
+        to: 0,
+        total: 0,
+      },
+      links: {
+        first: "",
+        last: "",
+        prev: null,
+        next: null,
+      },
+    };
+  }
+};
+
 const NewsListPage = async ({
   searchParams,
 }: {
@@ -50,8 +91,15 @@ const NewsListPage = async ({
     ? Number(resolvedSearchParams.page)
     : 1;
 
-  const result = await fetchNews(page);
+  const categoryId = resolvedSearchParams?.categoryId;
 
+  let result: IPaginate<INewsReturn>;
+
+  if (categoryId) {
+    result = await fetchNewsByCategory(page, categoryId);
+  } else {
+    result = await fetchNews(page);
+  }
   return <NewsListClient news={result.data} pagination={result} />;
 };
 

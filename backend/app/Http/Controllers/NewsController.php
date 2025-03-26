@@ -43,9 +43,9 @@ class NewsController extends Controller
         return response($this->newsService->destroy($id), 204);
     }
 
-    public function getNewsByCategory(int $categoryId): JsonResponse
+    public function getNewsByCategory(int $categoryId): AnonymousResourceCollection
     {
-        return response()->json($this->newsService->getNewsByCategory($categoryId), 200);
+        return $this->newsService->getNewsByCategory($categoryId);
     }
 
     public function getNewsByUser(UserRequest $request, int $userId): JsonResponse

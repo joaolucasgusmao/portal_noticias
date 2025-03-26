@@ -16,15 +16,15 @@ class NewsService
     {
         $user = $request->user();
 
-        
+
         if (!empty($data['is_draft']) && $data['is_draft'] === true) {
             $data['is_active'] = false;
         } else {
-            
+
             if (!empty($data['is_fixed'])) {
                 $data['is_active'] = true;
             } else {
-                
+
                 $data['is_active'] = true;
             }
         }
@@ -45,7 +45,8 @@ class NewsService
             ->orderByDesc('is_fixed')
             ->orderByDesc('is_draft')
             ->orderByDesc('id')
-            ->paginate(10);
+            ->get();
+
         return NewsResource::collection($news);
     }
 
@@ -68,22 +69,20 @@ class NewsService
             throw new AppError("News not found.", 404);
         }
 
-        // Verifica se as categorias foram passadas e atualiza
         if (array_key_exists("categories", $data)) {
             $categories = $data["categories"] ?? [];
             unset($data["categories"]);
             $news->categories()->sync($categories);
         }
 
-        // Lógica para definir 'is_active' durante o update
         if (!empty($data['is_draft']) && $data['is_draft'] === true) {
             $data['is_active'] = false;
         } else {
-          
+
             if (!empty($data['is_fixed'])) {
                 $data['is_active'] = true;
             } else {
-               
+
                 $data['is_active'] = true;
             }
         }
@@ -109,9 +108,14 @@ class NewsService
 
     public function getNewsByCategory(int $id): AnonymousResourceCollection
     {
-        $news = News::with('categories', 'user')->whereHas('categories', function ($query) use ($id) {
-            $query->where('category_id', $id);
-        })->get();
+        $news = News::with('categories', 'user')
+            ->whereHas('categories', function ($query) use ($id) {
+                $query->where('category_id', $id);
+            })
+            ->orderByDesc('is_fixed')
+            ->orderByDesc('is_draft')
+            ->orderByDesc('id')
+            ->paginate(10);
 
         if ($news->isEmpty()) {
             throw new AppError("News not found.", 404);
