@@ -4,7 +4,7 @@ import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { toast } from "react-toastify";
 
@@ -23,9 +23,21 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
     router.push(`/dashboard/news?page=${page}`);
   };
 
+  const [maxChars, setMaxChars] = useState(80);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMaxChars(window.innerWidth >= 640 ? 80 : 70);
+    };
+
+    handleResize(); // Chama a função na montagem
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -103,11 +115,11 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
           {news.map((newItem) => (
             <li
               key={newItem.id}
-              className="grid h-24 p-4 grid-cols-2 xl:grid-cols-5 xl:h-36! 2xl:h-32! gap-4 border-t border-[var(--input-border)] items-center first:border-t-0"
+              className="grid h-28 p-4 grid-cols-2 xl:grid-cols-5 xl:h-36! 2xl:h-32! gap-4 border-t border-[var(--input-border)] items-center first:border-t-0"
             >
               <h2 className="text-left text-xs w-full text-[var(--gray)] lg:text-base font-semibold h-fit">
-                {newItem.title.length > 80
-                  ? newItem.title.slice(0, 80) + "..."
+                {newItem.title.length > maxChars
+                  ? newItem.title.slice(0, maxChars) + "..."
                   : newItem.title}
               </h2>
 

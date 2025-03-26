@@ -12,7 +12,7 @@ export async function GET(
       return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
       method: "GET",
@@ -72,9 +72,9 @@ export async function PATCH(
     const updatedNews = await res.json();
 
     return NextResponse.json(
-      { 
+      {
         message: "Notícia editada com sucesso!",
-        data: updatedNews
+        data: updatedNews,
       },
       { status: 200 }
     );
@@ -85,7 +85,6 @@ export async function PATCH(
     );
   }
 }
-
 
 export async function DELETE(
   req: Request,
