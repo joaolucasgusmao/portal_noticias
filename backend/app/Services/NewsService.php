@@ -16,15 +16,15 @@ class NewsService
     {
         $user = $request->user();
 
-        // Se for rascunho, a notícia deve ser inativa, independentemente de ser fixada
+        
         if (!empty($data['is_draft']) && $data['is_draft'] === true) {
             $data['is_active'] = false;
         } else {
-            // Caso não seja rascunho, se for fixada, a notícia será ativa
+            
             if (!empty($data['is_fixed'])) {
                 $data['is_active'] = true;
             } else {
-                // Se não for fixada, e não for rascunho, a notícia será ativa (padrão)
+                
                 $data['is_active'] = true;
             }
         }
@@ -79,16 +79,16 @@ class NewsService
         if (!empty($data['is_draft']) && $data['is_draft'] === true) {
             $data['is_active'] = false;
         } else {
-            // Se for fixada, mantém a notícia ativa
+          
             if (!empty($data['is_fixed'])) {
                 $data['is_active'] = true;
             } else {
-                // Caso contrário, mantém a notícia ativa se não for rascunho
+               
                 $data['is_active'] = true;
             }
         }
 
-        // Atualiza a notícia com os novos dados
+
         $news->update($data);
 
         $news->load('user', 'categories');
