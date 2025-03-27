@@ -28,9 +28,9 @@ const DashboardPage: React.FC = () => {
   return (
     <DashboardLayoutProvider>
       <DashboardLayout useSidebar={true}>
-        <p className="text-[var(--primary)] font-bold text-2xl ml-8">
+        <h2 className="text-[var(--primary)] font-bold text-2xl ml-8">
           Oops! Estamos em desenvolvimento.
-        </p>
+        </h2>
       </DashboardLayout>
     </DashboardLayoutProvider>
   );

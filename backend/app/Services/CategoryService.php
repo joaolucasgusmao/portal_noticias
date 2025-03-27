@@ -23,7 +23,7 @@ class CategoryService
 
     public function get(): AnonymousResourceCollection
     {
-        return CategoryResource::collection(Category::oldest("id")->get());
+        return CategoryResource::collection(Category::orderByDesc("id")->get());
     }
 
     public function retrieve(int $id): JsonResource
@@ -64,7 +64,7 @@ class CategoryService
 
     public function getCategoriesPaginate(): AnonymousResourceCollection
     {
-        $categories = Category::paginate(10);
+        $categories = Category::orderByDesc("id")->paginate(10);
         return CategoryResource::collection($categories);
     }
 }
