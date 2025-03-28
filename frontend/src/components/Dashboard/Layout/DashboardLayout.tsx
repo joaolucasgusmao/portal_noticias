@@ -78,10 +78,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       />
 
       <main
-        className={`min-h-screen w-full flex transition-all duration-300 pt-20 bg-[var(--black)] 
-    ${
-      useSidebar ? "justify-start items-start" : "justify-center items-center"
-    }`}
+        className={`min-h-screen w-full flex transition-all duration-300 bg-[var(--black)] justify-center items-start`}
         style={{
           marginLeft: useSidebar
             ? isMobile

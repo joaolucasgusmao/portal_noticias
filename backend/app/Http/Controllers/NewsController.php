@@ -54,9 +54,9 @@ class NewsController extends Controller
         return response()->json($this->newsService->getNewsByUser($request, $userId), 200);
     }
 
-    public function getNewsByTitle(Request $request): JsonResponse
+    public function getNewsByTitle(Request $request): AnonymousResourceCollection
     {
-        return response()->json($this->newsService->getNewsByTitle($request), 200);
+        return $this->newsService->getNewsByTitle($request);
     }
 
     public function getNewsPaginate(): AnonymousResourceCollection

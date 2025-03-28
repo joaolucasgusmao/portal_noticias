@@ -1,14 +1,12 @@
 import { INewsReturn, IPaginate } from "@/@types/news";
-import Link from "next/link";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FormControl, IconButton, Menu, MenuItem, Select } from "@mui/material";
+import { IconButton, Menu, MenuItem, Select, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import useGetCategories from "@/hooks/useGetCategories";
-import InputComponent from "../commons/InputComponent";
 
 interface ListNewsComponentProps {
   news: INewsReturn[];
@@ -25,6 +23,10 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
     searchParams.get("categoryId") || null
   );
 
+  const [newsTitle, setNewsTitle] = useState<string>(
+    searchParams.get("title") || ""
+  );
+
   const { categories, loading, error } = useGetCategories();
 
   const goToPage = (page: number) => {
@@ -33,12 +35,13 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
 
     if (selectedCategory) {
       params.set("categoryId", selectedCategory);
-      router.push(
-        `/dashboard/news/category/${selectedCategory}/?${params.toString()}`
-      );
-    } else {
-      router.push(`/dashboard/news/?${params.toString()}`);
     }
+
+    if (newsTitle) {
+      params.set("title", newsTitle);
+    }
+
+    router.push(`/dashboard/news?${params.toString()}`);
   };
 
   const [maxChars, setMaxChars] = useState(80);
@@ -103,121 +106,163 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
   };
 
   return (
-    <section className="w-full mx-10 mb-10">
-      {news.length > 0 && (
-        <h2 className="text-[var(--primary)] font-bold text-2xl text-center">
-          Notícias cadastradas.
+    <section className="w-full mx-10 mb-10 mt-24">
+      {news && news.length > 0 && (
+        <h2 className="text-[var(--primary)] mb-10 font-bold text-2xl text-left">
+          Notícias cadastradas
         </h2>
       )}
 
       <div className="flex flex-row justify-between gap-8 my-4 items-center">
-        <div className="flex flex-col gap-[0.4rem]">
-          <span className="text-[var(--primary)] font-bold text-sm">
-            Filtrar por categorias
-          </span>
-          <Select
-            value={selectedCategory || ""}
-            onChange={(event) => {
-              const newCategory = event.target.value;
-              setSelectedCategory(newCategory);
-              router.push(`/dashboard/news?page=1&categoryId=${newCategory}`);
-            }}
-            displayEmpty
-            MenuProps={{
-              PaperProps: {
-                sx: {
+        <Select
+          value={selectedCategory || ""}
+          onChange={(event) => {
+            const newCategory = event.target.value;
+            setSelectedCategory(newCategory);
+            router.push(`/dashboard/news?page=1&categoryId=${newCategory}`);
+          }}
+          displayEmpty
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                backgroundColor: "var(--black-2)",
+                borderRadius: "8px",
+                padding: "5px 8px",
+                boxShadow: "none",
+                "& .MuiMenuItem-root": {
                   backgroundColor: "var(--black-2)",
-                  borderRadius: "8px",
-                  padding: "5px 8px",
-                  boxShadow: "none",
-                  "& .MuiMenuItem-root": {
-                    backgroundColor: "var(--black-2)",
-                    color: "var(--primary)",
-                    transition: "all 0.3s ease-in-out",
-                  },
-                  "& .MuiMenuItem-root:hover": {
-                    backgroundColor: "var(--black-3)",
-                    transform: "scale(1.05)",
-                  },
+                  color: "var(--primary)",
+                  transition: "all 0.3s ease-in-out",
+                },
+                "& .MuiMenuItem-root:hover": {
+                  backgroundColor: "var(--black-3)",
+                  transform: "scale(1.05)",
                 },
               },
-            }}
-            sx={{
-              backgroundColor: "var(--black-2)",
-              borderRadius: "8px",
-              fontWeight: "bold",
-              fontSize: "1rem",
-              border: "1px solid",
-              borderColor: "var(--input-border)",
+            },
+          }}
+          sx={{
+            backgroundColor: "var(--black-2)",
+            borderRadius: "8px",
+            fontWeight: "bold",
+            fontSize: "1rem",
+            border: "1px solid",
+            // marginTop: "14px",
+            borderColor: "var(--input-border)",
+            color: "var(--primary)",
+            height: "2.5rem",
+            width: "fit-content",
+            "& .MuiSelect-icon": {
+              right: 8,
               color: "var(--primary)",
-              height: "2.5rem",
-              width: "fit-content",
-              "& .MuiSelect-icon": {
-                right: 8,
-                color: "var(--primary)",
-              },
-              "&.Mui-focused": {
-                border: "none !important",
-                borderColor: "none !important",
-                backgroundColor: "none !important",
-                boxShadow: "none !important",
-                outline: "none !important",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--input-border) !important",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "none !important",
-              },
-              transition: "all 0.3s ease-in-out",
+            },
+            "&.Mui-focused": {
+              border: "none !important",
+              borderColor: "none !important",
+              backgroundColor: "none !important",
+              boxShadow: "none !important",
+              outline: "none !important",
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--input-border) !important",
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "none !important",
+            },
+            transition: "all 0.3s ease-in-out",
+            "&:hover": {
+              transform: "scale(1.05)",
+            },
+          }}
+        >
+          <MenuItem
+            value=""
+            sx={{
+              backgroundColor: "var(--black-2) !important",
               "&:hover": {
+                backgroundColor: "var(--black-3) !important",
                 transform: "scale(1.05)",
               },
             }}
           >
+            {loading ? "Carregando..." : "Todas"}
+          </MenuItem>
+          {categories.map((category) => (
             <MenuItem
-              value=""
+              key={category.id}
+              value={category.id}
               sx={{
-                backgroundColor: "var(--black-2) !important",
                 "&:hover": {
-                  backgroundColor: "var(--black-3) !important",
+                  backgroundColor: "var(--black-3)",
                   transform: "scale(1.05)",
                 },
               }}
             >
-              {loading ? "Carregando..." : "Todas"}
+              {loading ? "Carregando..." : category.name}
             </MenuItem>
-            {categories.map((category) => (
-              <MenuItem
-                key={category.id}
-                value={category.id}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "var(--black-3)",
-                    transform: "scale(1.05)",
-                  },
-                }}
-              >
-                {loading ? "Carregando..." : category.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-        <InputComponent
+          ))}
+        </Select>
+
+        <TextField
           label="Pesquisar"
           type="text"
           name="title"
-          className="w-40! m-0! p-0"
-          // // sx={{
-          // //   "& .MuiInputBase-input": {
-          // //     color: "var(--gray)",
-          // //     fontSize: "1rem",
-          // //     height: "10px", // Defina uma altura fixa para o campo
-          // //   },
-          // }}
+          disabled={Boolean(selectedCategory)}
+          value={newsTitle}
+          InputLabelProps={{ shrink: true }}
+          onChange={(event) => {
+            setNewsTitle(event.target.value);
+            const params = new URLSearchParams(window.location.search);
+            params.set("title", event.target.value);
+            router.push(`/dashboard/news?${params.toString()}`);
+          }}
+          sx={{
+            backgroundColor: "var(--black)",
+
+            "& .MuiOutlinedInput-root": {
+              alignItems: "center",
+              "& fieldset": {
+                border: "2px solid",
+                borderColor: "var(--input-border)",
+                transition: "border-color 0.3s ease",
+              },
+              "&:hover fieldset": {
+                borderColor: "var(--primary-hover)",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "var(--primary)",
+              },
+              "&.Mui-disabled:hover fieldset": {
+                borderColor: "var(--black)",
+              },
+            },
+            "& .MuiInputLabel-root": {
+              color: "var(--gray)",
+              transition: "color 0.3s ease, transform 0.3s ease",
+              fontSize: "1rem",
+              fontWeight: "bold",
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "var(--primary)",
+              fontSize: "1rem",
+              fontWeight: "bold",
+            },
+            "& .MuiInputLabel-root.Mui-disabled": {
+              display: "none",
+            },
+            "& .MuiInputBase-input": {
+              color: "var(--gray)",
+              height: "0.5rem",
+              width: "8rem",
+            },
+
+            "& .MuiInputLabel-shrink": {
+              backgroundColor: "var(--black)",
+            },
+          }}
         />
       </div>
-      {news.length > 0 ? (
+      {news && news.length > 0 ? (
         <>
           <div className="w-full border border-[var(--input-border)]">
             <div className="grid grid-cols-1 sm:grid-cols-5  p-2 bg-[var(--black-2)] text-[var(--primary)] font-bold border-b border-[var(--input-border)]">

@@ -108,13 +108,7 @@ const EditNewsComponentForm: React.FC<EditNewsProps> = ({
 
   return (
     <>
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap="0.5rem"
-        sx={{ backgroundColor: "var(--black)" }}
-        p={2}
-      >
+      <section className="flex flex-col gap-2 p-2 bg-[var(--black)] mx-3 mb-10 mt-24">
         <Typography
           className="text-[var(--primary)] font-bold! text-xl!"
           sx={{
@@ -295,7 +289,7 @@ const EditNewsComponentForm: React.FC<EditNewsProps> = ({
             className="w-full! xl:w-2/6!"
           />
         </Box>
-      </Box>
+      </section>
     </>
   );
 };

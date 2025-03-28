@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import ImageRoundedIcon from "@mui/icons-material/ImageRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
@@ -69,6 +69,7 @@ const SidebarComponent = ({
     >
       <Tooltip title="" placement="right" disableHoverListener={open}>
         <ListItem
+          onClick={() => router.push("/dashboard")}
           component="button"
           sx={{
             color: "var(--primary)",
@@ -87,10 +88,10 @@ const SidebarComponent = ({
             marginTop: "0.7rem",
           }}
         >
-          <HomeRoundedIcon onClick={() => setOpen(true)} />
+          <DashboardRoundedIcon onClick={() => setOpen(true)} />
           {open && (
             <ListItemText
-              primary="Home"
+              primary="Dashboard"
               sx={{
                 padding: "0 !important",
                 margin: "0 !important",

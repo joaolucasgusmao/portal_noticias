@@ -35,6 +35,7 @@ const InputComponent: React.FC<InputComponentProps> = ({ label, ...props }) => {
         "& .MuiInputLabel-root.Mui-focused": {
           color: "var(--primary)",
           fontSize: "1rem",
+          fontWeight: "bold",
         },
         "& .MuiInputBase-input": {
           color: "var(--gray)",
