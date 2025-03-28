@@ -23,8 +23,9 @@ Route::middleware(["auth.custom"])->group(function () {
 // News
 Route::get("/news", [NewsController::class, "get"]);
 Route::get("/news/paginate", [NewsController::class, "getNewsPaginate"]);
-Route::get("/news/{id}", [NewsController::class, "retrieve"]);
+Route::get("/news/title", [NewsController::class, "getNewsByTitle"]);
 Route::get("/news/category/{categoryId}", [NewsController::class, "getNewsByCategory"]);
+Route::get("/news/{id}", [NewsController::class, "retrieve"]);
 
 Route::middleware(["auth.custom"])->group(function () {
     Route::post("/news", [NewsController::class, "store"]);

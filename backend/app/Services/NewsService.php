@@ -151,6 +151,21 @@ class NewsService
         return NewsResource::collection($news);
     }
 
+    public function getNewsByTitle(Request $request): AnonymousResourceCollection
+    {
+        $title = $request->query('title', '');
+
+        $news = News::with(['categories', 'user'])
+            ->when($title, function ($query, $title) {
+                $query->where("title", "LIKE", "%$title%");
+            })
+            ->orderByDesc('is_fixed')
+            ->orderByDesc('is_draft')
+            ->orderByDesc('id')
+            ->paginate(10);
+
+        return NewsResource::collection($news);
+    }
 
     public function getNewsPaginate(): AnonymousResourceCollection
     {
