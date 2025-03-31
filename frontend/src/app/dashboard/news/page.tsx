@@ -37,25 +37,7 @@ const fetchNews = async (page: number): Promise<IPaginate<INewsReturn>> => {
     return response.json();
   } catch (error) {
     console.error("Erro ao buscar notícias:", error);
-    return {
-      data: [],
-      meta: {
-        current_page: 1,
-        from: 0,
-        last_page: 1,
-        links: [],
-        path: "",
-        per_page: 10,
-        to: 0,
-        total: 0,
-      },
-      links: {
-        first: "",
-        last: "",
-        prev: null,
-        next: null,
-      },
-    };
+    return getDefaultPagination();
   }
 };
 

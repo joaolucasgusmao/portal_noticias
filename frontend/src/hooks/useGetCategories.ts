@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { ICategory } from "@/@types/category";
+import { ICategoryReturn } from "@/@types/category";
 import useAuthToken from "@/hooks/useAuthToken";
 
 const useGetCategories = () => {
   const { token, loading: authLoading } = useAuthToken();
-  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [categories, setCategories] = useState<ICategoryReturn[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 

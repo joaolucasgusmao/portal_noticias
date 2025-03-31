@@ -14,7 +14,7 @@ import ImageRoundedIcon from "@mui/icons-material/ImageRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { IUser } from "@/@types/user";
+import { IUserCreate } from "@/@types/user";
 import { useRouter } from "next/navigation";
 
 interface SidebarIconComponentProps {
@@ -30,7 +30,7 @@ interface SidebarIconComponentProps {
   openUsers: boolean;
   setOpenUsers: (value: boolean) => void;
 
-  user: IUser | null;
+  user: IUserCreate | null;
 }
 
 const SidebarComponent = ({
@@ -207,6 +207,7 @@ const SidebarComponent = ({
           </ListItem>
           {user?.is_admin ? (
             <ListItem
+              onClick={() => router.push("/dashboard/categories/create")}
               component="button"
               sx={{
                 color: "var(--primary)",

@@ -17,6 +17,13 @@ interface EditNewsPageProps {
 
 const EditNewsPage = ({ params }: EditNewsPageProps) => {
   const [id, setId] = useState<string | null>(null);
+  const [news, setNews] = useState<INewsReturn | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const isAuthenticated = useAuth();
+  const router = useRouter();
+
+  const { categories, loading: categoriesLoading, error } = useGetCategories();
 
   useEffect(() => {
     const fetchParams = async () => {
@@ -26,13 +33,6 @@ const EditNewsPage = ({ params }: EditNewsPageProps) => {
 
     fetchParams();
   }, [params]);
-
-  const [news, setNews] = useState<INewsReturn | null>(null);
-  const [loading, setLoading] = useState(true);
-  const isAuthenticated = useAuth();
-  const router = useRouter();
-
-  const { categories, loading: categoriesLoading, error } = useGetCategories();
 
   useEffect(() => {
     if (isAuthenticated === false) {

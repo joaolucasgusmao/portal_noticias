@@ -115,7 +115,7 @@ export async function DELETE(
 
     return NextResponse.json(
       { message: "Notícia deletada com sucesso!" },
-      { status: 200 }
+      { status: 204 }
     );
   } catch (error) {
     return NextResponse.json(

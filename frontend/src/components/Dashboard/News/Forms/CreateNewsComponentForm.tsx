@@ -5,12 +5,12 @@ import { Box, Chip, FormControlLabel, Switch, Typography } from "@mui/material";
 import ButtonComponent from "../../commons/ButtonComponent";
 import Checkbox from "../../commons/CheckboxComponent";
 import { toast } from "react-toastify";
-import { INews } from "@/@types/news";
+import { INewsCreate } from "@/@types/news";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useRouter } from "next/navigation";
 
 const CreateNewsComponentForm: React.FC = () => {
-  const [formData, setFormData] = useState<INews>({
+  const [formData, setFormData] = useState<INewsCreate>({
     hat: "",
     title: "",
     summary: "",
@@ -27,6 +27,8 @@ const CreateNewsComponentForm: React.FC = () => {
     useState<boolean>(false);
 
   const router = useRouter();
+
+  const { categories, loading, error } = useGetCategories();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -59,8 +61,6 @@ const CreateNewsComponentForm: React.FC = () => {
       topics: prev.topics?.filter((topic) => topic !== topicToDelete),
     }));
   };
-
-  const { categories, loading, error } = useGetCategories();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;

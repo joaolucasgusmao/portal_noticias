@@ -1,7 +1,7 @@
-import { ICategory } from "./category";
-import { IUser } from "./user";
+import { ICategoryReturn } from "./category";
+import { IUserCreate } from "./user";
 
-export interface INews {
+export interface INewsCreate {
   hat?: string;
   title: string;
   summary?: string;
@@ -50,7 +50,7 @@ export interface INewsReturn {
   is_fixed: boolean;
   is_draft: boolean;
   is_active: boolean;
-  categories: ICategory[];
-  user: IUser;
+  categories: ICategoryReturn[];
+  user: IUserCreate;
   created_at: string;
 }

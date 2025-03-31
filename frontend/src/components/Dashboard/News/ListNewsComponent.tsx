@@ -14,20 +14,35 @@ interface ListNewsComponentProps {
 }
 
 const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
-  const { meta } = pagination;
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const { meta } = pagination;
 
+  const [maxChars, setMaxChars] = useState(80);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     searchParams.get("categoryId") || null
   );
-
   const [newsTitle, setNewsTitle] = useState<string>(
     searchParams.get("title") || ""
   );
-
+  
+  const open = Boolean(anchorEl);
+  const currentPage = Number(searchParams.get("page")) || 1;
+  
   const { categories, loading, error } = useGetCategories();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMaxChars(window.innerWidth >= 640 ? 80 : 70);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const goToPage = (page: number) => {
     const params = new URLSearchParams();
@@ -43,22 +58,6 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
 
     router.push(`/dashboard/news?${params.toString()}`);
   };
-
-  const [maxChars, setMaxChars] = useState(80);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null);
-  const open = Boolean(anchorEl);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setMaxChars(window.innerWidth >= 640 ? 80 : 70);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -147,7 +146,6 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
             fontWeight: "bold",
             fontSize: "1rem",
             border: "1px solid",
-            // marginTop: "14px",
             borderColor: "var(--input-border)",
             color: "var(--primary)",
             height: "2.5rem",

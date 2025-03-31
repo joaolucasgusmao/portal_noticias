@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IUserCreate {
   id?: number;
   name: string;
   email: string;

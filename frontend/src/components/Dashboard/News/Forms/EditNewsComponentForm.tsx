@@ -4,19 +4,19 @@ import { Box, Chip, FormControlLabel, Switch, Typography } from "@mui/material";
 import ButtonComponent from "../../commons/ButtonComponent";
 import Checkbox from "../../commons/CheckboxComponent";
 import { toast } from "react-toastify";
-import { INews, INewsReturn } from "@/@types/news";
-import { ICategory } from "@/@types/category";
+import { INewsCreate, INewsReturn } from "@/@types/news";
+import { ICategoryReturn } from "@/@types/category";
 import { useRouter } from "next/navigation";
 interface EditNewsProps {
   news: INewsReturn;
-  categories: ICategory[];
+  categories: ICategoryReturn[];
 }
 
 const EditNewsComponentForm: React.FC<EditNewsProps> = ({
   news,
   categories,
 }) => {
-  const [formData, setFormData] = useState<INews>({
+  const [formData, setFormData] = useState<INewsCreate>({
     hat: news.hat || "",
     title: news.title || "",
     summary: news.summary || "",
@@ -30,11 +30,9 @@ const EditNewsComponentForm: React.FC<EditNewsProps> = ({
   });
 
   const router = useRouter();
-
   const [selectedCategories, setSelectedCategories] = useState<number[]>(
     news.categories.map((cat) => cat.id)
   );
-
   const [inputValue, setInputValue] = useState<string>("");
   const [showNoCategoriesMessage, setShowNoCategoriesMessage] =
     useState<boolean>(false);
