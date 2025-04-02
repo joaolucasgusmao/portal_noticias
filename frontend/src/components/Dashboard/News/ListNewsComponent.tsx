@@ -27,10 +27,9 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
   const [newsTitle, setNewsTitle] = useState<string>(
     searchParams.get("title") || ""
   );
-  
+
   const open = Boolean(anchorEl);
   const currentPage = Number(searchParams.get("page")) || 1;
-  
   const { categories, loading, error } = useGetCategories();
 
   useEffect(() => {
@@ -137,6 +136,10 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
                   backgroundColor: "var(--black-3)",
                   transform: "scale(1.05)",
                 },
+                "& .MuiMenuItem-root:active": {
+                  backgroundColor: "var(--black-3)",
+                  transform: "scale(1.05)",
+                },  
               },
             },
           }}
@@ -279,7 +282,6 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
               <h1 className="w-fit text-base hidden xl:block text-left">
                 Data de Publicação
               </h1>
-              <h1 className="w-fit text-base hidden xl:block text-left"></h1>
             </div>
 
             <ul className="bg-[var(--black-2)]">

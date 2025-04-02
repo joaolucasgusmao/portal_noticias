@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
@@ -14,17 +14,17 @@ export async function GET(
 
     const id = (await params).id;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`,
+      {
+        method: "GET",
+      }
+    );
 
     if (!res.ok) {
       const data = await res.json();
       return NextResponse.json(
-        { error: data.message || "Erro ao buscar notícia!" },
+        { error: data.message || "Erro ao obter Categoria!" },
         { status: res.status }
       );
     }
@@ -52,29 +52,32 @@ export async function PATCH(
     const id = (await params).id;
     const body = await req.json();
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
 
     if (!res.ok) {
       const data = await res.json();
       return NextResponse.json(
-        { error: data.message || "Erro ao editar notícia!" },
+        { error: data.message || "Erro ao editar Categoria!" },
         { status: res.status }
       );
     }
 
-    const updatedNews = await res.json();
+    const updatedCategory = await res.json();
 
     return NextResponse.json(
       {
-        message: "Notícia editada com sucesso!",
-        data: updatedNews,
+        message: "Categoria editada com sucesso!",
+        data: updatedCategory,
       },
       { status: 200 }
     );
@@ -99,22 +102,25 @@ export async function DELETE(
 
     const id = (await params).id;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!res.ok) {
       return NextResponse.json(
-        { error: "Erro ao deletar notícia!" },
+        { error: "Erro ao deletar Categoria!" },
         { status: res.status }
       );
     }
 
     return NextResponse.json(
-      { message: "Notícia deletada com sucesso!" },
+      { message: "Categoria deletada com sucesso!" },
       { status: 200 }
     );
   } catch (error) {

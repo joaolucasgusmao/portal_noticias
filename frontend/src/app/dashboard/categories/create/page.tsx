@@ -1,40 +1,30 @@
-"use client";
+import { INewsReturn, IPaginate } from "@/@types/news";
+import CategoriesListClient from "./CategoriesListClient";
+import { ICategoryReturn } from "@/@types/category";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
-import PropagateLoader from "react-spinners/PropagateLoader";
-import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
-import DashboardLayout from "@/components/Dashboard/Layout/DashboardLayout";
-import { ToastContainer } from "react-toastify";
-import CategoryComponentForm from "@/components/Dashboard/Categories/Forms/CategoryComponentForm";
-
-const CreateCategoryPage = () => {
-  const isAuthenticated = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      router.push("/login");
-    }
-  }, [isAuthenticated, router]);
-
-  if (isAuthenticated === null || isAuthenticated === false) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--black)]">
-        <PropagateLoader color="var(--primary)" />
-      </div>
+const fetchCategories = async (): Promise<ICategoryReturn[]> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/categories`,
+      {
+        cache: "no-store",
+      }
     );
-  }
 
-  return (
-    <DashboardLayoutProvider>
-      <DashboardLayout useSidebar={true}>
-        <ToastContainer position="top-right" autoClose={1000} theme="dark" />
-        <CategoryComponentForm />
-      </DashboardLayout>
-    </DashboardLayoutProvider>
-  );
+    if (!response.ok) {
+      throw new Error("Erro ao buscar categorias");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao buscar categorias:", error);
+    return [];
+  }
 };
 
-export default CreateCategoryPage;
+const NewsListPage = async () => {
+  const categories = await fetchCategories();
+  return <CategoriesListClient categories={categories} />;
+};
+
+export default NewsListPage;

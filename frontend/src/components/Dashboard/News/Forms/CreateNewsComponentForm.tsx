@@ -94,11 +94,19 @@ const CreateNewsComponentForm: React.FC = () => {
         throw new Error(data.error || "Erro ao criar a notícia");
       }
 
-      toast.success(data.message, {
-        onClose: () => {
-          router.push("/dashboard/news");
-        },
-      });
+      if (formData.is_draft) {
+        toast.success("Rascunho salvo com sucesso!", {
+          onClose: () => {
+            router.push("/dashboard/news");
+          },
+        });
+      } else {
+        toast.success(data.message, {
+          onClose: () => {
+            router.push("/dashboard/news");
+          },
+        });
+      }
 
       setFormData({
         hat: "",

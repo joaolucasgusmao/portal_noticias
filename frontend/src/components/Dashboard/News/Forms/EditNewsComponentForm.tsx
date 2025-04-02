@@ -92,11 +92,20 @@ const EditNewsComponentForm: React.FC<EditNewsProps> = ({
       if (!response.ok) {
         throw new Error(data.error);
       }
-      toast.success(data.message, {
-        onClose: () => {
-          router.push("/dashboard/news");
-        },
-      });
+
+      if (formData.is_draft) {
+        toast.success("Rascunho salvo com sucesso!", {
+          onClose: () => {
+            router.push("/dashboard/news");
+          },
+        });
+      } else {
+        toast.success(data.message, {
+          onClose: () => {
+            router.push("/dashboard/news");
+          },
+        });
+      }
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Erro ao editar notícia!"
