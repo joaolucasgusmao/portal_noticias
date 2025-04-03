@@ -28,11 +28,12 @@ class BannerRequest extends FormRequest
             "side" => "sometimes|boolean",
             "home" => "sometimes|boolean",
             "is_active" => "sometimes|boolean",
-            "description" => "nullable|string|min:5|max:255",
+            "description" => ["string", "min:5", "max:255"],
         ];
 
         if ($this->isMethod("post")) {
             $rules["image"][] = "required";
+            $rules["description"][] = "required";
         }
 
         return $rules;
@@ -47,6 +48,7 @@ class BannerRequest extends FormRequest
 
             "link.url" => "The link field must be a valid URL.",
 
+            "description.required" => "The description field is required.",
             "description.string" => "The description field must be a text.",
             "description.min" => "The description must be at least :min characters.",
             "description.max" => "The description must be at most :max characters.",

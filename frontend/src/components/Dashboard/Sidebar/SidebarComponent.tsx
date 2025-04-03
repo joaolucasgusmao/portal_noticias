@@ -178,7 +178,7 @@ const SidebarComponent = ({
               },
             }}
           >
-            <ListItemText primary="Todas as notícias" />
+            <ListItemText primary="Todas as Notícias" />
           </ListItem>
           <ListItem
             component="button"
@@ -203,7 +203,7 @@ const SidebarComponent = ({
               },
             }}
           >
-            <ListItemText primary="Adicionar nova notícia" />
+            <ListItemText primary="Adicionar nova Notícia" />
           </ListItem>
           {user?.is_admin ? (
             <ListItem

@@ -155,8 +155,6 @@ const CategoriesListComponent = ({
     }
   };
 
-  console.log(categories.length);
-
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     categoryId: number
@@ -188,7 +186,13 @@ const CategoriesListComponent = ({
                 value={formData.name}
                 required
                 onChange={handleChange}
-                className="w-10/12! lg:w-8/12! mb-0!"
+                className="w-10/12! lg:w-8/12! mb-0! bg-[var(--black-2)]!"
+                sx={{
+                  "& .MuiInputLabel-shrink": {
+                    backgroundColor: "var(--black-2)",
+                    padding: "0 6px",
+                  },
+                }}
               />
               <ButtonComponent
                 type="submit"

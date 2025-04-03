@@ -5,7 +5,11 @@ type InputComponentProps = TextFieldProps & {
   label: string;
 };
 
-const InputComponent: React.FC<InputComponentProps> = ({ label, ...props }) => {
+const InputComponent: React.FC<InputComponentProps> = ({
+  label,
+  sx,
+  ...props
+}) => {
   return (
     <MUITextField
       label={label}
@@ -44,6 +48,7 @@ const InputComponent: React.FC<InputComponentProps> = ({ label, ...props }) => {
           backgroundColor: "var(--black)",
           padding: "0 6px",
         },
+        ...sx,
       }}
     />
   );

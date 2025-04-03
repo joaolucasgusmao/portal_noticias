@@ -11,12 +11,12 @@ class Banner extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        "description",
         "image",
         "link",
         "top",
         "side",
         "home",
-        "description",
         "is_active"
     ];
 

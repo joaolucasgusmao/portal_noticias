@@ -134,12 +134,7 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
                 },
                 "& .MuiMenuItem-root:hover": {
                   backgroundColor: "var(--black-3)",
-                  transform: "scale(1.05)",
                 },
-                "& .MuiMenuItem-root:active": {
-                  backgroundColor: "var(--black-3)",
-                  transform: "scale(1.05)",
-                },  
               },
             },
           }}
@@ -170,10 +165,6 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
               borderColor: "none !important",
             },
-            transition: "all 0.3s ease-in-out",
-            "&:hover": {
-              transform: "scale(1.05)",
-            },
           }}
         >
           <MenuItem
@@ -183,6 +174,10 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
               "&:hover": {
                 backgroundColor: "var(--black-3) !important",
                 transform: "scale(1.05)",
+              },
+              "&.Mui-selected": {
+                backgroundColor: "var(--black-3) !important",
+                color: "var(--primary) !important",
               },
             }}
           >
@@ -196,6 +191,10 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
                 "&:hover": {
                   backgroundColor: "var(--black-3)",
                   transform: "scale(1.05)",
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "var(--black-3) !important",
+                  color: "var(--primary) !important",
                 },
               }}
             >
@@ -242,6 +241,10 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
               transition: "color 0.3s ease, transform 0.3s ease",
               fontSize: "1rem",
               fontWeight: "bold",
+            },
+
+            "&:hover .MuiInputLabel-root": {
+              color: "var(--primary) !important",
             },
             "& .MuiInputLabel-root.Mui-focused": {
               color: "var(--primary)",
