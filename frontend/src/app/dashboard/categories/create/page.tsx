@@ -1,4 +1,3 @@
-import { INewsReturn, IPaginate } from "@/@types/news";
 import CategoriesListClient from "./CategoriesListClient";
 import { ICategoryReturn } from "@/@types/category";
 

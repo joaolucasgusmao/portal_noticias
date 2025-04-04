@@ -22,11 +22,10 @@ class BannerRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
+            "positions" => ["array"],
+            "positions.*" => "in:home,top,side",
             "image" => ["url", "regex:/\\.(jpg|jpeg|png|webp|gif)$/i"],
             "link" => "sometimes|url",
-            "top" => "sometimes|boolean",
-            "side" => "sometimes|boolean",
-            "home" => "sometimes|boolean",
             "is_active" => "sometimes|boolean",
             "description" => ["string", "min:5", "max:255"],
         ];
@@ -34,6 +33,8 @@ class BannerRequest extends FormRequest
         if ($this->isMethod("post")) {
             $rules["image"][] = "required";
             $rules["description"][] = "required";
+            $rules["positions"][] = "required";
+            $rules["positions"][] = "min:1";
         }
 
         return $rules;
@@ -53,9 +54,11 @@ class BannerRequest extends FormRequest
             "description.min" => "The description must be at least :min characters.",
             "description.max" => "The description must be at most :max characters.",
 
-            "side.boolean" => "The side field must be true or false.",
-            "top.boolean" => "The top field must be true or false.",
-            "home.boolean" => "The home field must be true or false.",
+            "positions.required" => "You must select at least one position.",
+            "positions.array" => "Positions must be an array.",
+            "positions.min" => "You must select at least one position.",
+            "positions.*.in" => "Invalid position selected.",
+
             "is_active.boolean" => "The is_active field must be true or false.",
         ];
     }

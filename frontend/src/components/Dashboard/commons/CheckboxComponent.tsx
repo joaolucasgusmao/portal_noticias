@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 interface CheckboxProps {
-  label: string;
-  value: number[];
-  onChange: (value: number[]) => void;
-  options: { id: number; name: string }[];
+  label?: string;
+  value: string[];
+  onChange: (value: string[]) => void;
+  options: { id: string; name: string }[];
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({
@@ -13,19 +13,17 @@ const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
   options,
 }) => {
-  const [selected, setSelected] = useState<number[]>(value);
+  const [selected, setSelected] = useState<string[]>(value);
 
   useEffect(() => {
     setSelected(value);
   }, [value]);
 
-  const handleChange = (id: number) => {
-    let newValue: number[];
-    if (selected.includes(id)) {
-      newValue = selected.filter((v) => v !== id);
-    } else {
-      newValue = [...selected, id];
-    }
+  const handleChange = (id: string) => {
+    const newValue = selected.includes(id)
+      ? selected.filter((v) => v !== id)
+      : [...selected, id];
+
     setSelected(newValue);
     onChange(newValue);
   };

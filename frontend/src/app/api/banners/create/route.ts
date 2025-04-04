@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json(
-      { message: "Banner criada com sucesso!", data },
+      { message: "Banner criado com sucesso!", data },
       { status: 201 }
     );
   } catch (error) {

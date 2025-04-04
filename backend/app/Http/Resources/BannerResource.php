@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NewsResource extends JsonResource
+class BannerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,28 +16,17 @@ class NewsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'hat' => $this->hat,
-            'summary' => $this->summary,
+            'description' => $this->description,
             'image' => $this->image,
-            'caption' => $this->caption,
-            'topics' => $this->topics ?? [],
-            'content' => $this->content,
-            'is_fixed' => (bool) $this->is_fixed,
-            'is_draft' => (bool) $this->is_draft,
+            'link' => $this->link,
+            'positions' => $this->positions,
             'is_active' => (bool) $this->is_active,
-            'categories' => $this->categories->map(fn($category) => [
-                'id' => $category->id,
-                'name' => $category->name,
-            ]),
-            'user' => new UserResource($this->whenLoaded('user')),
             'created_at' => $this->created_at
                 ->setTimezone('America/Sao_Paulo')
                 ->format('d/m/Y') . ' às ' . $this->created_at->setTimezone('America/Sao_Paulo')->format('H:i'),
 
             'updated_at' => $this->updated_at->setTimezone('America/Sao_Paulo')
                 ->format('d/m/Y') . ' às ' . $this->updated_at->setTimezone('America/Sao_Paulo')->format('H:i'),
-
         ];
     }
 }

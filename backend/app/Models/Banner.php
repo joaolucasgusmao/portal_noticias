@@ -14,16 +14,11 @@ class Banner extends Model
         "description",
         "image",
         "link",
-        "top",
-        "side",
-        "home",
+        "positions",
         "is_active"
     ];
 
-    public function toArray()
-    {
-        return [
-            'id' => $this->id,
-        ] + parent::toArray();
-    }
+    protected $casts = [
+        "positions" => "array",
+    ];
 }

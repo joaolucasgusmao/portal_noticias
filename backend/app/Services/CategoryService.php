@@ -5,10 +5,8 @@ namespace App\Services;
 use App\Exceptions\AppError;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryService
 {

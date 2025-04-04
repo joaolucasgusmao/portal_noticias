@@ -274,10 +274,16 @@ const EditNewsComponentForm: React.FC<EditNewsProps> = ({
               {categories.length > 0 ? (
                 <Checkbox
                   label="Categorias"
-                  value={selectedCategories}
-                  options={categories}
+                  value={formData.categories.map(String)}
+                  options={categories.map((category) => ({
+                    id: category.id.toString(),
+                    name: category.name,
+                  }))}
                   onChange={(selected) =>
-                    setFormData((prev) => ({ ...prev, categories: selected }))
+                    setFormData((prev) => ({
+                      ...prev,
+                      categories: selected.map(Number),
+                    }))
                   }
                 />
               ) : showNoCategoriesMessage ? (

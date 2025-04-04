@@ -301,32 +301,9 @@ const SidebarComponent = ({
                 fontWeight: "500",
               },
             }}
+            onClick={() => router.push("/dashboard/banners/create")}
           >
-            <ListItemText primary="Todos os banners" />
-          </ListItem>
-          <ListItem
-            component="button"
-            sx={{
-              color: "var(--primary)",
-              cursor: "pointer",
-              gap: "0.5rem",
-              transition:
-                "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
-              "&:hover": {
-                backgroundColor: "var(--black-3)",
-                transform: "scale(1.02)",
-              },
-              "&:active": {
-                backgroundColor: "var(--black-3)",
-                transform: "scale(0.98)",
-              },
-              "& .MuiListItemText-primary": {
-                fontSize: "0.9rem",
-                fontWeight: "500",
-              },
-            }}
-          >
-            <ListItemText primary="Adicionar novo banner" />
+            <ListItemText primary="Todos os Banners" />
           </ListItem>
         </List>
       </Collapse>

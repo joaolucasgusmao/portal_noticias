@@ -3,32 +3,37 @@
 namespace App\Services;
 
 use App\Exceptions\AppError;
+use App\Http\Resources\BannerResource;
 use App\Models\Banner;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class BannerService
 {
 
     public function store(array $data): Banner
     {
-        if (empty($data['side']) && empty($data['top']) && empty($data['home'])) {
+        if (empty($data["positions"])) {
             throw new AppError("You must specify at least one position for the banner.", 409);
         }
 
-        if (!empty($data['side']) && (!empty($data['top']) || !empty($data['home']))) {
+        if (in_array("side", $data["positions"]) && count($data["positions"]) > 1) {
             throw new AppError("You cannot place the side banner together with the others.", 409);
         }
 
         return Banner::create($data);
     }
 
-    public function get(): Collection
+    public function get(): AnonymousResourceCollection
     {
-        return Banner::oldest("id")->get();
+        return BannerResource::collection(
+            Banner::orderBy('is_active')
+                ->orderByDesc('id')
+                ->get()
+        );
     }
 
-    public function retrieve(int $id): Banner
+    public function retrieve(int $id): JsonResource
     {
         $banner = Banner::find($id);
 
@@ -36,10 +41,10 @@ class BannerService
             throw new AppError("Banner not found.", 404);
         }
 
-        return $banner;
+        return new BannerResource($banner);
     }
 
-    public function update(int $id, array $data): Banner
+    public function update(int $id, array $data): JsonResource
     {
         $banner = Banner::find($id);
 
@@ -47,12 +52,14 @@ class BannerService
             throw new AppError("Banner not found.", 404);
         }
 
-        if (!empty($data['side']) && (!empty($data['top']) || !empty($data['home']))) {
-            throw new AppError("You cannot place the side banner together with the others.", 409);
+        if (!empty($data["positions"])) {
+            if (in_array("side", $data["positions"]) && count($data["positions"]) > 1) {
+                throw new AppError("You cannot place the side banner together with the others.", 409);
+            }
         }
 
         $banner->update($data);
-        return $banner;
+        return new BannerResource($banner);
     }
 
     public function destroy(int $id): void
@@ -66,8 +73,9 @@ class BannerService
         $banner->delete();
     }
 
-    public function getBannersPaginate(): LengthAwarePaginator
+    public function getBannersPaginate(): AnonymousResourceCollection
     {
-        return Banner::paginate(10);
+        $banners = Banner::orderByDesc("id")->paginate(10);
+        return BannerResource::collection($banners);
     }
 }

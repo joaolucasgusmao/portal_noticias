@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BannerRequest;
 use App\Services\BannerService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class BannerController extends Controller
@@ -41,8 +42,8 @@ class BannerController extends Controller
         return response($this->bannerService->destroy($id), 204);
     }
 
-    public function getBannersPaginate(): JsonResponse
+    public function getBannersPaginate(): AnonymousResourceCollection
     {
-        return response()->json($this->bannerService->getBannersPaginate(), 200);
+        return  $this->bannerService->getBannersPaginate();
     }
 }
