@@ -45,6 +45,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <HeaderComponent>
         <Box className="flex items-center gap-4">
           <SidebarIconComponent
+            homePage={false}
             open={open}
             handleToggleMenu={handleToggleMenu}
           />

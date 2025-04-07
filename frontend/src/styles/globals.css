@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 :root {
+  /* Painel */
   --black: #0d0d0d;
   --black-2: #121212;
-  --black-3: #1a1a1a;
+  --black-3: #14171a;
   --input-bg: #262626;
   --input-border: #333333;
 
