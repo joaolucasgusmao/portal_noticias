@@ -22,7 +22,7 @@ const HeaderComponent = ({
 
   return (
     <header className="flex flex-col w-full fixed top-0 z-50">
-      <div className="w-full px-5 md:px-10 flex items-center justify-between bg-[var(--white)] h-20">
+      <div className="w-full px-5 md:px-10 flex items-center justify-start gap-8 sm:justify-between bg-[var(--white)] h-20">
         <div className="flex gap-4 items-center">
           <SidebarIconComponent
             homePage={true}
@@ -45,17 +45,13 @@ const HeaderComponent = ({
           </div>
         </div>
         <h1 className="text-[var(--black)] text-3xl font-bold">SUA LOGO</h1>
-        <div className="flex items-center">
+        <div className="hidden sm:flex items-center">
           <SearchIcon />
           <TextField
             placeholder="Buscar"
             type="text"
             name="title"
             sx={{
-              display: {
-                xs: "none",
-                sm: "block",
-              },
               backgroundColor: "var(--header-bg)",
 
               "& .MuiOutlinedInput-root": {
@@ -88,7 +84,7 @@ const HeaderComponent = ({
         </div>
       </div>
       {categories ? (
-        <div className="w-full bg-[var(--black-3)] px-4 sm:px-10 h-10 flex items-center justify-center">
+        <div className="hidden w-full bg-[var(--black-3)] px-4 sm:px-10 h-10 md:flex items-center justify-center">
           <h2 className="text-base flex gap-4 cursor-pointer items-center">
             {categories.map((category, index) => (
               <span key={index} className="font-medium text-[var(--white)]">
