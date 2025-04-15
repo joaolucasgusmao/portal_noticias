@@ -44,7 +44,7 @@ const HeaderComponent = ({
             </div>
           </div>
         </div>
-        <h1 className="text-[var(--black)] text-3xl font-bold">SUA LOGO</h1>
+        <h1 className="text-[var(--orange)] text-3xl font-bold">SUA LOGO</h1>
         <div className="hidden sm:flex items-center">
           <SearchIcon />
           <TextField
@@ -83,8 +83,8 @@ const HeaderComponent = ({
           />
         </div>
       </div>
-      {categories ? (
-        <div className="hidden w-full bg-[var(--black-3)] px-4 sm:px-10 h-10 md:flex items-center justify-center">
+      {categories.length > 0 ? (
+        <div className="hidden w-full bg-[var(--orange)] px-4 sm:px-10 h-10 md:flex items-center justify-center">
           <h2 className="text-base flex gap-4 cursor-pointer items-center">
             {categories.map((category, index) => (
               <span key={index} className="font-medium text-[var(--white)]">

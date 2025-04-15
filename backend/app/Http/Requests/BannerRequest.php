@@ -25,7 +25,7 @@ class BannerRequest extends FormRequest
             "positions" => ["array"],
             "positions.*" => "in:home,top,side",
             "image" => ["url", "regex:/\\.(jpg|jpeg|png|webp|gif)$/i"],
-            "link" => "sometimes|url",
+            "link" => "nullable|url",
             "is_active" => "sometimes|boolean",
             "description" => ["string", "min:5", "max:255"],
         ];
