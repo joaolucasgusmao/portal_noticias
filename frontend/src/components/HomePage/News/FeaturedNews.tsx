@@ -13,8 +13,8 @@ interface FeaturedNews {
 }
 
 const FeaturedNews = ({ news }: FeaturedNews) => {
-  const [maxCharsSummary, setMaxCharsSummary] = useState<number>(92);
-  const [maxCharsTitle, setMaxCharsTitle] = useState<number>(75);
+  const [maxCharsSummary] = useState<number>(107);
+  const [maxCharsTitle] = useState<number>(82);
 
   const sliderNews = news
     .filter((news) => news.is_fixed && news.is_active)
@@ -22,31 +22,35 @@ const FeaturedNews = ({ news }: FeaturedNews) => {
 
   const sideNews = news
     .filter((news) => !news.is_fixed && news.is_active)
-    .slice(0, 3);
+    .slice(0, 2);
 
-  if (sliderNews.length === 0 && sideNews.length === 0) null;
+  if (sliderNews.length === 0 && sideNews.length === 0) return null;
 
   return (
-    <section className="w-full flex items-center justify-center mt-5">
-      <div className="w-full h-auto flex flex-col gap-4">
+    <section className="w-full flex justify-center mt-5">
+      <div className="w-full max-w-[1295px] flex flex-col lg:flex-row gap-16 xl:gap-20">
         <Swiper
           modules={[Autoplay, Pagination]}
           autoplay={{ delay: 3000 }}
-          loop={true}
+          loop
           slidesPerView={1}
           pagination={{ clickable: true }}
           speed={500}
-          className="pb-10! w-full h-[380px!]"
+          spaceBetween={0}
+          className="w-full h-[280px] lg:w-[780px] lg:h-[400px] rounded-md"
         >
           {sliderNews.map((news) => (
-            <SwiperSlide key={news.id} className="w-full h-[350px!]">
+            <SwiperSlide
+              key={news.id}
+              className="w-full h-[380px] lg:h-[530px] relative"
+            >
               <img
                 src={news.image}
                 alt={news.caption}
-                className="w-full h-full relative"
+                className="w-full h-full object-cover"
               />
-              <div className="flex flex-col gap-2 absolute bottom-0 left-0 right-0 h-max p-2 bg-[linear-gradient(0deg,rgba(0,0,0,0.83)_34%,rgba(0,0,0,0.82)_35%,rgba(0,0,0,0.66)_68%,transparent_100%)]">
-                <span className="text-white text-xs font-bold bg-[var(--orange)] w-max px-2 py-1 rounded-full">
+              <div className="absolute bottom-0 h-[10.5rem] sm:h-36 md:h-32 left-0 right-0 flex flex-col gap-2 p-4 bg-gradient-to-t from-black/85 via-black/70 to-transparent">
+                <span className="text-white text-sm font-bold bg-[var(--orange)] w-max px-2 py-1 rounded-full">
                   {news.hat}
                 </span>
                 <h1 className="text-white font-bold text-xl">{news.title}</h1>
@@ -54,36 +58,45 @@ const FeaturedNews = ({ news }: FeaturedNews) => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className="flex flex-col gap-4 w-full">
+
+        <div className="flex flex-col gap-6 w-full lg:w-[440px]">
           {sideNews.map((news) => (
-            <>
-              <div className="w-full h-auto flex flex-col gap-4 items-start">
-                <div className="flex flex-row gap-4">
-                  <img
-                    src={news.image}
-                    alt={news.caption}
-                    className="w-full h-[120px] rounded-sm"
-                  />
-                  <div className="flex flex-col justify-between">
-                    <span className="text-[var(--orange)] font-bold text-sm rounded-md">
-                      {news.hat}
-                    </span>
-                    <h1 className="text-base font-bold">
-                      {news.title.length > maxCharsTitle
-                        ? news.title?.slice(0, maxCharsTitle) + "..."
-                        : news.title}
-                    </h1>
-                  </div>
+            <div
+              key={news.id}
+              className="flex flex-col gap-2 border-b-2 pb-4 border-[var(--gray-2)] last:border-none"
+            >
+              <div className="flex flex-row gap-4 items-start">
+                <img
+                  src={news.image}
+                  alt={news.caption}
+                  className="w-[200px] h-[120px] sm:h-[150px] sm:w-[250px] md:w-[180px] md:h-[127px] object-cover rounded-md"
+                />
+                <div className="flex flex-col gap-2 flex-1">
+                  <span className="text-[var(--orange)] font-bold text-sm sm:text-base lg:text-sm xl:text-base rounded-md">
+                    {news.hat}
+                  </span>
+                  <h2 className="text-sm font-bold sm:text-xl lg:text-sm xl:text-base">
+                    {news.title.length > maxCharsTitle
+                      ? `${news.title.slice(0, maxCharsTitle)}...`
+                      : news.title}
+                  </h2>
+                  {news.summary && (
+                    <p className="text-sm sm:text-base text-[var(--gray-3)] font-sans hidden md:block lg:hidden">
+                      {news.summary.length > maxCharsSummary
+                        ? `${news.summary.slice(0, maxCharsSummary)}...`
+                        : news.summary}
+                    </p>
+                  )}
                 </div>
-                <p className="text-sm text-[var(--gray-2)] font-sans">
-                  {news.summary
-                    ? news.summary.length > maxCharsSummary
-                      ? news.summary.slice(0, maxCharsSummary) + "..."
-                      : news.summary
-                    : ""}
-                </p>
               </div>
-            </>
+              {news.summary && (
+                <p className="text-sm sm:text-base lg:text-sm xl:text-base text-[var(--gray-3)] font-sans md:hidden lg:block">
+                  {news.summary.length > maxCharsSummary
+                    ? `${news.summary.slice(0, maxCharsSummary)}...`
+                    : news.summary}
+                </p>
+              )}
+            </div>
           ))}
         </div>
       </div>
@@ -92,7 +105,3 @@ const FeaturedNews = ({ news }: FeaturedNews) => {
 };
 
 export default FeaturedNews;
-
-{
-  /* */
-}
