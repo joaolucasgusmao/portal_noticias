@@ -8,6 +8,7 @@ use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class NewsService
 {
@@ -24,10 +25,11 @@ class NewsService
             if (!empty($data['is_fixed'])) {
                 $data['is_active'] = true;
             } else {
-
                 $data['is_active'] = true;
             }
         }
+
+        $data['slug'] = Str::slug($data['slug']);
 
         $categories = $data['categories'] ?? [];
         unset($data['categories']);
@@ -87,6 +89,13 @@ class NewsService
             }
         }
 
+        if (!empty($data['title']) && !array_key_exists('slug', $data)) {
+            throw new AppError("Slug field is required", 422);
+        }
+
+        if (array_key_exists('slug', $data)) {
+            $data['slug'] = Str::slug($data['slug']);
+        }
 
         $news->update($data);
 

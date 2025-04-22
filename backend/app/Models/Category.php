@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'slug'];
 
     public function news()
     {
@@ -17,9 +17,9 @@ class Category extends Model
     }
 
     public function toArray()
-{
-    return [
-        'id' => $this->id, 
-    ] + parent::toArray();
-}
+    {
+        return [
+            'id' => $this->id,
+        ] + parent::toArray();
+    }
 }

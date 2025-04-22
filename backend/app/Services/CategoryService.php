@@ -7,6 +7,7 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class CategoryService
 {
@@ -15,6 +16,8 @@ class CategoryService
         if (Category::where("name", $data["name"])->exists()) {
             throw new AppError("The category already exists.", 409);
         }
+
+        $data['slug'] = Str::slug($data['slug']);
 
         return Category::create($data);
     }
@@ -42,6 +45,8 @@ class CategoryService
         if (!$category) {
             throw new AppError("Category not found.", 404);
         }
+
+        $data['slug'] = Str::slug($data['slug']);
 
         $category->update($data);
 

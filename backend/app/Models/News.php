@@ -21,6 +21,7 @@ class News extends Model
         "is_fixed",
         "is_draft",
         "is_active",
+        "slug",
         "user_id",
     ];
 
@@ -42,6 +43,6 @@ class News extends Model
     {
         return [
             'id' => $this->id,
-        ] + parent::toArray(); 
+        ] + parent::toArray();
     }
 }

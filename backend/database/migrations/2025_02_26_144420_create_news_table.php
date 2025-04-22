@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean("is_draft")->default(false);
             $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->boolean("is_active")->default(true);
+            $table->string("slug");
             $table->softDeletes();
             $table->timestamps();
         });

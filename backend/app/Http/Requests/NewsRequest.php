@@ -24,6 +24,7 @@ class NewsRequest extends FormRequest
         $rules = [
             "hat" => "nullable|string|min:3|max:30",
             "title" => "required|string|min:5|max:255",
+            "slug" => "required|string|min:5|max:255",
             "summary" => "nullable|string|min:5|max:255",
             "image" => ["required", "url", "regex:/\\.(jpg|jpeg|png|webp)$/i"],
             "content" => "required|string|min:5",
@@ -39,6 +40,7 @@ class NewsRequest extends FormRequest
 
         if ($this->isMethod("patch")) {
             $rules["title"] = "sometimes|string|min:5|max:255";
+            $rules["slug"] = "sometimes|string|min:5|max:255";
             $rules["summary"] = "sometimes|nullable|string|min:5|max:255";
             $rules["image"] = ["sometimes", "url", "regex:/\\.(jpg|jpeg|png|webp)$/i"];
             $rules["content"] = "sometimes|string|min:5";
@@ -62,6 +64,11 @@ class NewsRequest extends FormRequest
             "title.string" => "The title must be a text.",
             "title.min" => "The title must have at least :min characters.",
             "title.max" => "The title must have at most :max characters.",
+
+            "slug.required" => "The slug field is required.",
+            "slug.string" => "The slug must be a text.",
+            "slug.min" => "The slug must have at least :min characters.",
+            "slug.max" => "The slug must have at most :max characters.",
 
             "summary.string" => "The summary must be a text.",
             "summary.min" => "The summary must have at least :min characters.",

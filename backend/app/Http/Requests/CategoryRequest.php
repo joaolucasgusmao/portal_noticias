@@ -22,7 +22,8 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|min:3|max:25"
+            "name" => "required|string|min:3|max:25",
+            "slug" => "required|string|min:3|max:25"
         ];
     }
 
@@ -33,6 +34,11 @@ class CategoryRequest extends FormRequest
             "name.string" => "The category name must be a valid string.",
             "name.min" => "The category name must be at least :min characters long.",
             "name.max" => "The category name must be at most :max characters long.",
+
+            "slug.required" => "The slug name is required.",
+            "slug.string" => "The slug must be a valid string.",
+            "slug.min" => "The slug must be at least :min characters long.",
+            "slug.max" => "The slug must be at most :max characters long.",
         ];
     }
 }
