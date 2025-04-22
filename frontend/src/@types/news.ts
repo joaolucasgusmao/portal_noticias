@@ -4,6 +4,7 @@ import { IUserCreate } from "./user";
 export interface INewsCreate {
   hat?: string;
   title: string;
+  slug: string;
   summary?: string;
   image: string;
   content: string;
@@ -41,6 +42,7 @@ export interface IPaginate<T> {
 export interface INewsReturn {
   id: number;
   title: string;
+  slug: string;
   hat?: string;
   summary?: string;
   image: string;

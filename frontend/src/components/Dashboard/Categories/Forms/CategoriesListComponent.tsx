@@ -16,6 +16,7 @@ const CategoriesListComponent = ({
 }: CategoriesListComponentProps) => {
   const [formData, setFormData] = useState<ICreateCategory>({
     name: "",
+    slug: "",
   });
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -34,6 +35,7 @@ const CategoriesListComponent = ({
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "name" && { slug: value }),
     }));
   };
 
@@ -59,6 +61,7 @@ const CategoriesListComponent = ({
         });
         setFormData({
           name: "",
+          slug: "",
         });
       } else {
         toast.error(data.error);
@@ -84,7 +87,7 @@ const CategoriesListComponent = ({
 
       if (response.ok) {
         setAnchorEl(null);
-        setFormData({ name: data.name });
+        setFormData({ name: data.name, slug: data.slug });
       } else {
         toast.error(data.error);
       }
@@ -114,6 +117,7 @@ const CategoriesListComponent = ({
           onClose: () => {
             setFormData({
               name: "",
+              slug: "",
             });
             router.refresh();
             setSelectedCategoryId(null);

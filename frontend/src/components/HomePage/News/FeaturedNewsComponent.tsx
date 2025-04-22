@@ -14,17 +14,26 @@ interface FeaturedNewsComponentProps {
 
 const FeaturedNewsComponent = ({ news }: FeaturedNewsComponentProps) => {
   const [maxCharsSummary] = useState<number>(107);
-  const [maxCharsTitle] = useState<number>(82);
+  const [maxCharsTitle] = useState<number>(135);
 
-  const sliderNews = news
+  let sliderNews = news
     .filter((news) => news.is_fixed && news.is_active)
     .slice(0, 3);
 
-  const sideNews = news
-    .filter((news) => !news.is_fixed && news.is_active)
-    .slice(0, 2);
+  if (sliderNews.length === 0) {
+    sliderNews = news
+      .filter((news) => news.is_active && !news.is_fixed)
+      .slice(0, 3);
+  }
 
-  if (sliderNews.length === 0 && sideNews.length === 0) return null;
+  const sideNews = news
+    .filter(
+      (newsItem) =>
+        !newsItem.is_fixed &&
+        newsItem.is_active &&
+        !sliderNews.some((sliderItem) => sliderItem.id === newsItem.id)
+    )
+    .slice(0, 2);
 
   return (
     <div className="w-full max-w-[1295px] flex flex-col lg:flex-row gap-16 xl:gap-20">
@@ -52,7 +61,11 @@ const FeaturedNewsComponent = ({ news }: FeaturedNewsComponentProps) => {
               <span className="text-white text-sm font-bold bg-[var(--orange)] w-max px-2 py-1 rounded-full">
                 {news.hat}
               </span>
-              <h1 className="text-white font-bold text-xl">{news.title}</h1>
+              <h1 className="text-white font-bold text-xl">
+                {news.title.length > maxCharsTitle
+                  ? `${news.title.slice(0, maxCharsTitle)}...`
+                  : news.title}
+              </h1>
             </div>
           </SwiperSlide>
         ))}

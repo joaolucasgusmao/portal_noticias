@@ -13,6 +13,7 @@ const CreateNewsComponentForm: React.FC = () => {
   const [formData, setFormData] = useState<INewsCreate>({
     hat: "",
     title: "",
+    slug: "",
     summary: "",
     image: "",
     content: "",
@@ -70,6 +71,15 @@ const CreateNewsComponentForm: React.FC = () => {
       return;
     }
 
+    if (name === "title") {
+      setFormData((prev) => ({
+        ...prev,
+        title: value,
+        slug: value,
+      }));
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -111,6 +121,7 @@ const CreateNewsComponentForm: React.FC = () => {
       setFormData({
         hat: "",
         title: "",
+        slug: "",
         summary: "",
         image: "",
         content: "",

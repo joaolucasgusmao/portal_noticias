@@ -19,6 +19,7 @@ const EditNewsComponentForm: React.FC<EditNewsProps> = ({
   const [formData, setFormData] = useState<INewsCreate>({
     hat: news.hat || "",
     title: news.title || "",
+    slug: news.slug || "",
     summary: news.summary || "",
     image: news.image || "",
     content: news.content || "",
@@ -66,6 +67,15 @@ const EditNewsComponentForm: React.FC<EditNewsProps> = ({
 
     if (type === "checkbox") {
       setFormData((prev) => ({ ...prev, [name]: checked }));
+      return;
+    }
+
+    if (name === "title") {
+      setFormData((prev) => ({
+        ...prev,
+        title: value,
+        slug: value,
+      }));
       return;
     }
 
