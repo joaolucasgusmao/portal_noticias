@@ -10,7 +10,7 @@ const HomeOneBannerComponent = ({ banner }: HomeOneBannerComponentProps) => {
     .slice(0, 1);
 
   return (
-    <div className="w-full max-w-[1500px]">
+    <div className="w-full max-w-[1295px]">
       {HomeOneBanner.map((banner) => (
         <div
           className="w-full h-auto lg:h-[350px] flex items-center justify-center"

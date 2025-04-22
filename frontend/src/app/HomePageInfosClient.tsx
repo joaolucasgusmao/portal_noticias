@@ -8,6 +8,7 @@ import HomeOneBannerComponent from "@/components/HomePage/Banners/HomeOneBannerC
 import TopBannerComponent from "@/components/HomePage/Banners/TopBannerComponent";
 import HeaderComponent from "@/components/HomePage/HeaderComponent";
 import FeaturedNewsComponent from "@/components/HomePage/News/FeaturedNewsComponent";
+import HomeNewsComponent from "@/components/HomePage/News/HomeNewsComponent";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
 
 interface HomePageInfosClient {
@@ -26,11 +27,14 @@ const HomePageInfosClient = ({
   return (
     <DashboardLayoutProvider>
       <HeaderComponent weatherInfos={weatherInfos} categories={categories} />
-      <main className="flex flex-col items-center justify-center mt-28 md:mt-48 mx-4 sm:mx-12">
+      <main className="flex flex-col items-center justify-center mt-28 md:mt-28 mx-4 sm:mx-12">
         <section className="w-full flex flex-col items-center justify-center mt-5">
           <TopBannerComponent banners={banners} />
           <FeaturedNewsComponent news={news} />
           <HomeOneBannerComponent banner={banners} />
+        </section>
+        <section className="w-full flex flex-col items-center justify-center mt-5">
+          <HomeNewsComponent news={news} />
         </section>
       </main>
     </DashboardLayoutProvider>

@@ -36,7 +36,7 @@ const FeaturedNewsComponent = ({ news }: FeaturedNewsComponentProps) => {
     .slice(0, 2);
 
   return (
-    <div className="w-full max-w-[1295px] flex flex-col lg:flex-row gap-16 xl:gap-20">
+    <div className="w-full max-w-[1295px] flex flex-col lg:flex-row gap-12 xl:gap-20">
       <Swiper
         modules={[Autoplay, Pagination]}
         autoplay={{ delay: 3000 }}
