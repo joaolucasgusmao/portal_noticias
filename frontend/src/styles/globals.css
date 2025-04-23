@@ -5,18 +5,25 @@
   --black: #0d0d0d;
   --black-2: #121212;
   --black-3: #14171a;
+  --black-4: #6e6a6a;
+
   --input-bg: #262626;
+
   --input-border: #333333;
 
   --white: #ffffff;
   --gray: #b3b3b3;
   --gray-2: #eaeaea;
   --gray-3: #4a4a4a;
+  --gray-4: #e1e1e1;
 
   --primary: #eb4432;
   --primary-hover: #d63d2d;
 
   --orange: #ff9300;
+
+  --green: #00c951;
+  --red: #fb2c37;
 }
 
 .swiper-pagination-bullet {

@@ -3,6 +3,7 @@ import { IWeather } from "@/@types/weather";
 import HomePageInfosClient from "./HomePageInfosClient";
 import { IBannerReturn } from "@/@types/banner";
 import { INewsReturn } from "@/@types/news";
+import { ICoins } from "@/@types/coins";
 
 const fetchCategories = async (): Promise<ICategoryReturn[]> => {
   try {
@@ -28,7 +29,7 @@ const API_KEY = `${process.env.API_WEATHER_KEY}`;
 const LAT = -23.7658;
 const LON = -53.325;
 
-export async function fetchWeather(): Promise<IWeather> {
+const fetchWeather = async (): Promise<IWeather> => {
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&appid=${API_KEY}&units=metric&lang=pt_br`;
 
   const res = await fetch(url);
@@ -39,7 +40,7 @@ export async function fetchWeather(): Promise<IWeather> {
   const data = await res.json();
 
   return parseWeatherResponse(data);
-}
+};
 
 const fetchBanners = async (): Promise<IBannerReturn[]> => {
   try {
@@ -75,6 +76,26 @@ const fetchNews = async (): Promise<INewsReturn[]> => {
   }
 };
 
+const fetchDol = async (): Promise<ICoins> => {
+  try {
+    const response = await fetch(
+      "https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,BTC-BRL",
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar cotação de Dólar");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao buscar cotação de Dólar:", error);
+    throw error;
+  }
+};
+
 function parseWeatherResponse(data: any): IWeather {
   const icon = data.weather?.[0]?.icon || "";
   const temp = data.main.temp;
@@ -96,12 +117,14 @@ const HomePage = async () => {
   const weather = await fetchWeather();
   const banners = await fetchBanners();
   const news = await fetchNews();
+  const coins = await fetchDol();
   return (
     <HomePageInfosClient
       weatherInfos={weather}
       categories={categories}
       banners={banners}
       news={news}
+      coins={coins}
     />
   );
 };

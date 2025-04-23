@@ -2,6 +2,7 @@
 
 import { IBannerReturn } from "@/@types/banner";
 import { ICategoryReturn } from "@/@types/category";
+import { ICoins } from "@/@types/coins";
 import { INewsReturn } from "@/@types/news";
 import { IWeather } from "@/@types/weather";
 import HomeOneBannerComponent from "@/components/HomePage/Banners/HomeOneBannerComponent";
@@ -16,6 +17,7 @@ interface HomePageInfosClient {
   weatherInfos: IWeather;
   banners: IBannerReturn[];
   news: INewsReturn[];
+  coins: ICoins;
 }
 
 const HomePageInfosClient = ({
@@ -23,6 +25,7 @@ const HomePageInfosClient = ({
   weatherInfos,
   banners,
   news,
+  coins,
 }: HomePageInfosClient) => {
   return (
     <DashboardLayoutProvider>
@@ -34,7 +37,7 @@ const HomePageInfosClient = ({
           <HomeOneBannerComponent banner={banners} />
         </section>
         <section className="w-full flex flex-col items-center justify-center mt-5">
-          <HomeNewsComponent news={news} />
+          <HomeNewsComponent news={news} coins={coins} />
         </section>
       </main>
     </DashboardLayoutProvider>
