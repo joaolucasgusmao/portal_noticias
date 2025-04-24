@@ -32,13 +32,8 @@ class NewsResource extends JsonResource
                 'name' => $category->name,
             ]),
             'user' => new UserResource($this->whenLoaded('user')),
-            'created_at' => $this->created_at
-                ->setTimezone('America/Sao_Paulo')
-                ->format('d/m/Y') . ' às ' . $this->created_at->setTimezone('America/Sao_Paulo')->format('H:i'),
-
-            'updated_at' => $this->updated_at->setTimezone('America/Sao_Paulo')
-                ->format('d/m/Y') . ' às ' . $this->updated_at->setTimezone('America/Sao_Paulo')->format('H:i'),
-
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

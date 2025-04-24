@@ -8,8 +8,9 @@ interface CoinsComponentProps {
 }
 
 const CoinsComponent = ({ coins }: CoinsComponentProps) => {
+
   return (
-    <div className="hidden xl:flex xl:flex-col">
+    <div className="w-fit xl:flex xl:flex-col">
       <h1 className="font-bold text-lg text-[var(--black)] mb-2 text-center">
         Economia
       </h1>
@@ -147,7 +148,7 @@ const CoinsComponent = ({ coins }: CoinsComponentProps) => {
           </div>
         </div>
         <div className="flex items-center justify-center flex-col mt-1 pt-6 border-t border-[var(--gray-2)]">
-          <h2 className="text-base font-bold text-[var(--black)]">Bitcoin</h2>
+          <h2 className="text-base font-medium text-[var(--black)]">Bitcoin</h2>
           <p className="text-[0.900rem] font-bold text-[var(--black)]">
             {Number(coins.BTCBRL.ask).toLocaleString("pt-BR", {
               style: "currency",

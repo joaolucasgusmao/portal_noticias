@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { IconButton, Menu, MenuItem, Select, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import useGetCategories from "@/hooks/useGetCategories";
+import dayjs from "dayjs";
 
 interface ListNewsComponentProps {
   news: INewsReturn[];
@@ -323,7 +324,9 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
 
                   <div className="flex w-full h-fit justify-center items-center gap-4 xl:gap-8 2xl:gap-20">
                     <h2 className="text-[var(--gray)] xl:text-base font-semibold hidden xl:block w-full whitespace-nowrap">
-                      {newItem.created_at}
+                      {dayjs(newItem.created_at).format(
+                        "DD/MM/YYYY [às] HH:mm"
+                      )}
                     </h2>
                     <div className="flex w-full justify-end xl:justify-normal">
                       <IconButton

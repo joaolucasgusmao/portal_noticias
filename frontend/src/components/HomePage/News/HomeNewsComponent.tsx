@@ -3,6 +3,7 @@ import { INewsReturn } from "@/@types/news";
 import { useState } from "react";
 
 import CoinsComponent from "../commons/CoinsComponent";
+import LastNewsComponent from "../commons/LastNewsComponent";
 
 interface HomeNewsComponentProps {
   news: INewsReturn[];
@@ -29,7 +30,7 @@ const HomeNewsComponent = ({ news, coins }: HomeNewsComponentProps) => {
             />
             <div className="flex flex-col gap-4">
               <div className="flex gap-6 items-center">
-                <span className="bg-[var(--gray-4)] px-2 py-1 rounded-full text-[var(--black)] text-sm font-bold">
+                <span className="bg-[var(--gray-4)] px-2 py-1 rounded-full text-[var(--black)] text-sm font-sans">
                   {news.hat}
                 </span>
                 <span className="font-medium text-xs text-[var(--black-4)]">
@@ -55,7 +56,10 @@ const HomeNewsComponent = ({ news, coins }: HomeNewsComponentProps) => {
           </div>
         ))}
       </div>
-      <CoinsComponent coins={coins} />
+      <div className="hidden xl:flex flex-col gap-16">
+        <CoinsComponent coins={coins} />
+        <LastNewsComponent news={news} />
+      </div>
     </div>
   );
 };
