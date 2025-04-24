@@ -29,9 +29,9 @@ class NewsController extends Controller
         return response()->json($this->newsService->get(), 200);
     }
 
-    public function retrieve(int $id): JsonResponse
+    public function retrieve(string $slug): JsonResponse
     {
-        return response()->json($this->newsService->retrieve($id), 200);
+        return response()->json($this->newsService->retrieve($slug), 200);
     }
 
     public function update(int $id, NewsRequest $request): JsonResponse

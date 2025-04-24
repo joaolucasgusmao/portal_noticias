@@ -6,19 +6,10 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const token = (await cookies()).get("token")?.value;
-
-    if (!token) {
-      return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
-    }
-
     const id = (await params).id;
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
 
     if (!res.ok) {

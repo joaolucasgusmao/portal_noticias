@@ -17,6 +17,9 @@ class NewsService
     {
         $user = $request->user();
 
+        if (News::where("title", $data["title"])->exists()) {
+            throw new AppError("The title already exists.", 409);
+        }
 
         if (!empty($data['is_draft']) && $data['is_draft'] === true) {
             $data['is_active'] = false;
@@ -52,9 +55,9 @@ class NewsService
         return NewsResource::collection($news);
     }
 
-    public function retrieve(int $id): JsonResource
+    public function retrieve(string $slug): JsonResource
     {
-        $news = News::with('categories', 'user')->find($id);
+        $news = News::with('categories', 'user')->where('slug', $slug)->first();
 
         if (!$news) {
             throw new AppError("News not found.", 404);
