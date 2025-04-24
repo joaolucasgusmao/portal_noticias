@@ -59,6 +59,11 @@ class NewsController extends Controller
         return $this->newsService->getNewsByTitle($request);
     }
 
+    public function getNewsMostViewed(): JsonResponse
+    {
+        return response()->json($this->newsService->getNewsMostViewed(), 200);
+    }
+
     public function getNewsPaginate(): AnonymousResourceCollection
     {
         return $this->newsService->getNewsPaginate();

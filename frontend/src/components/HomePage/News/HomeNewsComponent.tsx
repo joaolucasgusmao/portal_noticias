@@ -4,13 +4,20 @@ import { useState } from "react";
 
 import CoinsComponent from "../commons/CoinsComponent";
 import LastNewsComponent from "../commons/LastNewsComponent";
+import SideHomeBannerComponent from "../Banners/SideHomeBannerComponent";
+import { IBannerReturn } from "@/@types/banner";
 
 interface HomeNewsComponentProps {
   news: INewsReturn[];
   coins: ICoins;
+  banners: IBannerReturn[];
 }
 
-const HomeNewsComponent = ({ news, coins }: HomeNewsComponentProps) => {
+const HomeNewsComponent = ({
+  news,
+  coins,
+  banners,
+}: HomeNewsComponentProps) => {
   const [maxCharsSummary] = useState<number>(107);
   const [maxCharsTitle] = useState<number>(80);
   const homeNews = news.filter((newsItem) => newsItem.is_active).slice(0, 30);
@@ -59,6 +66,7 @@ const HomeNewsComponent = ({ news, coins }: HomeNewsComponentProps) => {
       <div className="hidden xl:flex flex-col gap-16">
         <CoinsComponent coins={coins} />
         <LastNewsComponent news={news} />
+        <SideHomeBannerComponent banners={banners} />
       </div>
     </div>
   );

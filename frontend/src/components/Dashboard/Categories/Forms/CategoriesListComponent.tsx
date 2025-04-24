@@ -174,7 +174,7 @@ const CategoriesListComponent = ({
 
   return (
     <>
-      <section className="flex flex-col xl:flex-row w-full justify-between gap-16 p-4 mx-4 items-center bg-[var(--black-2)] my-20 lg:mx-16">
+      <section className="flex flex-col xl:flex-row w-full justify-around gap-16 p-4 mx-4 items-center bg-[var(--black-2)] my-20 lg:mx-16">
         <form
           onSubmit={selectedCategoryId ? handleUpdate : handleSubmit}
           className="flex w-full 2xl:w-4/12 h-96 justify-center flex-col items-center border border-[var(--input-border)]"
@@ -302,7 +302,13 @@ const CategoriesListComponent = ({
               Total: {categories.length}
             </span>
           </div>
-        ) : null}
+        ) : (
+          <div className="flex justify-center items-center">
+            <p className="text-[var(--primary)] text-xl font-bold">
+              Nenhuma Categoria cadastrada!
+            </p>
+          </div>
+        )}
       </section>
     </>
   );

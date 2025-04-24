@@ -60,6 +60,8 @@ class NewsService
             throw new AppError("News not found.", 404);
         }
 
+        $news->increment('views');
+
         return new NewsResource($news);
     }
 
@@ -173,6 +175,12 @@ class NewsService
             ->orderByDesc('id')
             ->paginate(10);
 
+        return NewsResource::collection($news);
+    }
+
+    public function getNewsMostViewed(): AnonymousResourceCollection
+    {
+        $news = News::with(["categories", "user"])->orderByDesc("views")->get();
         return NewsResource::collection($news);
     }
 

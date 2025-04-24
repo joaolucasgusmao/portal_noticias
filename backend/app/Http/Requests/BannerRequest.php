@@ -23,7 +23,7 @@ class BannerRequest extends FormRequest
     {
         $rules = [
             "positions" => ["array"],
-            "positions.*" => "in:home,top,side",
+            "positions.*" => "in:superTop,top,homeOne,homeTwo,homeThree,homeFour,homeFive,sideHome,side",
             "image" => ["url", "regex:/\\.(jpg|jpeg|png|webp|gif)$/i"],
             "link" => "nullable|url",
             "is_active" => "sometimes|boolean",

@@ -17,7 +17,7 @@ class BannerService
             throw new AppError("You must specify at least one position for the banner.", 409);
         }
 
-        if (in_array("side", $data["positions"]) && count($data["positions"]) > 1) {
+        if (in_array("side", $data["positions"]) && count($data["positions"]) > 1 || in_array("sideHome", $data["positions"]) && count($data["positions"]) > 1) {
             throw new AppError("You cannot place the side banner together with the others.", 409);
         }
 
@@ -53,7 +53,7 @@ class BannerService
         }
 
         if (!empty($data["positions"])) {
-            if (in_array("side", $data["positions"]) && count($data["positions"]) > 1) {
+            if (in_array("side", $data["positions"]) && count($data["positions"]) > 1 || in_array("sideHome", $data["positions"]) && count($data["positions"]) > 1) {
                 throw new AppError("You cannot place the side banner together with the others.", 409);
             }
         }

@@ -36,8 +36,14 @@ const BannersListComponent = ({ banners }: BannersListComponentProps) => {
   const router = useRouter();
 
   const positionMap: Record<string, string> = {
-    home: "Home",
+    superTop: "Super Topo",
     top: "Topo",
+    homeOne: "Home 1",
+    homeTwo: "Home 2",
+    homeThree: "Home 3",
+    homeFour: "Home 4",
+    homeFive: "Home 5",
+    sideHome: "Home Lateral",
     side: "Lateral",
   };
 
@@ -257,8 +263,14 @@ const BannersListComponent = ({ banners }: BannersListComponentProps) => {
                 <Checkbox
                   value={formData.positions}
                   options={[
-                    { id: "home", name: "Home" },
+                    { id: "superTop", name: "Super Topo" },
                     { id: "top", name: "Topo" },
+                    { id: "homeOne", name: "Home 1" },
+                    { id: "homeTwo", name: "Home 2" },
+                    { id: "homeThree", name: "Home 3" },
+                    { id: "homeFour", name: "Home 4" },
+                    { id: "homeFive", name: "Home 5" },
+                    { id: "sideHome", name: "Home Lateral" },
                     { id: "side", name: "Lateral" },
                   ]}
                   onChange={(selected) => {
@@ -270,9 +282,17 @@ const BannersListComponent = ({ banners }: BannersListComponentProps) => {
                       newPositions = selected.filter((pos) => pos !== "side");
                     }
 
+                    if (selected.includes("sideHome")) {
+                      newPositions = ["sideHome"];
+                    } else {
+                      newPositions = selected.filter(
+                        (pos) => pos !== "sideHome"
+                      );
+                    }
+
                     setFormData((prev) => ({
                       ...prev,
-                      positions: newPositions as ("home" | "top" | "side")[],
+                      positions: newPositions as ("superTop" | "top" | "homeOne" | "homeTwo" | "homeThree" | "homeFour" | "homeFive" | "sideHome" | "side")[],
                     }));
                   }}
                 />

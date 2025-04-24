@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->boolean("is_active")->default(true);
             $table->string("slug");
+            $table->integer("views")->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

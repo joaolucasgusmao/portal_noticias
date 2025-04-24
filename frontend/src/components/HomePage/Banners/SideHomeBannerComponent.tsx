@@ -1,19 +1,21 @@
 import { IBannerReturn } from "@/@types/banner";
 
-interface HomeOneBannerComponentProps {
-  banner: IBannerReturn[];
+interface SideHomeBannerComponentProps {
+  banners: IBannerReturn[];
 }
 
-const HomeOneBannerComponent = ({ banner }: HomeOneBannerComponentProps) => {
-  const HomeOneBanner = banner
-    .filter((banner) => banner.positions.includes("home") && banner.is_active)
+const SideHomeBannerComponent = ({ banners }: SideHomeBannerComponentProps) => {
+  const sideHomeBanner = banners
+    .filter(
+      (banner) => banner.positions.includes("sideHome") && banner.is_active
+    )
     .slice(0, 1);
 
   return (
-    <div className="w-full max-w-[1295px]">
-      {HomeOneBanner.map((banner) => (
+    <div className="w-full">
+      {sideHomeBanner.map((banner) => (
         <div
-          className="w-full h-auto lg:h-[350px] flex items-center justify-center"
+          className="w-full h-auto flex items-center justify-center"
           key={banner.id}
         >
           <img
@@ -32,4 +34,4 @@ const HomeOneBannerComponent = ({ banner }: HomeOneBannerComponentProps) => {
   );
 };
 
-export default HomeOneBannerComponent;
+export default SideHomeBannerComponent;

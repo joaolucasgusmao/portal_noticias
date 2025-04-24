@@ -22,6 +22,7 @@ Route::middleware(["auth.custom"])->group(function () {
 
 // News
 Route::get("/news", [NewsController::class, "get"]);
+Route::get("/news/views", [NewsController::class, "getNewsMostViewed"]);
 Route::get("/news/paginate", [NewsController::class, "getNewsPaginate"]);
 Route::get("/news/title", [NewsController::class, "getNewsByTitle"]);
 Route::get("/news/category/{categoryId}", [NewsController::class, "getNewsByCategory"]);
