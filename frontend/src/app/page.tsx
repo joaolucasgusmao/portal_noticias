@@ -76,6 +76,26 @@ const fetchNews = async (): Promise<INewsReturn[]> => {
   }
 };
 
+const fetchNewsMostRead = async (): Promise<INewsReturn[]> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/news/views`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar notícias");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao buscar notícias:", error);
+    return [];
+  }
+};
+
 const fetchDol = async (): Promise<ICoins> => {
   try {
     const response = await fetch(
@@ -118,6 +138,7 @@ const HomePage = async () => {
   const banners = await fetchBanners();
   const news = await fetchNews();
   const coins = await fetchDol();
+  const mostReadNews = await fetchNewsMostRead();
   return (
     <HomePageInfosClient
       weatherInfos={weather}
@@ -125,6 +146,7 @@ const HomePage = async () => {
       banners={banners}
       news={news}
       coins={coins}
+      mostReadNews={mostReadNews}
     />
   );
 };

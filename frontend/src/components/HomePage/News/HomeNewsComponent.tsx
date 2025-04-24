@@ -6,17 +6,20 @@ import CoinsComponent from "../commons/CoinsComponent";
 import LastNewsComponent from "../commons/LastNewsComponent";
 import SideHomeBannerComponent from "../Banners/SideHomeBannerComponent";
 import { IBannerReturn } from "@/@types/banner";
+import MostReadComponent from "../commons/MostReadComponent";
 
 interface HomeNewsComponentProps {
   news: INewsReturn[];
   coins: ICoins;
   banners: IBannerReturn[];
+  mostReadNews: INewsReturn[];
 }
 
 const HomeNewsComponent = ({
   news,
   coins,
   banners,
+  mostReadNews,
 }: HomeNewsComponentProps) => {
   const [maxCharsSummary] = useState<number>(107);
   const [maxCharsTitle] = useState<number>(80);
@@ -67,6 +70,7 @@ const HomeNewsComponent = ({
         <CoinsComponent coins={coins} />
         <LastNewsComponent news={news} />
         <SideHomeBannerComponent banners={banners} />
+        <MostReadComponent mostReadNews={mostReadNews} />
       </div>
     </div>
   );

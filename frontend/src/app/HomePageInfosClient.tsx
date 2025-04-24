@@ -17,6 +17,7 @@ interface HomePageInfosClient {
   weatherInfos: IWeather;
   banners: IBannerReturn[];
   news: INewsReturn[];
+  mostReadNews: INewsReturn[];
   coins: ICoins;
 }
 
@@ -26,6 +27,7 @@ const HomePageInfosClient = ({
   banners,
   news,
   coins,
+  mostReadNews,
 }: HomePageInfosClient) => {
   return (
     <DashboardLayoutProvider>
@@ -37,7 +39,12 @@ const HomePageInfosClient = ({
           <TopBannerComponent banner={banners} />
         </section>
         <section className="w-full flex flex-col items-center justify-center mt-5">
-          <HomeNewsComponent news={news} coins={coins} banners={banners} />
+          <HomeNewsComponent
+            news={news}
+            coins={coins}
+            banners={banners}
+            mostReadNews={mostReadNews}
+          />
         </section>
       </main>
     </DashboardLayoutProvider>
