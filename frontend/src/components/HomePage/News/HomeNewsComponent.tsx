@@ -7,6 +7,7 @@ import LastNewsComponent from "../commons/LastNewsComponent";
 import SideHomeBannerComponent from "../Banners/SideHomeBannerComponent";
 import { IBannerReturn } from "@/@types/banner";
 import MostReadComponent from "../commons/MostReadComponent";
+import { useRouter } from "next/navigation";
 
 interface HomeNewsComponentProps {
   news: INewsReturn[];
@@ -25,13 +26,16 @@ const HomeNewsComponent = ({
   const [maxCharsTitle] = useState<number>(80);
   const homeNews = news.filter((newsItem) => newsItem.is_active).slice(0, 30);
 
+  const router = useRouter();
+
   return (
     <div className="w-full max-w-[1295px] flex gap-28">
       <div className="flex flex-col gap-4">
         {homeNews.map((news) => (
           <div
             key={news.id}
-            className="flex flex-col md:flex-row gap-4 border-b-2 border-[var(--gray-2)] last:border-none pb-4 lg:gap-6"
+            className="flex flex-col md:flex-row gap-4 border-b-2 border-[var(--gray-2)] last:border-none pb-4 lg:gap-6 cursor-pointer"
+            onClick={() => router.push(`/news/${news.slug}`)}
           >
             <img
               src={news.image}
@@ -49,7 +53,7 @@ const HomeNewsComponent = ({
                 </span>
               </div>
               <div className="flex flex-col gap-4">
-                <h1 className="text-xl font-bold text-[var(--orange)] lg:text-2xl">
+                <h1 className="text-xl font-bold text-[var(--orange)] lg:text-2xl hover:underline">
                   {news.title.length > maxCharsTitle
                     ? `${news.title.slice(0, maxCharsTitle)}...`
                     : news.title}

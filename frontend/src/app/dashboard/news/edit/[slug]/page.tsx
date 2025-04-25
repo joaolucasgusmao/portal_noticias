@@ -12,27 +12,27 @@ import { INewsReturn } from "@/@types/news";
 import useGetCategories from "@/hooks/useGetCategories";
 
 interface EditNewsPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 const EditNewsPage = ({ params }: EditNewsPageProps) => {
-  const [id, setId] = useState<string | null>(null);
+  const [slug, setSlug] = useState<string | null>(null);
   const [news, setNews] = useState<INewsReturn | null>(null);
   const [loading, setLoading] = useState(true);
 
   const isAuthenticated = useAuth();
   const router = useRouter();
 
-  const { categories, loading: categoriesLoading, error } = useGetCategories();
-
   useEffect(() => {
     const fetchParams = async () => {
       const resolvedParams = await params;
-      setId(resolvedParams.id);
+      setSlug(resolvedParams.slug);
     };
 
     fetchParams();
   }, [params]);
+
+  const { categories, loading: categoriesLoading, error } = useGetCategories();
 
   useEffect(() => {
     if (isAuthenticated === false) {
@@ -45,7 +45,7 @@ const EditNewsPage = ({ params }: EditNewsPageProps) => {
 
     const fetchNews = async () => {
       try {
-        const newsResponse = await fetch(`/api/news/${id}`);
+        const newsResponse = await fetch(`/api/news/${slug}`);
 
         if (newsResponse.ok) {
           const newsData: INewsReturn = await newsResponse.json();
@@ -61,7 +61,7 @@ const EditNewsPage = ({ params }: EditNewsPageProps) => {
     };
 
     fetchNews();
-  }, [isAuthenticated, id]);
+  }, [isAuthenticated, slug]);
 
   if (
     loading ||

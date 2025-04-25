@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface FeaturedNewsComponentProps {
   news: INewsReturn[];
@@ -15,6 +16,8 @@ interface FeaturedNewsComponentProps {
 const FeaturedNewsComponent = ({ news }: FeaturedNewsComponentProps) => {
   const [maxCharsSummary] = useState<number>(107);
   const [maxCharsTitle] = useState<number>(135);
+
+  const router = useRouter();
 
   let sliderNews = news
     .filter((news) => news.is_fixed && news.is_active)
@@ -50,7 +53,8 @@ const FeaturedNewsComponent = ({ news }: FeaturedNewsComponentProps) => {
         {sliderNews.map((news) => (
           <SwiperSlide
             key={news.id}
-            className="w-full h-[380px] lg:h-[530px] relative"
+            className="w-full h-[380px] lg:h-[530px] relative cursor-pointer"
+            onClick={() => router.push(`/news/${news.slug}`)}
           >
             <img
               src={news.image}
@@ -61,7 +65,7 @@ const FeaturedNewsComponent = ({ news }: FeaturedNewsComponentProps) => {
               <span className="text-white text-sm font-bold bg-[var(--orange)] w-max px-2 py-1 rounded-full">
                 {news.hat}
               </span>
-              <h1 className="text-white font-bold text-xl">
+              <h1 className="text-white font-bold text-xl hover:underline">
                 {news.title.length > maxCharsTitle
                   ? `${news.title.slice(0, maxCharsTitle)}...`
                   : news.title}
@@ -77,7 +81,10 @@ const FeaturedNewsComponent = ({ news }: FeaturedNewsComponentProps) => {
             key={news.id}
             className="flex flex-col gap-2 border-b-2 pb-4 border-[var(--gray-2)] last:border-none"
           >
-            <div className="flex flex-row gap-4 items-start">
+            <div
+              className="flex flex-row gap-4 items-start cursor-pointer"
+              onClick={() => router.push(`/news/${news.slug}`)}
+            >
               <img
                 src={news.image}
                 alt={news.caption}
@@ -87,7 +94,7 @@ const FeaturedNewsComponent = ({ news }: FeaturedNewsComponentProps) => {
                 <span className="text-[var(--orange)] font-bold text-sm sm:text-base lg:text-sm xl:text-base rounded-md">
                   {news.hat}
                 </span>
-                <h2 className="text-sm font-bold sm:text-xl lg:text-sm xl:text-base">
+                <h2 className="text-sm font-bold sm:text-xl lg:text-sm xl:text-base hover:underline">
                   {news.title.length > maxCharsTitle
                     ? `${news.title.slice(0, maxCharsTitle)}...`
                     : news.title}

@@ -21,6 +21,7 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
 
   const [maxChars, setMaxChars] = useState(80);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     searchParams.get("categoryId") || null
@@ -61,20 +62,22 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
+    slug: string,
     newsId: number
   ) => {
     setAnchorEl(event.currentTarget);
+    setSelectedSlug(slug);
     setSelectedNewsId(newsId);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    setSelectedNewsId(null);
+    setSelectedSlug(null);
   };
 
   const handleEdit = () => {
-    if (selectedNewsId) {
-      router.push(`/dashboard/news/edit/${selectedNewsId}`);
+    if (selectedSlug) {
+      router.push(`/dashboard/news/edit/${selectedSlug}`);
     }
     handleClose();
   };
@@ -330,7 +333,9 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
                     </h2>
                     <div className="flex w-full justify-end xl:justify-normal">
                       <IconButton
-                        onClick={(event) => handleMenuClick(event, newItem.id)}
+                        onClick={(event) =>
+                          handleMenuClick(event, newItem.slug, newItem.id)
+                        }
                       >
                         <MoreVertRoundedIcon
                           sx={{

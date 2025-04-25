@@ -26,7 +26,6 @@ Route::get("/news/views", [NewsController::class, "getNewsMostViewed"]);
 Route::get("/news/paginate", [NewsController::class, "getNewsPaginate"]);
 Route::get("/news/title", [NewsController::class, "getNewsByTitle"]);
 Route::get("/news/category/{categoryId}", [NewsController::class, "getNewsByCategory"]);
-Route::get("/news/{slug}", [NewsController::class, "retrieve"]);
 
 Route::middleware(["auth.custom"])->group(function () {
     Route::post("/news", [NewsController::class, "store"]);
@@ -34,6 +33,8 @@ Route::middleware(["auth.custom"])->group(function () {
     Route::delete("/news/{id}", [NewsController::class, "destroy"]);
     Route::get("/news/user/{userId}", [NewsController::class, "getNewsByUser"]);
 });
+
+Route::get("/news/{slug}", [NewsController::class, "retrieve"]);
 
 
 // Categories

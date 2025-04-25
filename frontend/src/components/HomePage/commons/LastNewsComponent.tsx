@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/pt-br";
 import CircleIcon from "@mui/icons-material/Circle";
+import { useRouter } from "next/navigation";
 
 dayjs.extend(relativeTime);
 dayjs.locale("pt-br");
@@ -13,6 +14,7 @@ interface LastNewsComponentProps {
 
 const LastNewsComponent = ({ news }: LastNewsComponentProps) => {
   const lastNews = news.filter((news) => news.is_active).slice(0, 5);
+  const router = useRouter();
 
   return (
     <div className="flex flex-col">
@@ -21,7 +23,11 @@ const LastNewsComponent = ({ news }: LastNewsComponentProps) => {
       </h1>
       <div className="flex flex-col gap-4 mt-4">
         {lastNews.map((news) => (
-          <div className="flex flex-col gap-2 border-b-2 border-[var(--gray-2)] pb-2 last:border-none">
+          <div
+            className="flex flex-col gap-2 border-b-2 border-[var(--gray-2)] pb-2 last:border-none cursor-pointer"
+            key={news.id}
+            onClick={() => router.push(`/news/${news.slug}`)}
+          >
             <div className="flex flex-row items-center gap-2">
               <span className="font-bold text-sm">{news.hat}</span>
               <CircleIcon sx={{ fontSize: "6px", color: "var(--gray-2)" }} />
@@ -29,7 +35,7 @@ const LastNewsComponent = ({ news }: LastNewsComponentProps) => {
                 {dayjs(news.created_at).fromNow()}
               </span>
             </div>
-            <h2 className="text-lg font-bold text-[var(--orange)]">
+            <h2 className="text-lg font-bold text-[var(--orange)] hover:underline">
               {news.title}
             </h2>
           </div>
