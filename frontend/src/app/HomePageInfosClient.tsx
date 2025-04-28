@@ -11,6 +11,7 @@ import HeaderComponent from "@/components/HomePage/HeaderComponent";
 import FeaturedNewsComponent from "@/components/HomePage/News/FeaturedNewsComponent";
 import HomeNewsComponent from "@/components/HomePage/News/HomeNewsComponent";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
+import FooterComponent from "@/components/HomePage/FooterComponent";
 
 interface HomePageInfosClient {
   categories: ICategoryReturn[];
@@ -47,6 +48,7 @@ const HomePageInfosClient = ({
           />
         </section>
       </main>
+      <FooterComponent />
     </DashboardLayoutProvider>
   );
 };

@@ -10,7 +10,7 @@ interface CoinsComponentProps {
 const CoinsComponent = ({ coins }: CoinsComponentProps) => {
 
   return (
-    <div className="xl:flex xl:flex-col items-center">
+    <div className="flex flex-col items-center">
       <h1 className="font-bold text-lg text-[var(--black)] mb-2 text-center">
         Economia
       </h1>

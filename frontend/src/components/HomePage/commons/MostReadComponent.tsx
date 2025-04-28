@@ -14,7 +14,7 @@ const MostReadComponent = ({ mostReadNews }: MostReadComponentProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold text-[var(--black)]">Mais lidas</h1>
+      <h1 className="text-lg sm:text-xl font-bold text-[var(--black)]">Mais lidas</h1>
       <div className="flex flex-col gap-4">
         {news.map((newsItem, index) => (
           <div
@@ -29,7 +29,7 @@ const MostReadComponent = ({ mostReadNews }: MostReadComponentProps) => {
               <span className="text-sm font-sans text-[var(--black)]">
                 {newsItem.hat}
               </span>
-              <h1 className="text-lg font-bold text-[var(--orange)] hover:underline">
+              <h1 className="text-base sm:text-lg font-bold text-[var(--orange)] hover:underline">
                 {newsItem.title}
               </h1>
             </div>
