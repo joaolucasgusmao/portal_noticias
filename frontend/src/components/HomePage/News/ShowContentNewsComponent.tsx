@@ -1,6 +1,7 @@
 import { INewsReturn } from "@/@types/news";
 import Image from "next/image";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import TurnedInIcon from "@mui/icons-material/TurnedIn";
 
 interface ShowContentNewsComponentProps {
   news: INewsReturn;
@@ -46,6 +47,30 @@ const ShowContentNewsComponent = ({ news }: ShowContentNewsComponentProps) => {
       <p className="w-full 2xl:w-[800px] text-[var(--black)] text-base font-medium">
         {news.content}
       </p>
+
+      {news.topics ? (
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-1 items-center">
+            <TurnedInIcon
+              sx={{
+                fontSize: "1rem",
+                color: "var(--black-4)",
+              }}
+            />
+            <h2 className="text-sm text-[var(--black)] font-bold">Tópicos</h2>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {news.topics.map((topic, index) => (
+              <span
+                className="bg-[var(--orange)] text-xs text-[var(--white)] font-medium px-3 py-1 rounded-full cursor-pointer"
+                key={index}
+              >
+                {topic}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

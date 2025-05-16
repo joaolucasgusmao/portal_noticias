@@ -29,9 +29,9 @@ class CategoryController extends Controller
         return response()->json($this->categoryService->get(), 200);
     }
 
-    public function retrieve(int $id): JsonResponse
+    public function retrieve(string $slug): JsonResponse
     {
-        return response()->json($this->categoryService->retrieve($id), 200);
+        return response()->json($this->categoryService->retrieve($slug), 200);
     }
 
     public function update(CategoryRequest $request, int $id): JsonResponse

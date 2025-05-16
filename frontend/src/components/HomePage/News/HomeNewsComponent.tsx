@@ -29,7 +29,7 @@ const HomeNewsComponent = ({
   const router = useRouter();
 
   return (
-    <div className="w-full max-w-[1295px] flex gap-28">
+    <div className="w-full max-w-[1295px] flex flex-col lg:flex-row gap-8">
       <div className="flex flex-col gap-4">
         {homeNews.map((news) => (
           <div
@@ -70,11 +70,11 @@ const HomeNewsComponent = ({
           </div>
         ))}
       </div>
-      <div className="hidden xl:flex flex-col gap-16">
+      <div className="flex flex-col gap-16">
         <CoinsComponent coins={coins} />
-        <LastNewsComponent news={news} />
-        <SideHomeBannerComponent banners={banners} />
+        {/* <LastNewsComponent news={news} /> */}
         <MostReadComponent mostReadNews={mostReadNews} />
+        <SideHomeBannerComponent banners={banners} />
       </div>
     </div>
   );

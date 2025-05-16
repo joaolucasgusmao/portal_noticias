@@ -9,10 +9,10 @@ const SideHomeBannerComponent = ({ banners }: SideHomeBannerComponentProps) => {
     .filter(
       (banner) => banner.positions.includes("sideHome") && banner.is_active
     )
-    .slice(0, 1);
+    .slice(0, 3);
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col-reverse gap-8">
       {sideHomeBanner.map((banner) => (
         <div
           className="w-full h-auto flex items-center justify-center"

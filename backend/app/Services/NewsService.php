@@ -120,11 +120,11 @@ class NewsService
         $news->delete();
     }
 
-    public function getNewsByCategory(int $id): AnonymousResourceCollection
+    public function getNewsByCategory(string $slug): AnonymousResourceCollection
     {
         $news = News::with('categories', 'user')
-            ->whereHas('categories', function ($query) use ($id) {
-                $query->where('category_id', $id);
+            ->whereHas('categories', function ($query) use ($slug) {
+                $query->where('slug', $slug);
             })
             ->orderByDesc('is_fixed')
             ->orderByDesc('is_draft')
@@ -185,6 +185,18 @@ class NewsService
     {
         $news = News::with(["categories", "user"])->orderByDesc("views")->get();
         return NewsResource::collection($news);
+    }
+
+    public function otherNews(string $slug): AnonymousResourceCollection
+    {
+        $currentNews = News::where('slug', $slug)->first();
+
+        $otherNews = News::where('news.id', '!=', $currentNews->id)->get();
+
+        if ($otherNews->isEmpty()) {
+            throw new AppError("No other news found.", 404);
+        }
+        return NewsResource::collection($otherNews);
     }
 
     public function getNewsPaginate(): AnonymousResourceCollection

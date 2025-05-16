@@ -57,6 +57,26 @@ const fetchNewsBySlug = async (slug: string): Promise<INewsReturn> => {
   }
 };
 
+const fetchOtherNews = async (slug: string): Promise<INewsReturn[]> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/news/other/${slug}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar outras notícias");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao buscar outras notícias:", error);
+    return [];
+  }
+};
+
 const fetchCategories = async (): Promise<ICategoryReturn[]> => {
   try {
     const response = await fetch(
@@ -158,6 +178,7 @@ interface ShowContentPageProps {
 const ShowContentPage = async ({ params }: ShowContentPageProps) => {
   const slug = (await params).slug;
   const news = await fetchNewsBySlug(slug);
+  const otherNews = await fetchOtherNews(slug);
   const weather = await fetchWeather();
   const categories = await fetchCategories();
   const banners = await fetchBanners();
@@ -172,6 +193,7 @@ const ShowContentPage = async ({ params }: ShowContentPageProps) => {
       banners={banners}
       coins={coins}
       mostReadNews={mostReadNews}
+      otherNews={otherNews}
     />
   );
 };

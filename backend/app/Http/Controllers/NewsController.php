@@ -44,9 +44,9 @@ class NewsController extends Controller
         return response($this->newsService->destroy($id), 204);
     }
 
-    public function getNewsByCategory(int $categoryId): AnonymousResourceCollection
+    public function getNewsByCategory(string $slug): AnonymousResourceCollection
     {
-        return $this->newsService->getNewsByCategory($categoryId);
+        return $this->newsService->getNewsByCategory($slug);
     }
 
     public function getNewsByUser(UserRequest $request, int $userId): JsonResponse
@@ -62,6 +62,11 @@ class NewsController extends Controller
     public function getNewsMostViewed(): JsonResponse
     {
         return response()->json($this->newsService->getNewsMostViewed(), 200);
+    }
+
+    public function otherNews(string $slug): JsonResponse
+    {
+        return response()->json($this->newsService->otherNews(($slug)), 200);
     }
 
     public function getNewsPaginate(): AnonymousResourceCollection

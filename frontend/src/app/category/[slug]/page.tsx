@@ -1,9 +1,29 @@
 import { ICategoryReturn } from "@/@types/category";
 import { IWeather } from "@/@types/weather";
-import HomePageInfosClient from "./HomePageInfosClient";
 import { IBannerReturn } from "@/@types/banner";
 import { INewsReturn, IPaginate } from "@/@types/news";
 import { ICoins } from "@/@types/coins";
+import NewsCategoryClient from "./NewsCategoryClient";
+
+const getDefaultPagination = (): IPaginate<INewsReturn> => ({
+  data: [],
+  meta: {
+    current_page: 1,
+    from: 0,
+    last_page: 1,
+    links: [],
+    path: "",
+    per_page: 10,
+    to: 0,
+    total: 0,
+  },
+  links: {
+    first: "",
+    last: "",
+    prev: null,
+    next: null,
+  },
+});
 
 const fetchCategories = async (): Promise<ICategoryReturn[]> => {
   try {
@@ -22,6 +42,29 @@ const fetchCategories = async (): Promise<ICategoryReturn[]> => {
   } catch (error) {
     console.error("Erro ao buscar categorias:", error);
     return [];
+  }
+};
+
+const fetchNewsByCategory = async (
+  page: number,
+  slug: string
+): Promise<IPaginate<INewsReturn>> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/news/category/${slug}?page=${page}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar notícias por categoria");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Erro ao buscar notícias por categoria:", error);
+    return getDefaultPagination();
   }
 };
 
@@ -132,15 +175,30 @@ function parseWeatherResponse(data: any): IWeather {
   };
 }
 
-const HomePage = async () => {
+interface NewsCategoryPageProps {
+  params: { slug: string };
+  searchParams: { page?: string };
+}
+
+const NewsCategoryPage = async ({
+  params,
+  searchParams,
+}: NewsCategoryPageProps) => {
+  const slug = (await params).slug;
+  const { page } = await searchParams;
+  const pageNumber = Number(page) || 1;
+
   const categories = await fetchCategories();
   const weather = await fetchWeather();
   const banners = await fetchBanners();
   const news = await fetchNews();
+  const newsCategory = await fetchNewsByCategory(pageNumber, slug);
   const coins = await fetchDol();
   const mostReadNews = await fetchNewsMostRead();
   return (
-    <HomePageInfosClient
+    <NewsCategoryClient
+      pagination={newsCategory}
+      newsCategory={newsCategory.data}
       weatherInfos={weather}
       categories={categories}
       banners={banners}
@@ -151,4 +209,4 @@ const HomePage = async () => {
   );
 };
 
-export default HomePage;
+export default NewsCategoryPage;

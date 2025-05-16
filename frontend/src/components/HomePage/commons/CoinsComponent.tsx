@@ -14,8 +14,8 @@ const CoinsComponent = ({ coins }: CoinsComponentProps) => {
       <h1 className="font-bold text-lg text-[var(--black)] mb-2 text-center">
         Economia
       </h1>
-      <div className="pt-2 w-[350px] h-[225px] border border-[var(--gray-2)]">
-        <div className="flex items-center gap-16 justify-center">
+      <div className="pt-2 w-[300px] h-[225px] border border-[var(--gray-2)]">
+        <div className="flex items-center gap-14 justify-center">
           <div className="flex flex-col">
             <h2 className="text-base font-medium text-[var(--black)] text-center">
               Dólar

@@ -43,11 +43,11 @@ const fetchNews = async (page: number): Promise<IPaginate<INewsReturn>> => {
 
 const fetchNewsByCategory = async (
   page: number,
-  categoryId: string
+  slug: string
 ): Promise<IPaginate<INewsReturn>> => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/news/category/${categoryId}?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/news/category/${slug}?page=${page}`,
       {
         cache: "no-store",
       }
@@ -101,12 +101,12 @@ const NewsListPage = async ({
 
   const title = resolvedSearchParams?.title;
 
-  const categoryId = resolvedSearchParams?.categoryId;
+  const slug = resolvedSearchParams?.slug;
 
   let result: IPaginate<INewsReturn>;
 
-  if (categoryId) {
-    result = await fetchNewsByCategory(page, categoryId);
+  if (slug) {
+    result = await fetchNewsByCategory(page, slug);
   } else if (title) {
     result = await fetchNewsByTitle(title);
   } else {

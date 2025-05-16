@@ -27,9 +27,9 @@ class CategoryService
         return CategoryResource::collection(Category::orderByDesc("id")->get());
     }
 
-    public function retrieve(int $id): JsonResource
+    public function retrieve(string $slug): JsonResource
     {
-        $category = Category::find($id);
+        $category = Category::where("slug", $slug)->get();
 
         if (!$category) {
             throw new AppError("Category not found.", 404);

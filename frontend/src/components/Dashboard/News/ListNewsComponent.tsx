@@ -119,9 +119,9 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
         <Select
           value={selectedCategory || ""}
           onChange={(event) => {
-            const newCategory = event.target.value;
-            setSelectedCategory(newCategory);
-            router.push(`/dashboard/news?page=1&categoryId=${newCategory}`);
+            const slug = event.target.value;
+            setSelectedCategory(slug);
+            router.push(`/dashboard/news?page=1&slug=${slug}`);
           }}
           displayEmpty
           MenuProps={{
@@ -190,7 +190,7 @@ const ListNewsComponent = ({ news, pagination }: ListNewsComponentProps) => {
           {categories.map((category) => (
             <MenuItem
               key={category.id}
-              value={category.id}
+              value={category.slug}
               sx={{
                 "&:hover": {
                   backgroundColor: "var(--black-3)",
