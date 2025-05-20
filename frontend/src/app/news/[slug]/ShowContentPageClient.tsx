@@ -11,6 +11,7 @@ import FooterComponent from "@/components/HomePage/FooterComponent";
 import HeaderComponent from "@/components/HomePage/HeaderComponent";
 import OtherNewsComponent from "@/components/HomePage/News/OtherNewsComponent";
 import ShowContentNewsComponent from "@/components/HomePage/News/ShowContentNewsComponent";
+import SidebarHomeComponent from "@/components/HomePage/Sidebar/SidebarHomeComponent";
 import CoinsComponent from "@/components/HomePage/commons/CoinsComponent";
 import MostReadComponent from "@/components/HomePage/commons/MostReadComponent";
 import { DashboardLayoutProvider } from "@/context/DashboardLayoutContext";
@@ -38,6 +39,7 @@ const ShowContentPageClient = ({
   return (
     <DashboardLayoutProviderHome>
       <HeaderComponent weatherInfos={weatherInfos} categories={categories} />
+      <SidebarHomeComponent categories={categories} />
       <main className="mt-24 md:mt-40 flex flex-col items-center justify-center mx-4 sm:mx-16">
         <SuperTopBannerComponent banners={banners} />
         <section className="max-w-[1295px] flex flex-col lg:flex-row gap-8 mt-10">

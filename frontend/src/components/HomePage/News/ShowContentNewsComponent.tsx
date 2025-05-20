@@ -48,7 +48,7 @@ const ShowContentNewsComponent = ({ news }: ShowContentNewsComponentProps) => {
         {news.content}
       </p>
 
-      {news.topics ? (
+      {(news.topics ?? []).length > 0 && (
         <div className="flex flex-col gap-4">
           <div className="flex gap-1 items-center">
             <TurnedInIcon
@@ -60,7 +60,7 @@ const ShowContentNewsComponent = ({ news }: ShowContentNewsComponentProps) => {
             <h2 className="text-sm text-[var(--black)] font-bold">Tópicos</h2>
           </div>
           <div className="flex flex-wrap gap-2">
-            {news.topics.map((topic, index) => (
+            {(news.topics ?? []).map((topic, index) => (
               <span
                 className="bg-[var(--orange)] text-xs text-[var(--white)] font-medium px-3 py-1 rounded-full cursor-pointer"
                 key={index}
@@ -70,7 +70,7 @@ const ShowContentNewsComponent = ({ news }: ShowContentNewsComponentProps) => {
             ))}
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
