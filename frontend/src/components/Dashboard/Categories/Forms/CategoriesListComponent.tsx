@@ -20,6 +20,9 @@ const CategoriesListComponent = ({
   });
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState<
+    string | null
+  >(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   );
@@ -77,7 +80,7 @@ const CategoriesListComponent = ({
     if (!selectedCategoryId) return;
 
     try {
-      const response = await fetch(`/api/categories/${selectedCategoryId}`, {
+      const response = await fetch(`/api/categories/${selectedCategorySlug}`, {
         method: "GET",
       });
 
@@ -121,6 +124,7 @@ const CategoriesListComponent = ({
             });
             router.refresh();
             setSelectedCategoryId(null);
+            setSelectedCategorySlug(null);
             setButtonText("Criar");
           },
         });
@@ -147,6 +151,8 @@ const CategoriesListComponent = ({
           onClose: () => {
             router.refresh();
             setAnchorEl(null);
+            setSelectedCategoryId(null);
+            setSelectedCategorySlug(null);
           },
         });
       } else {
@@ -161,22 +167,25 @@ const CategoriesListComponent = ({
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
-    categoryId: number
+    categoryId: number,
+    categorySlug: string
   ) => {
     setAnchorEl(event.currentTarget);
     setSelectedCategoryId(categoryId);
+    setSelectedCategorySlug(categorySlug);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
     setSelectedCategoryId(null);
+    setSelectedCategorySlug(null);
   };
 
   return (
     <>
       <section className="flex flex-col xl:flex-row w-full justify-around gap-16 p-4 mx-4 items-center bg-[var(--black-2)] my-20 lg:mx-16">
         <form
-          onSubmit={selectedCategoryId ? handleUpdate : handleSubmit}
+          onSubmit={selectedCategorySlug ? handleUpdate : handleSubmit}
           className="flex w-full 2xl:w-4/12 h-96 justify-center flex-col items-center border border-[var(--input-border)]"
         >
           <div className="flex flex-col gap-6 w-11/12 bg-[var(--black-2)] items-center">
@@ -225,7 +234,9 @@ const CategoriesListComponent = ({
                       {category.name}
                     </h2>
                     <IconButton
-                      onClick={(event) => handleMenuClick(event, category.id)}
+                      onClick={(event) =>
+                        handleMenuClick(event, category.id, category.slug)
+                      }
                     >
                       <MoreVertRoundedIcon
                         sx={{

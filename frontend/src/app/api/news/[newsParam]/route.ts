@@ -82,33 +82,30 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { newsParam: string } }
+  { params }: { params: Promise<{ newsParam: string }> }
 ) {
   try {
     const token = (await cookies()).get("token")?.value;
+
     if (!token) {
       return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
     }
 
-    const id = Number(params.newsParam);
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { error: "ID inválido para exclusão" },
-        { status: 400 }
-      );
-    }
+    const id = Number((await params).newsParam);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/news/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-    const data = await res.json();
     if (!res.ok) {
       return NextResponse.json(
-        { error: data.message || "Erro ao deletar notícia!" },
+        { error: "Erro ao deletar Notícia!" },
         { status: res.status }
       );
     }

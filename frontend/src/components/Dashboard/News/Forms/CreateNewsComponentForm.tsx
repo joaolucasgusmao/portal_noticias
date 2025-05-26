@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { INewsCreate } from "@/@types/news";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 const CreateNewsComponentForm: React.FC = () => {
   const [formData, setFormData] = useState<INewsCreate>({
@@ -43,6 +44,10 @@ const CreateNewsComponentForm: React.FC = () => {
     setInputValue(event.target.value);
   };
 
+  const TiptapEditor = dynamic(() => import("../../commons/TiptapEditor"), {
+    ssr: false,
+  });
+  
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "," || event.key === "Enter") {
       event.preventDefault();
@@ -288,14 +293,14 @@ const CreateNewsComponentForm: React.FC = () => {
               </Box>
             </Box>
             <Box>
-              <InputComponent
-                label="Escreva seu Conteúdo aqui"
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                multiline
-                rows={12.4}
-                required
+              <TiptapEditor
+                content={formData.content}
+                onChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    content: value,
+                  }))
+                }
               />
               {loading ? (
                 <div className="mt-4 mb-5! sm:mt-10 sm:mb-0 flex justify-center items-center">

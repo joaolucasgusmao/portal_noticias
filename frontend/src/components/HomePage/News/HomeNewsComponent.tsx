@@ -24,7 +24,7 @@ const HomeNewsComponent = ({
 }: HomeNewsComponentProps) => {
   const [maxCharsSummary] = useState<number>(107);
   const [maxCharsTitle] = useState<number>(80);
-  const homeNews = news.filter((newsItem) => newsItem.is_active).slice(0, 30);
+  const homeNews = news.filter((news) => news.is_active);
 
   const router = useRouter();
 

@@ -17,7 +17,6 @@ interface NewsCategoryClientProps {
   weatherInfos: IWeather;
   banners: IBannerReturn[];
   newsCategory: INewsReturn[];
-  news: INewsReturn[];
   mostReadNews: INewsReturn[];
   coins: ICoins;
   pagination: IPaginate<INewsReturn>;
@@ -28,7 +27,6 @@ const NewsCategoryClient = ({
   weatherInfos,
   banners,
   newsCategory,
-  news,
   coins,
   mostReadNews,
   pagination,
@@ -45,7 +43,6 @@ const NewsCategoryClient = ({
           <NewsCategoryComponent
             pagination={pagination}
             newsCategory={newsCategory}
-            news={news}
             coins={coins}
             banners={banners}
             mostReadNews={mostReadNews}

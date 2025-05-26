@@ -3,7 +3,7 @@ import { IWeather } from "@/@types/weather";
 import { IBannerReturn } from "@/@types/banner";
 import { INewsReturn, IPaginate } from "@/@types/news";
 import { ICoins } from "@/@types/coins";
-import NewsCategoryClient from "./NewsCategoryClient";
+import SearchPageClient from "./SearchPageClient";
 
 const getDefaultPagination = (): IPaginate<INewsReturn> => ({
   data: [],
@@ -25,6 +25,22 @@ const getDefaultPagination = (): IPaginate<INewsReturn> => ({
   },
 });
 
+function parseWeatherResponse(data: any): IWeather {
+  const icon = data.weather?.[0]?.icon || "";
+  const temp = data.main.temp;
+  const temp_min = data.main.temp_min;
+  const temp_max = data.main.temp_max;
+  const temp_avg = (temp_min + temp_max) / 2;
+
+  return {
+    icon,
+    temp,
+    temp_min,
+    temp_max,
+    temp_avg,
+  };
+}
+
 const fetchCategories = async (): Promise<ICategoryReturn[]> => {
   try {
     const response = await fetch(
@@ -42,29 +58,6 @@ const fetchCategories = async (): Promise<ICategoryReturn[]> => {
   } catch (error) {
     console.error("Erro ao buscar categorias:", error);
     return [];
-  }
-};
-
-const fetchNewsByCategory = async (
-  page: number,
-  slug: string
-): Promise<IPaginate<INewsReturn>> => {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/news/category/${slug}?page=${page}`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Erro ao buscar notícias por categoria");
-    }
-
-    return response.json();
-  } catch (error) {
-    console.error("Erro ao buscar notícias por categoria:", error);
-    return getDefaultPagination();
   }
 };
 
@@ -98,23 +91,6 @@ const fetchBanners = async (): Promise<IBannerReturn[]> => {
     return await response.json();
   } catch (error) {
     console.error("Erro ao buscar banners:", error);
-    return [];
-  }
-};
-
-const fetchNews = async (): Promise<INewsReturn[]> => {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news`, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      throw new Error("Erro ao buscar notícias");
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Erro ao buscar notícias:", error);
     return [];
   }
 };
@@ -159,52 +135,59 @@ const fetchDol = async (): Promise<ICoins> => {
   }
 };
 
-function parseWeatherResponse(data: any): IWeather {
-  const icon = data.weather?.[0]?.icon || "";
-  const temp = data.main.temp;
-  const temp_min = data.main.temp_min;
-  const temp_max = data.main.temp_max;
-  const temp_avg = (temp_min + temp_max) / 2;
+const fetchNewsByTitle = async (
+  title: string
+): Promise<IPaginate<INewsReturn>> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/news/title?title=${title}`,
+      {
+        cache: "no-store",
+      }
+    );
 
-  return {
-    icon,
-    temp,
-    temp_min,
-    temp_max,
-    temp_avg,
-  };
+    if (!response.ok) {
+      throw new Error("Erro ao buscar notícias por titulo");
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Erro ao buscar notícias por titulo:", error);
+    return getDefaultPagination();
+  }
+};
+
+interface SearchPageProps {
+  params: { query: string };
 }
 
-interface NewsCategoryPageProps {
-  params: { slug: string };
-  searchParams: { page?: string };
-}
-
-const NewsCategoryPage = async ({
-  params,
-  searchParams,
-}: NewsCategoryPageProps) => {
-  const slug = (await params).slug;
-  const { page } = await searchParams;
-  const pageNumber = Number(page) || 1;
+const SearchPage = async ({ params }: SearchPageProps) => {
+  const title = (await params).query;
 
   const categories = await fetchCategories();
   const weather = await fetchWeather();
   const banners = await fetchBanners();
-  const newsCategory = await fetchNewsByCategory(pageNumber, slug);
   const coins = await fetchDol();
   const mostReadNews = await fetchNewsMostRead();
+
+  const newsByTitle = title
+    ? await fetchNewsByTitle(title)
+    : getDefaultPagination();
+
   return (
-    <NewsCategoryClient
-      pagination={newsCategory}
-      newsCategory={newsCategory.data}
+    <SearchPageClient
       weatherInfos={weather}
       categories={categories}
       banners={banners}
       coins={coins}
       mostReadNews={mostReadNews}
+      newsByTitle={newsByTitle.data}
+      pagination={newsByTitle}
+      title={title}
     />
   );
 };
 
-export default NewsCategoryPage;
+export default SearchPage;

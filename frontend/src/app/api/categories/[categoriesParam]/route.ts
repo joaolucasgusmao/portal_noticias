@@ -3,19 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ categoriesParam: string }> }
 ) {
   try {
-    const token = (await cookies()).get("token")?.value;
-
-    if (!token) {
-      return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
-    }
-
-    const id = (await params).id;
+    const slug = (await params).categoriesParam;
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/categories/${slug}`,
       {
         method: "GET",
       }
@@ -40,7 +34,7 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ categoriesParam: string }> }
 ) {
   try {
     const token = (await cookies()).get("token")?.value;
@@ -49,7 +43,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
     }
 
-    const id = (await params).id;
+    const id = Number((await params).categoriesParam);
     const body = await req.json();
 
     const res = await fetch(
@@ -91,7 +85,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ categoriesParam: string }> }
 ) {
   try {
     const token = (await cookies()).get("token")?.value;
@@ -100,7 +94,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Não autenticado!" }, { status: 401 });
     }
 
-    const id = (await params).id;
+    const id = Number((await params).categoriesParam);
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`,

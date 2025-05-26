@@ -29,7 +29,7 @@ class CategoryService
 
     public function retrieve(string $slug): JsonResource
     {
-        $category = Category::where("slug", $slug)->get();
+        $category = Category::where("slug", $slug)->first();
 
         if (!$category) {
             throw new AppError("Category not found.", 404);

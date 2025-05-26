@@ -1,8 +1,8 @@
 "use client";
 
-import { TextField } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import { ICategoryReturn } from "@/@types/category";
-import React from "react";
+import React, { useState } from "react";
 import { IWeather } from "@/@types/weather";
 import Image from "next/image";
 import SearchIcon from "@mui/icons-material/Search";
@@ -24,6 +24,13 @@ const HeaderComponent = ({
 }: HeaderComponentProps) => {
   const { open, handleToggleMenu } = useDashboardLayoutHome();
   const router = useRouter();
+  const [newsSearch, setNewsSearch] = useState<string>("");
+
+  const handleSearch = () => {
+    if (newsSearch.trim().length === 0) return;
+
+    router.push(`/news/search/${encodeURIComponent(newsSearch.trim())}`);
+  };
 
   return (
     <header className="flex flex-col w-full fixed top-0 z-50">
@@ -62,13 +69,13 @@ const HeaderComponent = ({
                 cursor: "pointer",
               }}
             />
-            <FacebookIcon
+            <YouTubeIcon
               sx={{
                 color: "var(--black)",
                 cursor: "pointer",
               }}
             />
-            <YouTubeIcon
+            <FacebookIcon
               sx={{
                 color: "var(--black)",
                 cursor: "pointer",
@@ -76,11 +83,19 @@ const HeaderComponent = ({
             />
           </div>
           <div className="hidden md:flex items-center">
-            <SearchIcon />
+            <IconButton
+              onClick={handleSearch}
+              aria-label="buscar"
+              className="p-0! hover:bg-[var(--white)]!"
+            >
+              <SearchIcon />
+            </IconButton>
             <TextField
               placeholder="Buscar"
               type="text"
               name="title"
+              value={newsSearch}
+              onChange={(event) => setNewsSearch(event.target.value)}
               sx={{
                 backgroundColor: "var(--header-bg)",
 

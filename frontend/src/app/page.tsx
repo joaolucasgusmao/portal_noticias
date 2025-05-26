@@ -5,6 +5,42 @@ import { IBannerReturn } from "@/@types/banner";
 import { INewsReturn, IPaginate } from "@/@types/news";
 import { ICoins } from "@/@types/coins";
 
+const getDefaultPagination = (): IPaginate<INewsReturn> => ({
+  data: [],
+  meta: {
+    current_page: 1,
+    from: 0,
+    last_page: 1,
+    links: [],
+    path: "",
+    per_page: 10,
+    to: 0,
+    total: 0,
+  },
+  links: {
+    first: "",
+    last: "",
+    prev: null,
+    next: null,
+  },
+});
+
+function parseWeatherResponse(data: any): IWeather {
+  const icon = data.weather?.[0]?.icon || "";
+  const temp = data.main.temp;
+  const temp_min = data.main.temp_min;
+  const temp_max = data.main.temp_max;
+  const temp_avg = (temp_min + temp_max) / 2;
+
+  return {
+    icon,
+    temp,
+    temp_min,
+    temp_max,
+    temp_avg,
+  };
+}
+
 const fetchCategories = async (): Promise<ICategoryReturn[]> => {
   try {
     const response = await fetch(
@@ -116,29 +152,49 @@ const fetchDol = async (): Promise<ICoins> => {
   }
 };
 
-function parseWeatherResponse(data: any): IWeather {
-  const icon = data.weather?.[0]?.icon || "";
-  const temp = data.main.temp;
-  const temp_min = data.main.temp_min;
-  const temp_max = data.main.temp_max;
-  const temp_avg = (temp_min + temp_max) / 2;
+const fetchNewsByTitle = async (
+  title: string
+): Promise<IPaginate<INewsReturn>> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/news/title?title=${title}`,
+      {
+        cache: "no-store",
+      }
+    );
 
-  return {
-    icon,
-    temp,
-    temp_min,
-    temp_max,
-    temp_avg,
-  };
-}
+    if (!response.ok) {
+      throw new Error("Erro ao buscar notícias por titulo");
+    }
 
-const HomePage = async () => {
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Erro ao buscar notícias por titulo:", error);
+    return getDefaultPagination();
+  }
+};
+
+const HomePage = async ({
+  searchParams,
+}: {
+  searchParams?: Record<string, string>;
+}) => {
+  const resolvedSearchParams = await searchParams;
+  const title = resolvedSearchParams?.title;
+
   const categories = await fetchCategories();
   const weather = await fetchWeather();
   const banners = await fetchBanners();
   const news = await fetchNews();
   const coins = await fetchDol();
   const mostReadNews = await fetchNewsMostRead();
+
+  const newsByTitle = title
+    ? await fetchNewsByTitle(title)
+    : getDefaultPagination();
+
   return (
     <HomePageInfosClient
       weatherInfos={weather}
@@ -147,6 +203,7 @@ const HomePage = async () => {
       news={news}
       coins={coins}
       mostReadNews={mostReadNews}
+      newsByTitle={newsByTitle.data}
     />
   );
 };

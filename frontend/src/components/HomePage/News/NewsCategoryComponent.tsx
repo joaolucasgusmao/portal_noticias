@@ -15,20 +15,20 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 interface NewsCategoryComponentProps {
   newsCategory: INewsReturn[];
-  news: INewsReturn[];
   coins: ICoins;
   banners: IBannerReturn[];
   mostReadNews: INewsReturn[];
   pagination: Omit<IPaginate<INewsReturn>, "data">;
+  titleSearch?: string; // <- aqui
 }
 
 const NewsCategoryComponent = ({
   newsCategory,
-  news,
   coins,
   banners,
   mostReadNews,
   pagination,
+  titleSearch,
 }: NewsCategoryComponentProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -51,9 +51,11 @@ const NewsCategoryComponent = ({
   return (
     <div className="w-full max-w-[1295px] flex gap-28">
       {newsByCategory.length > 0 ? (
-        <div className="flex flex-col gap-4">
-          <h1 className="text-2xl sm:text-3xl text-[var(--orange)] font-bold">
-            {slug.charAt(0).toUpperCase() + slug.slice(1)}
+        <div className="h-screen flex flex-col gap-4">
+          <h1 className="text-xl text-[var(--orange)] font-bold">
+            {titleSearch
+              ? `Resultado da busca por: "${decodeURIComponent(titleSearch)}"`
+              : slug?.charAt(0).toUpperCase() + slug?.slice(1)}
           </h1>
           <div className="flex flex-col gap-4">
             {newsByCategory.map((news) => (
@@ -146,7 +148,7 @@ const NewsCategoryComponent = ({
       ) : (
         <div className="w-full h-screen flex mt-8">
           <h1 className="text-2xl text-[var(--orange)] font-bold">
-            Nenhuma Notícia cadastrada!
+            Nenhuma Notícia encontrada!
           </h1>
         </div>
       )}

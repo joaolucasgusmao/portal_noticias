@@ -208,13 +208,13 @@ const BannersListComponent = ({ banners }: BannersListComponentProps) => {
       <section className="flex flex-col w-full justify-between gap-16 p-4 sm:p-12 mx-4 items-center bg-[var(--black-2)] my-20 lg:mx-16">
         <form
           onSubmit={selectedBannerId ? handleUpdate : handleSubmit}
-          className="flex w-full lg:w-10/12 xl:w-7/12 2xl:w-5/12 h-[580px] justify-center flex-col items-center border border-[var(--input-border)]"
+          className="flex w-full h-[820px] lg:w-10/12 lg:h-[750px] xl:w-7/12 2xl:w-5/12  justify-center flex-col items-center border border-[var(--input-border)]"
         >
           <div className="flex flex-col gap-6 w-11/12 bg-[var(--black-2)] items-center">
             <h1 className="text-[var(--primary)] font-bold! text-xl!">
               Novo Banner
             </h1>
-            <div className="flex flex-col gap-3 items-center w-full">
+            <div className="flex flex-col gap-4 items-center w-full">
               <InputComponent
                 label="Descrição do Banner"
                 name="description"
@@ -292,7 +292,17 @@ const BannersListComponent = ({ banners }: BannersListComponentProps) => {
 
                     setFormData((prev) => ({
                       ...prev,
-                      positions: newPositions as ("superTop" | "top" | "homeOne" | "homeTwo" | "homeThree" | "homeFour" | "homeFive" | "sideHome" | "side")[],
+                      positions: newPositions as (
+                        | "superTop"
+                        | "top"
+                        | "homeOne"
+                        | "homeTwo"
+                        | "homeThree"
+                        | "homeFour"
+                        | "homeFive"
+                        | "sideHome"
+                        | "side"
+                      )[],
                     }));
                   }}
                 />
