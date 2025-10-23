@@ -1,5 +1,7 @@
 node_modules
 vendor
 .git
-storage
-.env
+docker
+tests
+storage/logs/*
+storage/framework/cache/*

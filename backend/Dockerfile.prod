@@ -1,0 +1,41 @@
+# Stage 1: PHP + Composer
+FROM php:8.3-fpm AS base
+
+WORKDIR /var/www
+
+# Instala dependências do sistema
+RUN apt-get update && apt-get install -y \
+    git \
+    zip \
+    unzip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Extensões PHP necessárias
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets
+
+# Instala Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copia apenas arquivos necessários para Composer
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+
+# Copia todo o projeto
+COPY . .
+
+# Cache Laravel
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
+
+# Ajusta permissões de storage e bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Expondo porta do PHP-FPM
+EXPOSE 9000
+
+# Comando para iniciar o PHP-FPM
+CMD ["php-fpm"]
